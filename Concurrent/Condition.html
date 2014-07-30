@@ -325,13 +325,13 @@ the same mutex</p>
       <pre class="lines">
 
 
-65
-66
-67
-68</pre>
+61
+62
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_broadcast'>broadcast</span>
   <span class='ivar'>@condition</span><span class='period'>.</span><span class='id identifier rubyid_broadcast'>broadcast</span>
@@ -380,13 +380,13 @@ the same mutex</p>
       <pre class="lines">
 
 
-58
-59
-60
-61</pre>
+54
+55
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_signal'>signal</span>
   <span class='ivar'>@condition</span><span class='period'>.</span><span class='id identifier rubyid_signal'>signal</span>
@@ -479,11 +479,7 @@ the same mutex</p>
 47
 48
 49
-50
-51
-52
-53
-54</pre>
+50</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 41</span>
@@ -497,11 +493,7 @@ the same mutex</p>
   <span class='kw'>else</span>
     <span class='const'>Result</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_start_time'>start_time</span> <span class='op'>+</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>-</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
-<span class='comment'># ensure
-</span><span class='comment'>#   if $!
-</span><span class='comment'>#     binding.pry
-</span><span class='comment'>#   end
-</span><span class='kw'>end</span></pre>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -512,9 +504,9 @@ the same mutex</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:39 2014 by
+  Generated on Wed Jul 30 19:36:29 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

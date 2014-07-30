@@ -91,7 +91,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><span class='object_link'><a href="JavaExecutor.html" title="Concurrent::JavaExecutor (module)">JavaExecutor</a></span></dd>
+      <dd class="r2"><span class='object_link'><a href="JavaExecutor.html" title="Concurrent::JavaExecutor (module)">JavaExecutor</a></span>, <span class='object_link'><a href="SerialExecutor.html" title="Concurrent::SerialExecutor (module)">SerialExecutor</a></span></dd>
       
     
   
@@ -207,7 +207,8 @@ from the pool and replaced.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Does the task queue have a maximum size?.</p>
+</div></span>
   
 </li>
 
@@ -316,6 +317,34 @@ from the pool and replaced.</p>
 
   
     <span class="summary_desc"><div class='inline'><p>Is the executor running?.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialized%3F-instance_method" title="#serialized? (instance method)">- (Boolean) <strong>serialized?</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="SerialExecutor.html#serialized%3F-instance_method" title="Concurrent::SerialExecutor#serialized? (method)">SerialExecutor</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Does this executor guarantee serialization of its operations?.</p>
 </div></span>
   
 </li>
@@ -435,7 +464,7 @@ from the pool and replaced.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Boolean) <strong>wait_for_termination</strong>(timeout) </a>
+      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Boolean) <strong>wait_for_termination</strong>(timeout = nil) </a>
     
 
     
@@ -464,6 +493,8 @@ from the pool and replaced.</p>
   
 
 
+  
+  
   
   
   
@@ -506,13 +537,13 @@ from the pool and replaced.</p>
       <pre class="lines">
 
 
-15
 16
 17
-18</pre>
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_single_thread_executor.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_single_thread_executor.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@executor</span> <span class='op'>=</span> <span class='id identifier rubyid_java'>java</span><span class='period'>.</span><span class='id identifier rubyid_util'>util</span><span class='period'>.</span><span class='id identifier rubyid_concurrent'>concurrent</span><span class='period'>.</span><span class='const'>Executors</span><span class='period'>.</span><span class='id identifier rubyid_newSingleThreadExecutor'>newSingleThreadExecutor</span>
@@ -610,6 +641,14 @@ from the pool and replaced.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>false</code></p>
+</div>
+  </div>
+
+<p>Does the task queue have a maximum size?</p>
+
 
   </div>
 </div>
@@ -624,6 +663,10 @@ from the pool and replaced.</p>
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'><p>True if the task queue has a maximum size else false.</p>
+</div>
       
     </li>
   
@@ -650,7 +693,7 @@ from the pool and replaced.</p>
   <div class="discussion">
     <p>Begin an immediate shutdown. In-progress tasks will be allowed to
 complete but enqueued tasks will be dismissed and no new tasks
-will be accepted. Has no additional effect if the executor is
+will be accepted. Has no additional effect if the thread pool is
 not running.</p>
 
 
@@ -805,6 +848,59 @@ is not running</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="serialized?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>serialized?</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="SerialExecutor.html#serialized%3F-instance_method" title="Concurrent::SerialExecutor#serialized? (method)">SerialExecutor</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>true</code></p>
+</div>
+  </div>
+
+<p>Does this executor guarantee serialization of its operations?</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>True if the executor guarantees that all operations
+will be post in the order they are received and no two operations may
+occur simultaneously. Else false.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="set_shutdown_hook-instance_method">
   
     - (<tt>Object</tt>) <strong>set_shutdown_hook</strong>  <span class="extras">(protected)</span>
@@ -839,7 +935,7 @@ is not running</p>
   <div class="discussion">
     <p>Begin an orderly shutdown. Tasks already in the queue will be executed,
 but no new tasks will be accepted. Has no additional effect if the
-executor is not running.</p>
+thread pool is not running.</p>
 
 
   </div>
@@ -941,7 +1037,7 @@ executor is not running.</p>
       <div class="method_details ">
   <h3 class="signature " id="wait_for_termination-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>wait_for_termination</strong>(timeout) 
+    - (<tt>Boolean</tt>) <strong>wait_for_termination</strong>(timeout = nil) 
   
 
   
@@ -980,6 +1076,8 @@ passed.</p>
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
       
         &mdash;
         <div class='inline'><p>the maximum number of seconds to wait for shutdown to complete</p>
@@ -1015,9 +1113,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:42 2014 by
+  Generated on Wed Jul 30 19:36:33 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

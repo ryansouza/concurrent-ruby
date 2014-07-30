@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>
-  Class: Concurrent::Actor
+  Module: Concurrent::Actor
   
     &mdash; Concurrent
   
@@ -63,185 +63,355 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><h1>Class: Concurrent::Actor
+    <div id="content"><h1>Module: Concurrent::Actor
   
-  <span class="deprecated note title">Deprecated</span>
+  
   
 </h1>
 
 <dl class="box">
   
-    <dt class="r1">Inherits:</dt>
-    <dd class="r1">
-      <span class="inheritName">Object</span>
-      
-        <ul class="fullTree">
-          <li>Object</li>
-          
-            <li class="next">Concurrent::Actor</li>
-          
-        </ul>
-        <a href="#" class="inheritanceTree">show all</a>
-      
-      </dd>
-    
-  
   
     
   
-    
-      <dt class="r2">Includes:</dt>
-      <dd class="r2"><span class='object_link'><a href="Postable.html" title="Concurrent::Postable (module)">Postable</a></span>, <span class='object_link'><a href="Runnable.html" title="Concurrent::Runnable (module)">Runnable</a></span>, Observable</dd>
-      
     
   
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/concurrent/actor/actor.rb</dd>
+    <dd class="r1 last">lib/concurrent/actor.rb<span class="defines">,<br />
+  lib/concurrent/actor/root.rb,<br /> lib/concurrent/actor/core.rb,<br /> lib/concurrent/actor/errors.rb,<br /> lib/concurrent/actor/utills.rb,<br /> lib/concurrent/actor/ad_hoc.rb,<br /> lib/concurrent/actor/context.rb,<br /> lib/concurrent/actor/envelope.rb,<br /> lib/concurrent/actor/reference.rb,<br /> lib/concurrent/actor/behaviour.rb,<br /> lib/concurrent/actor/type_check.rb,<br /> lib/concurrent/actor/utils/broadcast.rb,<br /> lib/concurrent/actor/behaviour/buffer.rb,<br /> lib/concurrent/actor/behaviour/awaits.rb,<br /> lib/concurrent/actor/behaviour/pausing.rb,<br /> lib/concurrent/actor/behaviour/linking.rb,<br /> lib/concurrent/actor/behaviour/abstract.rb,<br /> lib/concurrent/actor/public_delegations.rb,<br /> lib/concurrent/actor/internal_delegations.rb,<br /> lib/concurrent/actor/behaviour/supervised.rb,<br /> lib/concurrent/actor/behaviour/supervising.rb,<br /> lib/concurrent/actor/behaviour/termination.rb,<br /> lib/concurrent/actor/behaviour/sets_results.rb,<br /> lib/concurrent/actor/behaviour/removes_child.rb,<br /> lib/concurrent/actor/behaviour/executes_context.rb,<br /> lib/concurrent/actor/default_dead_letter_handler.rb,<br /> lib/concurrent/actor/behaviour/terminates_children.rb,<br /> lib/concurrent/actor/behaviour/errors_on_unknown_message.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
-</div></div>
-<p>Actor-based concurrency is all the rage in some circles. Originally described in
-1973, the actor model is a paradigm for creating asynchronous, concurrent objects
-that is becoming increasingly popular. Much has changed since actors were first
-written about four decades ago, which has led to a serious fragmentation within
-the actor community. There is <em>no</em> universally accepted, strict definition of
-&quot;actor&quot; and actor implementations differ widely between languages and libraries.</p>
-
-<p>A good definition of &quot;actor&quot; is:</p>
-
-<p>An independent, concurrent, single-purpose, computational entity that communicates exclusively via message passing.</p>
-
-<p>The +Concurrent::Actor+ class in this library is based solely on the
-<a href="http://www.scala-lang.org/api/current/index.html#scala.actors.Actor" target="_parent" title="Actor">Actor</a> trait
-defined in the Scala standard library. It does not implement all the features of
-Scala&#39;s +Actor+ but its behavior for what <em>has</em> been implemented is nearly identical.
-The excluded features mostly deal with Scala&#39;s message semantics, strong typing,
-and other characteristics of Scala that don&#39;t really apply to Ruby.</p>
-
-<p>Unlike many of the abstractions in this library, +Actor+ takes an <em>object-oriented</em>
-approach to asynchronous concurrency, rather than a <em>functional programming</em>
-approach.</p>
-
-<p>Because +Actor+ mixes in the +Concurrent::Runnable+ module subclasses have access to
-the +#on_error+ method and can override it to implement custom error handling. The
-+Actor+ base class does not use +#on_error+ so as to avoid conflit with subclasses
-which override it. Generally speaking, +#on_error+ should not be used. The +Actor+
-base class provides concictent, reliable, and robust error handling already, and
-error handling specifics are tied to the message posting method. Incorrect behavior
-in an +#on_error+ override can lead to inconsistent +Actor+ behavior that may lead
-to confusion and difficult debugging.</p>
-
-<p>The +Actor+ superclass mixes in the Ruby standard library
-<a href="http://ruby-doc.org/stdlib-2.0/libdoc/observer/rdoc/Observable.html" target="_parent" title="Observable">Observable</a>
-module to provide consistent callbacks upon message processing completion. The normal
-+Observable+ methods, including +#add_observer+ behave normally. Once an observer
-is added to an +Actor+ it will be notified of all messages processed <em>after</em>
-addition. Notification will <em>not</em> occur for any messages that have already been
-processed.</p>
-
-<p>Observers will be notified regardless of whether the message processing is successful
-or not. The +#update+ method of the observer will receive four arguments. The
-appropriate method signature is:</p>
-
-<p>def update(time, message, result, reason)</p>
-
-<p>These four arguments represent:</p>
+    <p><h1>Actor model</h1>
 
 <ul>
-<li>The time that message processing was completed</li>
-<li>An array containing all elements of the original message, in order</li>
-<li>The result of the call to +#act+ (will be +nil+ if an exception was raised)</li>
-<li>Any exception raised by +#act+ (or +nil+ if message processing was successful)</li>
+<li> Light-weighted.</li>
+<li> Inspired by Akka and Erlang.</li>
+<li> Modular.</li>
 </ul>
+
+<p>Actors are sharing a thread-pool by default which makes them very cheap to create and discard.
+Thousands of actors can be created, allowing you to break the program into small maintainable pieces,
+without violating the single responsibility principle.</p>
+
+<h2>What is an actor model?</h2>
+
+<p><a href="http://en.wikipedia.org/wiki/Actor_model">Wiki</a> says:
+The actor model in computer science is a mathematical model of concurrent computation
+that treats <em>actors</em> as the universal primitives of concurrent digital computation:
+in response to a message that it receives, an actor can make local decisions,
+create more actors, send more messages, and determine how to respond to the next
+message received.</p>
+
+<h2>Why?</h2>
+
+<p>Concurrency is hard this is one of many ways how to simplify the problem.
+It is simpler to reason about actors than about locks (and all their possible states).</p>
+
+<h2>How to use it</h2>
+
+<p><pre class="code ruby"><span class='kw'>class</span> <span class='const'>Counter</span> <span class='op'>&lt;</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Actor</span><span class='op'>::</span><span class='const'>Context</span>
+  <span class='comment'># Include context of an actor which gives this class access to reference and other information
+</span>  <span class='comment'># about the actor, see PublicDelegations.
+</span>
+  <span class='comment'># use initialize as you wish
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial_value'>initial_value</span><span class='rparen'>)</span>
+    <span class='ivar'>@count</span> <span class='op'>=</span> <span class='id identifier rubyid_initial_value'>initial_value</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># override on_message to define actor&#39;s behaviour
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_on_message'>on_message</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='const'>Integer</span> <span class='op'>===</span> <span class='id identifier rubyid_message'>message</span>
+      <span class='ivar'>@count</span> <span class='op'>+=</span> <span class='id identifier rubyid_message'>message</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span> 
+
+<span class='comment'># Create new actor naming the instance &#39;first&#39;.
+</span><span class='comment'># Return value is a reference to the actor, the actual actor is never returned.
+</span><span class='id identifier rubyid_counter'>counter</span> <span class='op'>=</span> <span class='const'>Counter</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='symbol'>:first</span><span class='comma'>,</span> <span class='int'>5</span><span class='rparen'>)</span>                 <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference /first (Counter)&gt;
+</span>
+<span class='comment'># Tell a message and forget returning self.
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_tell'>tell</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span>                                    <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference /first (Counter)&gt;
+</span><span class='id identifier rubyid_counter'>counter</span> <span class='op'>&lt;&lt;</span> <span class='int'>1</span>                                       <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference /first (Counter)&gt;
+</span><span class='comment'># (First counter now contains 7.)
+</span>
+<span class='comment'># Send a messages asking for a result.
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>                               <span class='comment'># =&gt; Concurrent::IVar
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>                               <span class='comment'># =&gt; 7
+</span>
+<span class='comment'># Terminate the actor.
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_tell'>tell</span><span class='lparen'>(</span><span class='symbol'>:terminate!</span><span class='rparen'>)</span>                          <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference /first (Counter)&gt;
+</span><span class='comment'># Not terminated yet, it takes a while until the message is processed.
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_terminated?'>terminated?</span>                                <span class='comment'># =&gt; false
+</span><span class='comment'># Waiting for the termination.
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_terminated'>terminated</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>                           <span class='comment'># =&gt; Concurrent::Event
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_terminated'>terminated</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span>                            <span class='comment'># =&gt; true
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_terminated?'>terminated?</span>                                <span class='comment'># =&gt; true
+</span><span class='comment'># Any subsequent messages are rejected.
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='int'>5</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span><span class='period'>.</span><span class='id identifier rubyid_rejected?'>rejected?</span>                      <span class='comment'># =&gt; true
+</span>
+<span class='comment'># Failure on message processing terminates the actor.
+</span><span class='id identifier rubyid_counter'>counter</span> <span class='op'>=</span> <span class='const'>Counter</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='symbol'>:first</span><span class='comma'>,</span> <span class='int'>0</span><span class='rparen'>)</span>                 <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference /first (Counter)&gt;
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>boom</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span><span class='period'>.</span><span class='id identifier rubyid_rejected?'>rejected?</span>                 <span class='comment'># =&gt; false
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_terminated?'>terminated?</span>                                <span class='comment'># =&gt; false
+</span>
+
+<span class='comment'># Lets define an actor creating children actors.
+</span><span class='kw'>class</span> <span class='const'>Node</span> <span class='op'>&lt;</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Actor</span><span class='op'>::</span><span class='const'>Context</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_on_message'>on_message</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
+    <span class='kw'>case</span> <span class='id identifier rubyid_message'>message</span>
+    <span class='kw'>when</span> <span class='symbol'>:new_child</span>
+      <span class='const'>Node</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span> <span class='symbol'>:child</span>
+    <span class='kw'>when</span> <span class='symbol'>:how_many_children</span>
+      <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unknown</span><span class='tstring_end'>&#39;</span></span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span> 
+
+<span class='comment'># Actors are tracking parent-child relationships
+</span><span class='id identifier rubyid_parent'>parent</span> <span class='op'>=</span> <span class='const'>Node</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span> <span class='symbol'>:parent</span>                        <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference /parent (Node)&gt;
+</span><span class='id identifier rubyid_child'>child</span>  <span class='op'>=</span> <span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_tell'>tell</span><span class='lparen'>(</span><span class='symbol'>:new_child</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_ask!'>ask!</span><span class='lparen'>(</span><span class='symbol'>:new_child</span><span class='rparen'>)</span>
+    <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference /parent/child (Node)&gt;
+</span><span class='id identifier rubyid_child'>child</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span>                                       <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference /parent (Node)&gt;
+</span><span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_ask!'>ask!</span><span class='lparen'>(</span><span class='symbol'>:how_many_children</span><span class='rparen'>)</span>                    <span class='comment'># =&gt; 2
+</span>
+<span class='comment'># There is a special root actor which is used for all actors spawned outside any actor.
+</span><span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span>
+    <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference / (Concurrent::Actor::Root)&gt;
+</span>
+<span class='comment'># Termination of an parent will also terminate all children.
+</span><span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>boom</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span> 
+<span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_terminated?'>terminated?</span>                                 <span class='comment'># =&gt; true
+</span><span class='id identifier rubyid_child'>child</span><span class='period'>.</span><span class='id identifier rubyid_terminated?'>terminated?</span>                                  <span class='comment'># =&gt; true</span></pre></p>
+
+<h2>Messaging</h2>
+
+<p>Messages are processed in same order as they are sent by a sender. It may interleaved with
+messages form other senders though. There is also a contract in actor model that
+messages sent between actors should be immutable. Gems like</p>
+
+<ul>
+<li><a href="https://github.com/pitr-ch/algebrick">Algebrick</a> - Typed struct on steroids based on
+algebraic types and pattern matching</li>
+<li><a href="https://github.com/hamstergem/hamster">Hamster</a> - Efficient, Immutable, Thread-Safe
+Collection classes for Ruby</li>
+</ul>
+
+<p>are very useful.</p>
+
+<h3>Dead letter routing</h3>
+
+<p>see <span class='object_link'><a href="Actor/AbstractContext.html#dead_letter_routing-instance_method" title="Concurrent::Actor::AbstractContext#dead_letter_routing (method)">AbstractContext#dead_letter_routing</a></span> description:</p>
+
+<blockquote>
+<p><p>Defines an actor responsible for dead letters. Any rejected message send with
+<span class='object_link'><a href="Actor/Reference.html#tell-instance_method" title="Concurrent::Actor::Reference#tell (method)">Reference#tell</a></span> is sent there, a message with ivar is considered already monitored for
+failures. Default behaviour is to use <span class='object_link'><a href="Actor/AbstractContext.html#dead_letter_routing-instance_method" title="Concurrent::Actor::AbstractContext#dead_letter_routing (method)">AbstractContext#dead_letter_routing</a></span> of the parent,
+so if no <span class='object_link'><a href="Actor/AbstractContext.html#dead_letter_routing-instance_method" title="Concurrent::Actor::AbstractContext#dead_letter_routing (method)">AbstractContext#dead_letter_routing</a></span> method is overridden in parent-chain the message ends up in
+<code>Actor.root.dead_letter_routing</code> agent which will log warning.</p>
+</p>
+</blockquote>
+
+<h2>Architecture</h2>
+
+<p>Actors are running on shared thread poll which allows user to create many actors cheaply.
+Downside is that these actors cannot be directly used to do IO or other blocking operations.
+Blocking operations could starve the <code>default_task_pool</code>. However there are two options:</p>
+
+<ul>
+<li>Create an regular actor which will schedule blocking operations in <code>global_operation_pool</code>
+(which is intended for blocking operations) sending results back to self in messages.</li>
+<li>Create an actor using <code>global_operation_pool</code> instead of <code>global_task_pool</code>, e.g.
+<code>AnIOActor.spawn name: :blocking, executor: Concurrent.configuration.global_operation_pool</code>.</li>
+</ul>
+
+<p>Each actor is composed from 4 parts:</p>
+
+<h3><span class='object_link'><a href="Actor/Reference.html" title="Concurrent::Actor::Reference (class)">Reference</a></span></h3>
+
+<p><p>Reference is public interface of Actor instances. It is used for sending messages and can
+be freely passed around the program. It also provides some basic information about the actor,
+see <span class='object_link'><a href="Actor/PublicDelegations.html" title="Concurrent::Actor::PublicDelegations (module)">PublicDelegations</a></span>.</p>
+</p>
+
+<h3><span class='object_link'><a href="Actor/Core.html" title="Concurrent::Actor::Core (class)">Core</a></span></h3>
+
+<p><p>Core of the actor</p>
+</p>
+
+<h3><span class='object_link'><a href="Actor/AbstractContext.html" title="Concurrent::Actor::AbstractContext (class)">AbstractContext</a></span></h3>
+
+<p><p>Abstract implementation of Actor context. Children has to implement
+<span class='object_link'><a href="Actor/AbstractContext.html#on_message-instance_method" title="Concurrent::Actor::AbstractContext#on_message (method)">AbstractContext#on_message</a></span> and <span class='object_link'><a href="Actor/AbstractContext.html#behaviour_definition-instance_method" title="Concurrent::Actor::AbstractContext#behaviour_definition (method)">AbstractContext#behaviour_definition</a></span> methods.
+There are two implementations:</p>
+
+<ul>
+<li><p><span class='object_link'><a href="Actor/Context.html" title="Concurrent::Actor::Context (class)">Context</a></span></p>
+
+<blockquote>
+<p><p>Basic Context of an Actor.</p>
+
+<ul>
+<li>  linking</li>
+<li>  terminates on error</li>
+</ul>
+
+<p>TODO describe behaviour
+TODO usage</p>
+</p>
+</blockquote></li>
+<li><p><span class='object_link'><a href="Actor/RestartingContext.html" title="Concurrent::Actor::RestartingContext (class)">RestartingContext</a></span>.</p>
+
+<blockquote>
+<p><p>Context of an Actor for complex robust systems.</p>
+
+<ul>
+<li>  linking</li>
+<li>  supervising</li>
+<li>  pauses on error</li>
+</ul>
+
+<p>TODO describe behaviour
+TODO usage</p>
+</p>
+</blockquote></li>
+</ul>
+</p>
+
+<h3><span class='object_link'><a href="Actor/Behaviour.html" title="Concurrent::Actor::Behaviour (module)">Behaviour</a></span></h3>
+
+<p><p>Actors have modular architecture, which is achieved by combining a light core with chain of
+behaviours. Each message or internal event propagates through the chain allowing the
+behaviours react based on their responsibility. listing few as an example:</p>
+
+<ul>
+<li><p><span class='object_link'><a href="Actor/Behaviour/Linking.html" title="Concurrent::Actor::Behaviour::Linking (class)">Behaviour::Linking</a></span>:</p>
+
+<blockquote>
+<p><p>Links the actor to other actors and sends events to them,
+like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
+</p>
+</blockquote></li>
+<li><p><span class='object_link'><a href="Actor/Behaviour/Awaits.html" title="Concurrent::Actor::Behaviour::Awaits (class)">Behaviour::Awaits</a></span>:</p>
+
+<blockquote>
+<p><p>Handles <code>:await</code> messages. Which allows to wait on Actor to process all previously send
+messages.</p>
+</p>
+</blockquote></li>
+</ul>
+
+<p>See <span class='object_link'><a href="Actor/Behaviour.html" title="Concurrent::Actor::Behaviour (module)">Behaviour</a></span>&#39;s namespace fo other behaviours.
+If needed new behaviours can be added, or old one removed to get required behaviour.</p>
+</p>
+
+<h2>Speed</h2>
+
+<p>Simple benchmark Actor vs Celluloid, the numbers are looking good
+but you know how it is with benchmarks. Source code is in
+<code>examples/actor/celluloid_benchmark.rb</code>. It sends numbers between x actors
+and adding 1 until certain limit is reached.</p>
+
+<p>Benchmark legend:</p>
+
+<ul>
+<li>mes.  - number of messages send between the actors</li>
+<li>act.  - number of actors exchanging the messages</li>
+<li>impl. - which gem is used</li>
+</ul>
+
+<h3>JRUBY</h3>
+
+<pre class="code ruby"><code class="ruby">Rehearsal --------------------------------------------------------
+50000    2 concurrent 24.110000   0.800000  24.910000 (  7.728000)
+50000    2 celluloid  28.510000   4.780000  33.290000 ( 14.782000)
+50000  500 concurrent 13.700000   0.280000  13.980000 (  4.307000)
+50000  500 celluloid  14.520000  11.740000  26.260000 ( 12.258000)
+50000 1000 concurrent 10.890000   0.220000  11.110000 (  3.760000)
+50000 1000 celluloid  15.600000  21.690000  37.290000 ( 18.512000)
+50000 1500 concurrent 10.580000   0.270000  10.850000 (  3.646000)
+50000 1500 celluloid  14.490000  29.790000  44.280000 ( 26.043000)
+--------------------------------------------- total: 201.970000sec
+
+ mes. act.      impl.      user     system      total        real
+50000    2 concurrent  9.820000   0.510000  10.330000 (  5.735000)
+50000    2 celluloid  10.390000   4.030000  14.420000 (  7.494000)
+50000  500 concurrent  9.880000   0.200000  10.080000 (  3.310000)
+50000  500 celluloid  12.430000  11.310000  23.740000 ( 11.727000)
+50000 1000 concurrent 10.590000   0.190000  10.780000 (  4.029000)
+50000 1000 celluloid  14.950000  23.260000  38.210000 ( 20.841000)
+50000 1500 concurrent 10.710000   0.250000  10.960000 (  3.892000)
+50000 1500 celluloid  13.280000  30.030000  43.310000 ( 24.620000) (1)
+</code></pre>
+
+<h3>MRI 2.1.0</h3>
+
+<pre class="code ruby"><code class="ruby">Rehearsal --------------------------------------------------------
+50000    2 concurrent  4.640000   0.080000   4.720000 (  4.852390)
+50000    2 celluloid   6.110000   2.300000   8.410000 (  7.898069)
+50000  500 concurrent  6.260000   2.210000   8.470000 (  7.400573)
+50000  500 celluloid  10.250000   4.930000  15.180000 ( 14.174329)
+50000 1000 concurrent  6.300000   1.860000   8.160000 (  7.303162)
+50000 1000 celluloid  12.300000   7.090000  19.390000 ( 17.962621)
+50000 1500 concurrent  7.410000   2.610000  10.020000 (  8.887396)
+50000 1500 celluloid  14.850000  10.690000  25.540000 ( 24.489796)
+---------------------------------------------- total: 99.890000sec
+
+ mes. act.      impl.      user     system      total        real
+50000    2 concurrent  4.190000   0.070000   4.260000 (  4.306386)
+50000    2 celluloid   6.490000   2.210000   8.700000 (  8.280051)
+50000  500 concurrent  7.060000   2.520000   9.580000 (  8.518707)
+50000  500 celluloid  10.550000   4.980000  15.530000 ( 14.699962)
+50000 1000 concurrent  6.440000   1.870000   8.310000 (  7.571059)
+50000 1000 celluloid  12.340000   7.510000  19.850000 ( 18.793591)
+50000 1500 concurrent  6.720000   2.160000   8.880000 (  7.929630)
+50000 1500 celluloid  14.140000  10.130000  24.270000 ( 22.775288) (1)
+</code></pre>
+
+<p><em>Note (1):</em> Celluloid is using thread per actor so this bench is creating about 1500
+native threads. Actor is using constant number of threads.</p>
+</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
     
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Actor/Behaviour.html" title="Concurrent::Actor::Behaviour (module)">Behaviour</a></span>, <span class='object_link'><a href="Actor/InternalDelegations.html" title="Concurrent::Actor::InternalDelegations (module)">InternalDelegations</a></span>, <span class='object_link'><a href="Actor/PublicDelegations.html" title="Concurrent::Actor::PublicDelegations (module)">PublicDelegations</a></span>, <span class='object_link'><a href="Actor/TypeCheck.html" title="Concurrent::Actor::TypeCheck (module)">TypeCheck</a></span>, <span class='object_link'><a href="Actor/Utils.html" title="Concurrent::Actor::Utils (module)">Utils</a></span>
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Actor/AbstractContext.html" title="Concurrent::Actor::AbstractContext (class)">AbstractContext</a></span>, <span class='object_link'><a href="Actor/ActorTerminated.html" title="Concurrent::Actor::ActorTerminated (class)">ActorTerminated</a></span>, <span class='object_link'><a href="Actor/AdHoc.html" title="Concurrent::Actor::AdHoc (class)">AdHoc</a></span>, <span class='object_link'><a href="Actor/Context.html" title="Concurrent::Actor::Context (class)">Context</a></span>, <span class='object_link'><a href="Actor/Core.html" title="Concurrent::Actor::Core (class)">Core</a></span>, <span class='object_link'><a href="Actor/DefaultDeadLetterHandler.html" title="Concurrent::Actor::DefaultDeadLetterHandler (class)">DefaultDeadLetterHandler</a></span>, <span class='object_link'><a href="Actor/Envelope.html" title="Concurrent::Actor::Envelope (class)">Envelope</a></span>, <span class='object_link'><a href="Actor/Reference.html" title="Concurrent::Actor::Reference (class)">Reference</a></span>, <span class='object_link'><a href="Actor/RestartingContext.html" title="Concurrent::Actor::RestartingContext (class)">RestartingContext</a></span>, <span class='object_link'><a href="Actor/Root.html" title="Concurrent::Actor::Root (class)">Root</a></span>, <span class='object_link'><a href="Actor/UnknownMessage.html" title="Concurrent::Actor::UnknownMessage (class)">UnknownMessage</a></span>
+    
+  
+</p>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
       
-        <p class="example_title"><div class='inline'><p>Actor Ping Pong</p>
-</div></p>
+        <dt id="Error-constant" class="">Error =
+          
+        </dt>
+        <dd><pre class="code"><span class='const'>Class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='const'>StandardError</span><span class='rparen'>)</span></pre></dd>
       
-      <pre class="example code"><code><span class='kw'>class</span> <span class='const'>Ping</span> <span class='op'>&lt;</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Actor</span>
+    </dl>
+  
 
-  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_count'>count</span><span class='comma'>,</span> <span class='id identifier rubyid_pong'>pong</span><span class='rparen'>)</span>
-    <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
-    <span class='ivar'>@pong</span> <span class='op'>=</span> <span class='id identifier rubyid_pong'>pong</span>
-    <span class='ivar'>@remaining</span> <span class='op'>=</span> <span class='id identifier rubyid_count'>count</span>
-  <span class='kw'>end</span>
-
-  <span class='kw'>def</span> <span class='id identifier rubyid_act'>act</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
-
-    <span class='kw'>if</span> <span class='id identifier rubyid_msg'>msg</span> <span class='op'>==</span> <span class='symbol'>:pong</span>
-      <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Ping: pong\n</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@remaining</span> <span class='op'>%</span> <span class='int'>1000</span> <span class='op'>==</span> <span class='int'>0</span>
-      <span class='ivar'>@pong</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='symbol'>:ping</span><span class='rparen'>)</span>
-
-      <span class='kw'>if</span> <span class='ivar'>@remaining</span> <span class='op'>&gt;</span> <span class='int'>0</span>
-        <span class='ivar'>@pong</span> <span class='op'>&lt;&lt;</span> <span class='symbol'>:ping</span>
-        <span class='ivar'>@remaining</span> <span class='op'>-=</span> <span class='int'>1</span>
-      <span class='kw'>else</span>
-        <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Ping :stop\n</span><span class='tstring_end'>&quot;</span></span>
-        <span class='ivar'>@pong</span> <span class='op'>&lt;&lt;</span> <span class='symbol'>:stop</span>
-        <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_stop'>stop</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span>
-
-<span class='kw'>class</span> <span class='const'>Pong</span> <span class='op'>&lt;</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Actor</span>
-
-  <span class='id identifier rubyid_attr_writer'>attr_writer</span> <span class='symbol'>:ping</span>
-
-  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
-    <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
-    <span class='ivar'>@count</span> <span class='op'>=</span> <span class='int'>0</span>
-  <span class='kw'>end</span>
-
-  <span class='kw'>def</span> <span class='id identifier rubyid_act'>act</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
-
-    <span class='kw'>if</span> <span class='id identifier rubyid_msg'>msg</span> <span class='op'>==</span> <span class='symbol'>:ping</span>
-      <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Pong: ping\n</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@count</span> <span class='op'>%</span> <span class='int'>1000</span> <span class='op'>==</span> <span class='int'>0</span>
-      <span class='ivar'>@ping</span> <span class='op'>&lt;&lt;</span> <span class='symbol'>:pong</span>
-      <span class='ivar'>@count</span> <span class='op'>+=</span> <span class='int'>1</span>
-
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_msg'>msg</span> <span class='op'>==</span> <span class='symbol'>:stop</span>
-      <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Pong :stop\n</span><span class='tstring_end'>&quot;</span></span>
-      <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_stop'>stop</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span>
-
-<span class='id identifier rubyid_pong'>pong</span> <span class='op'>=</span> <span class='const'>Pong</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-<span class='id identifier rubyid_ping'>ping</span> <span class='op'>=</span> <span class='const'>Ping</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>10000</span><span class='comma'>,</span> <span class='id identifier rubyid_pong'>pong</span><span class='rparen'>)</span>
-<span class='id identifier rubyid_pong'>pong</span><span class='period'>.</span><span class='id identifier rubyid_ping'>ping</span> <span class='op'>=</span> <span class='id identifier rubyid_ping'>ping</span>
-
-<span class='id identifier rubyid_t1'>t1</span> <span class='op'>=</span> <span class='id identifier rubyid_ping'>ping</span><span class='period'>.</span><span class='id identifier rubyid_run!'>run!</span>
-<span class='id identifier rubyid_t2'>t2</span> <span class='op'>=</span> <span class='id identifier rubyid_pong'>pong</span><span class='period'>.</span><span class='id identifier rubyid_run!'>run!</span>
-
-<span class='id identifier rubyid_ping'>ping</span> <span class='op'>&lt;&lt;</span> <span class='symbol'>:pong</span></code></pre>
-    
-  </div>
-
-
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><a href="http://ruby-doc.org/stdlib-2.0/libdoc/observer/rdoc/Observable.html" target="_parent" title="http://ruby-doc.org/stdlib-2.0/libdoc/observer/rdoc/Observable.html">http://ruby-doc.org/stdlib-2.0/libdoc/observer/rdoc/Observable.html</a></li>
-    
-  </ul>
-
-</div>
 
 
 
@@ -256,69 +426,10 @@ appropriate method signature is:</p>
 
     <ul class="summary">
       
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#pool-class_method" title="pool (class method)">+ (Array) <strong>pool</strong>(count, *args, &amp;block) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
-</div></span>
-  
-</li>
-
-      
-    </ul>
-  
-    <h2>
-      Instance Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
-
-    <ul class="summary">
-      
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#%3C%3C-instance_method" title="#&lt;&lt; (instance method)">- (Object) <strong>&lt;&lt;</strong>(message) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Postable.html#%3C%3C-instance_method" title="Concurrent::Postable#&lt;&lt; (method)">Postable</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#act-instance_method" title="#act (instance method)">- (Object) <strong>act</strong>(*message) </a>
+      <a href="#current-class_method" title="current (class method)">+ (Reference<sup>?</sup>) <strong>current</strong> </a>
     
 
     
@@ -328,94 +439,11 @@ appropriate method signature is:</p>
   
   
   
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#forward-instance_method" title="#forward (instance method)">- (Object) <strong>forward</strong>(receiver, *message) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Postable.html#forward-instance_method" title="Concurrent::Postable#forward (method)">Postable</a></span>
-    </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#mutex-instance_method" title="#mutex (instance method)">- (Object) <strong>mutex</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Runnable.html#mutex-instance_method" title="Concurrent::Runnable#mutex (method)">Runnable</a></span>
-    </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
   
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#post-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(*message) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Postable.html#post-instance_method" title="Concurrent::Postable#post (method)">Postable</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Sends a message to and returns.</p>
+    <span class="summary_desc"><div class='inline'><p>Current executing actor if any.</p>
 </div></span>
   
 </li>
@@ -424,16 +452,11 @@ appropriate method signature is:</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#post%21-instance_method" title="#post! (instance method)">- (Object) <strong>post!</strong>(seconds, *message) </a>
+      <a href="#experimental_acknowledged%3F-class_method" title="experimental_acknowledged? (class method)">+ (Boolean) <strong>experimental_acknowledged?</strong> </a>
     
 
     
   </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Postable.html#post%21-instance_method" title="Concurrent::Postable#post! (method)">Postable</a></span>
-    </span>
   
   
   
@@ -451,17 +474,12 @@ appropriate method signature is:</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#post%3F-instance_method" title="#post? (instance method)">- (Boolean) <strong>post?</strong>(*message) </a>
+      <a href="#i_know_it_is_experimental%21-class_method" title="i_know_it_is_experimental! (class method)">+ (Object) <strong>i_know_it_is_experimental!</strong> </a>
     
 
     
   </span>
   
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Postable.html#post%3F-instance_method" title="Concurrent::Postable#post? (method)">Postable</a></span>
-    </span>
-  
   
   
   
@@ -470,34 +488,7 @@ appropriate method signature is:</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#ready%3F-instance_method" title="#ready? (instance method)">- (Boolean) <strong>ready?</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Postable.html#ready%3F-instance_method" title="Concurrent::Postable#ready? (method)">Postable</a></span>
-    </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
+    <span class="summary_desc"><div class='inline'><p>call this to disable experimental warning.</p>
 </div></span>
   
 </li>
@@ -506,17 +497,12 @@ appropriate method signature is:</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#run-instance_method" title="#run (instance method)">- (Object) <strong>run</strong> </a>
+      <a href="#root-class_method" title="root (class method)">+ (Object) <strong>root</strong> </a>
     
 
     
   </span>
   
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Runnable.html#run-instance_method" title="Concurrent::Runnable#run (method)">Runnable</a></span>
-    </span>
-  
   
   
   
@@ -525,7 +511,8 @@ appropriate method signature is:</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>A root actor, a default parent of all actors spawned outside an actor.</p>
+</div></span>
   
 </li>
 
@@ -533,17 +520,12 @@ appropriate method signature is:</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#run%21-instance_method" title="#run! (instance method)">- (Object) <strong>run!</strong>(abort_on_exception = false) </a>
+      <a href="#spawn-class_method" title="spawn (class method)">+ (Reference) <strong>spawn</strong>(*args, &amp;block) </a>
     
 
     
   </span>
   
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Runnable.html#run%21-instance_method" title="Concurrent::Runnable#run! (method)">Runnable</a></span>
-    </span>
-  
   
   
   
@@ -552,7 +534,8 @@ appropriate method signature is:</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Spawns a new actor.</p>
+</div></span>
   
 </li>
 
@@ -560,17 +543,12 @@ appropriate method signature is:</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#running%3F-instance_method" title="#running? (instance method)">- (Boolean) <strong>running?</strong> </a>
+      <a href="#spawn%21-class_method" title="spawn! (class method)">+ (Object) <strong>spawn!</strong>(*args, &amp;block) </a>
     
 
     
   </span>
   
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Runnable.html#running%3F-instance_method" title="Concurrent::Runnable#running? (method)">Runnable</a></span>
-    </span>
-  
   
   
   
@@ -579,7 +557,8 @@ appropriate method signature is:</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>as <span class='object_link'><a href="#spawn-class_method" title="Concurrent::Actor.spawn (method)">Actor.spawn</a></span> but it&#39;ll raise when Actor not initialized properly.</p>
+</div></span>
   
 </li>
 
@@ -587,16 +566,11 @@ appropriate method signature is:</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#stop-instance_method" title="#stop (instance method)">- (Object) <strong>stop</strong> </a>
+      <a href="#spawn_optionify-class_method" title="spawn_optionify (class method)">+ (Object) <strong>spawn_optionify</strong>(*args) </a>
     
 
     
   </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Runnable.html#stop-instance_method" title="Concurrent::Runnable#stop (method)">Runnable</a></span>
-    </span>
   
   
   
@@ -615,20 +589,15 @@ appropriate method signature is:</p>
   
 
 
-  
-  
-  
-  
-  
 
   <div id="class_method_details" class="method_details_list">
     <h2>Class Method Details</h2>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="pool-class_method">
+  <h3 class="signature first" id="current-class_method">
   
-    + (<tt>Array</tt>) <strong>pool</strong>(count, *args, &amp;block) 
+    + (<tt><span class='object_link'><a href="Actor/Reference.html" title="Concurrent::Actor::Reference (class)">Reference</a></span></tt><sup>?</sup>) <strong>current</strong> 
   
 
   
@@ -636,15 +605,196 @@ appropriate method signature is:</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
-</div></div>
-<p>Create a pool of actors that share a common mailbox.</p>
+    <p>Returns current executing actor if any</p>
 
-<p>Every +Actor+ instance operates on its own thread. When one thread isn&#39;t enough capacity
-to manage all the messages being sent to an +Actor+ a <em>pool</em> can be used instead. A pool
-is a collection of +Actor+ instances, all of the same type, that shate a message queue.
-Messages from other threads are all sent to a single queue against which all +Actor+s
-load balance.</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Actor/Reference.html" title="Concurrent::Actor::Reference (class)">Reference</a></span></tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>current executing actor if any</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 32</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span>
+  <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='lbracket'>[</span><span class='symbol'>:__current_actor__</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="experimental_acknowledged?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>experimental_acknowledged?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+100
+101
+102</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 100</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_experimental_acknowledged?'>experimental_acknowledged?</span>
+  <span class='op'>!</span><span class='op'>!</span><span class='ivar'>@experimental_acknowledged</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="i_know_it_is_experimental!-class_method">
+  
+    + (<tt>Object</tt>) <strong>i_know_it_is_experimental!</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>call this to disable experimental warning</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+96
+97
+98</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 96</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_i_know_it_is_experimental!'>i_know_it_is_experimental!</span>
+  <span class='ivar'>@experimental_acknowledged</span> <span class='op'>=</span> <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="root-class_method">
+  
+    + (<tt>Object</tt>) <strong>root</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>A root actor, a default parent of all actors spawned outside an actor</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+43
+44
+45</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 43</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_root'>root</span>
+  <span class='ivar'>@root</span><span class='period'>.</span><span class='id identifier rubyid_value!'>value!</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="spawn-class_method">
+  
+    + (<tt><span class='object_link'><a href="Actor/Reference.html" title="Concurrent::Actor::Reference (class)">Reference</a></span></tt>) <strong>spawn</strong>(*args, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Spawns a new actor.</p>
 
 
   </div>
@@ -655,25 +805,21 @@ load balance.</p>
     <p class="tag_title">Examples:</p>
     
       
-      <pre class="example code"><code><span class='kw'>class</span> <span class='const'>EchoActor</span> <span class='op'>&lt;</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Actor</span>
-  <span class='kw'>def</span> <span class='id identifier rubyid_act'>act</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_content'> handled by </span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span>
-
-<span class='id identifier rubyid_mailbox'>mailbox</span><span class='comma'>,</span> <span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>EchoActor</span><span class='period'>.</span><span class='id identifier rubyid_pool'>pool</span><span class='lparen'>(</span><span class='int'>5</span><span class='rparen'>)</span>
-<span class='id identifier rubyid_pool'>pool</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_echo'>echo</span><span class='op'>|</span> <span class='id identifier rubyid_echo'>echo</span><span class='period'>.</span><span class='id identifier rubyid_run!'>run!</span> <span class='rbrace'>}</span>
-
-<span class='int'>10</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span> <span class='id identifier rubyid_mailbox'>mailbox</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
-<span class='comment'>#=&gt; [0] handled by #&lt;EchoActor:0x007fc8014fb8b8&gt;
-</span><span class='comment'>#=&gt; [1] handled by #&lt;EchoActor:0x007fc8014fb890&gt;
-</span><span class='comment'>#=&gt; [2] handled by #&lt;EchoActor:0x007fc8014fb868&gt;
-</span><span class='comment'>#=&gt; [3] handled by #&lt;EchoActor:0x007fc8014fb890&gt;
-</span><span class='comment'>#=&gt; [4] handled by #&lt;EchoActor:0x007fc8014fb840&gt;
-</span><span class='comment'>#=&gt; [5] handled by #&lt;EchoActor:0x007fc8014fb8b8&gt;
-</span><span class='comment'>#=&gt; [6] handled by #&lt;EchoActor:0x007fc8014fb8b8&gt;
-</span><span class='comment'>#=&gt; [7] handled by #&lt;EchoActor:0x007fc8014fb818&gt;
-</span><span class='comment'>#=&gt; [8] handled by #&lt;EchoActor:0x007fc8014fb890&gt;</span></code></pre>
+        <p class="example_title"><div class='inline'><p>simple</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'>Actor</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='const'>AdHoc</span><span class='comma'>,</span> <span class='symbol'>:ping1</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='tlambda'>-&gt;</span> <span class='id identifier rubyid_message'>message</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid_message'>message</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'><p>complex</p>
+</div></p>
+      
+      <pre class="example code"><code>Actor.spawn name:     :ping3,
+              class:    AdHoc,
+              args:     [1]
+              executor: Concurrent.configuration.global_task_pool do |add|
+  lambda { |number| number + add }
+end</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -681,15 +827,15 @@ load balance.</p>
   
     <li>
       
-        <span class='name'>count</span>
+        <span class='name'>block</span>
       
       
-        <span class='type'>(<tt>Integer</tt>)</span>
+        <span class='type'></span>
       
       
       
         &mdash;
-        <div class='inline'><p>the number of actors in the pool</p>
+        <div class='inline'><p>for context_class instantiation</p>
 </div>
       
     </li>
@@ -699,12 +845,12 @@ load balance.</p>
         <span class='name'>args</span>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'></span>
       
       
       
         &mdash;
-        <div class='inline'><p>zero or more arguments to pass to each actor in the pool</p>
+        <div class='inline'><p>see <span class='object_link'><a href="#spawn_optionify-class_method" title="Concurrent::Actor.spawn_optionify (method)">spawn_optionify</a></span></p>
 </div>
       
     </li>
@@ -717,30 +863,12 @@ load balance.</p>
     <li>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Actor/Reference.html" title="Concurrent::Actor::Reference (class)">Reference</a></span></tt>)</span>
       
       
       
         &mdash;
-        <div class='inline'><p>two-element array with the shared mailbox as the first element
-and an array of actors as the second element</p>
-</div>
-      
-    </li>
-  
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'></span>
-      
-      
-      
-        
-        <div class='inline'><p>ArgumentError if +count+ is zero or less</p>
+        <div class='inline'><p>never the actual actor</p>
 </div>
       
     </li>
@@ -753,72 +881,39 @@ and an array of actors as the second element</p>
       <pre class="lines">
 
 
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195</pre>
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/actor.rb', line 181</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 63</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_pool'>pool</span><span class='lparen'>(</span><span class='id identifier rubyid_count'>count</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] `Actor` is deprecated and will be replaced with `Actress`.</span><span class='tstring_end'>&#39;</span></span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>count must be greater than zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_count'>count</span> <span class='op'>&gt;</span> <span class='int'>0</span>
-  <span class='id identifier rubyid_mailbox'>mailbox</span> <span class='op'>=</span> <span class='const'>Queue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='id identifier rubyid_actors'>actors</span> <span class='op'>=</span> <span class='id identifier rubyid_count'>count</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span> <span class='kw'>do</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
-      <span class='id identifier rubyid_actor'>actor</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span><span class='rparen'>)</span>
-    <span class='kw'>else</span>
-      <span class='id identifier rubyid_actor'>actor</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_actor'>actor</span><span class='period'>.</span><span class='id identifier rubyid_instance_variable_set'>instance_variable_set</span><span class='lparen'>(</span><span class='symbol'>:@queue</span><span class='comma'>,</span> <span class='id identifier rubyid_mailbox'>mailbox</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_actor'>actor</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_experimental_acknowledged?'>experimental_acknowledged?</span> <span class='kw'>or</span>
+      <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[EXPERIMENTAL] A full release of `Actor`, is expected in the 0.7.0 release.</span><span class='tstring_end'>&#39;</span></span>
+
+  <span class='kw'>if</span> <span class='const'>Actor</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span>
+    <span class='const'>Core</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_spawn_optionify'>spawn_optionify</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>parent:</span> <span class='const'>Actor</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reference'>reference</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_root'>root</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='symbol'>:spawn</span><span class='comma'>,</span> <span class='id identifier rubyid_spawn_optionify'>spawn_optionify</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
   <span class='kw'>end</span>
-  <span class='kw'>return</span> <span class='const'>Poolbox</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_mailbox'>mailbox</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_actors'>actors</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
 </div>
     
-  </div>
-
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
-
-    
-      <div class="method_details first">
-  <h3 class="signature first" id="<<-instance_method">
-  
-    - (<tt>Object</tt>) <strong>&lt;&lt;</strong>(message) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Postable.html#%3C%3C-instance_method" title="Concurrent::Postable#&lt;&lt; (method)">Postable</a></span>
-    </span>
-  
-</h3>
-</div>
-    
       <div class="method_details ">
-  <h3 class="signature " id="act-instance_method">
+  <h3 class="signature " id="spawn!-class_method">
   
-    - (<tt>Object</tt>) <strong>act</strong>(*message) 
+    + (<tt>Object</tt>) <strong>spawn!</strong>(*args, &amp;block) 
   
 
   
@@ -826,15 +921,65 @@ and an array of actors as the second element</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
-</div></div>
-<p>Actors are defined by subclassing the +Concurrent::Actor+ class and overriding the</p>
+    <p>as <span class='object_link'><a href="#spawn-class_method" title="Concurrent::Actor.spawn (method)">spawn</a></span> but it&#39;ll raise when Actor not initialized properly</p>
 
-<h1>act method. The #act method can have any signature/arity but +def act(*args)+</h1>
 
-<p>is the most flexible and least error-prone signature. The #act method is called in
-response to a message being post to the +Actor+ instance (see <em>Behavior</em> below).</p>
+  </div>
+</div>
+<div class="tags">
+  
 
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+75
+76
+77</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 75</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_spawn!'>spawn!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='id identifier rubyid_spawn_optionify'>spawn_optionify</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>initialized:</span> <span class='id identifier rubyid_ivar'>ivar</span> <span class='op'>=</span> <span class='const'>IVar</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_ivar'>ivar</span><span class='period'>.</span><span class='id identifier rubyid_no_error!'>no_error!</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="spawn_optionify-class_method">
+  
+    
+      <span class="overload">+ (<tt>Object</tt>) <strong>spawn_optionify</strong>(context_class, name, *args) </span>
+    
+      <span class="overload">+ (<tt>Object</tt>) <strong>spawn_optionify</strong>(opts) </span>
+    
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <p class="tag_title">Overloads:</p>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">+ (<tt>Object</tt>) <strong>spawn_optionify</strong>(context_class, name, *args) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
 
   </div>
 </div>
@@ -844,56 +989,73 @@ response to a message being post to the +Actor+ instance (see <em>Behavior</em> 
   
     <li>
       
-        <span class='name'>message</span>
+        <span class='name'>context_class</span>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>one or more arguments representing the message sent to the
-actor via one of the Concurrent::Postable methods</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Actor/Context.html" title="Concurrent::Actor::Context (class)">Context</a></span></tt>)</span>
       
       
       
         &mdash;
-        <div class='inline'><p>the result obtained when the message is successfully processed</p>
+        <div class='inline'><p>to be spawned</p>
 </div>
       
     </li>
   
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
+    <li>
+      
+        <span class='name'>name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>of the instance, it&#39;s used to generate the <span class='object_link'><a href="Actor/Core.html#path-instance_method" title="Concurrent::Actor::Core#path (method)">Concurrent::Actor::Core#path</a></span> of the actor</p>
+</div>
+      
+    </li>
   
     <li>
+      
+        <span class='name'>args</span>
       
       
         <span class='type'></span>
       
       
       
-        
-        <div class='inline'><p>NotImplementedError unless overridden in the +Actor+ subclass</p>
+        &mdash;
+        <div class='inline'><p>for context_class instantiation</p>
 </div>
       
     </li>
   
 </ul>
+
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">+ (<tt>Object</tt>) <strong>spawn_optionify</strong>(opts) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>see <span class='object_link'><a href="Actor/Core.html#initialize-instance_method" title="Concurrent::Actor::Core#initialize (method)">Concurrent::Actor::Core#initialize</a></span> opts</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+      </li>
+    
+  </ul>
+
 
 </div><table class="source_code">
   <tr>
@@ -901,429 +1063,31 @@ actor via one of the Concurrent::Postable methods</p>
       <pre class="lines">
 
 
-214
-215
-216
-217</pre>
+85
+86
+87
+88
+89
+90
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/actor.rb', line 214</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 85</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_act'>act</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] `Actor` is deprecated and will be replaced with `Actress`.</span><span class='tstring_end'>&#39;</span></span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'> does not implement #act</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_spawn_optionify'>spawn_optionify</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>==</span> <span class='int'>1</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Hash</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+  <span class='kw'>else</span>
+    <span class='lbrace'>{</span> <span class='label'>class:</span> <span class='id identifier rubyid_args'>args</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='label'>name:</span>  <span class='id identifier rubyid_args'>args</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='label'>args:</span>  <span class='id identifier rubyid_args'>args</span><span class='lbracket'>[</span><span class='int'>2</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="forward-instance_method">
-  
-    - (<tt>Object</tt>) <strong>forward</strong>(receiver, *message) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Postable.html#forward-instance_method" title="Concurrent::Postable#forward (method)">Postable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
-</div></div>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="mutex-instance_method">
-  
-    - (<tt>Object</tt>) <strong>mutex</strong>  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Runnable.html#mutex-instance_method" title="Concurrent::Runnable#mutex (method)">Runnable</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="post-instance_method">
-  
-    - (<tt>Object</tt>) <strong>post</strong>(*message) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Postable.html#post-instance_method" title="Concurrent::Postable#post (method)">Postable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Sends a message to and returns. It&#39;s a fire-and-forget interaction.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code><span class='kw'>class</span> <span class='const'>EchoActor</span> <span class='op'>&lt;</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Actor</span>
-  <span class='kw'>def</span> <span class='id identifier rubyid_act'>act</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_p'>p</span> <span class='id identifier rubyid_message'>message</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span>
-
-<span class='id identifier rubyid_echo'>echo</span> <span class='op'>=</span> <span class='const'>EchoActor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-<span class='id identifier rubyid_echo'>echo</span><span class='period'>.</span><span class='id identifier rubyid_run!'>run!</span>
-
-<span class='id identifier rubyid_echo'>echo</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Don&#39;t panic</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; true
-</span><span class='comment'>#=&gt; [&quot;Don&#39;t panic&quot;]
-</span>
-<span class='id identifier rubyid_echo'>echo</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='int'>1</span><span class='comma'>,</span> <span class='int'>2</span><span class='comma'>,</span> <span class='int'>3</span><span class='comma'>,</span> <span class='int'>4</span><span class='comma'>,</span> <span class='int'>5</span><span class='rparen'>)</span> <span class='comment'>#=&gt; true
-</span><span class='comment'>#=&gt; [1, 2, 3, 4, 5]
-</span>
-<span class='id identifier rubyid_echo'>echo</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>There&#39;s a frood who really knows where his towel is.</span><span class='tstring_end'>&quot;</span></span> <span class='comment'>#=&gt; #&lt;EchoActor:0x007fc8012b8448...
-</span><span class='comment'>#=&gt; [&quot;There&#39;s a frood who really knows where his towel is.&quot;]</span></code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>message</span>
-      
-      
-        <span class='type'>(<tt>Array</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>one or more arguments representing a single message
-to be sent to the receiver.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>false when the message cannot be queued else the number
-of messages in the queue <em>after</em> this message has been post</p>
-</div>
-      
-    </li>
-  
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'></span>
-      
-      
-      
-        
-        <div class='inline'><p>ArgumentError when the message is empty</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="post!-instance_method">
-  
-    - (<tt>Object</tt>) <strong>post!</strong>(seconds, *message) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Postable.html#post%21-instance_method" title="Concurrent::Postable#post! (method)">Postable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="post?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>post?</strong>(*message) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Postable.html#post%3F-instance_method" title="Concurrent::Postable#post? (method)">Postable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="ready?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>ready?</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Postable.html#ready%3F-instance_method" title="Concurrent::Postable#ready? (method)">Postable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>+Actor+ is being replaced with a completely new framework prior to v1.0.0</p>
-</div></div>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="run-instance_method">
-  
-    - (<tt>Object</tt>) <strong>run</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Runnable.html#run-instance_method" title="Concurrent::Runnable#run (method)">Runnable</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="run!-instance_method">
-  
-    - (<tt>Object</tt>) <strong>run!</strong>(abort_on_exception = false) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Runnable.html#run%21-instance_method" title="Concurrent::Runnable#run! (method)">Runnable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Concurrent.html#LifecycleError-constant" title="Concurrent::LifecycleError (constant)">LifecycleError</a></span></tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="running?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>running?</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Runnable.html#running%3F-instance_method" title="Concurrent::Runnable#running? (method)">Runnable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="stop-instance_method">
-  
-    - (<tt>Object</tt>) <strong>stop</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Runnable.html#stop-instance_method" title="Concurrent::Runnable#stop (method)">Runnable</a></span>
-    </span>
-  
-</h3>
 </div>
     
   </div>
@@ -1331,9 +1095,9 @@ of messages in the queue <em>after</em> this message has been post</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:38 2014 by
+  Generated on Wed Jul 30 19:36:26 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

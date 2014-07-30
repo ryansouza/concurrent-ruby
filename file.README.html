@@ -63,7 +63,7 @@
 
     <div id="content"><div id='filecontents'><h1>Concurrent Ruby</h1>
 
-<p><a href="http://badge.fury.io/rb/concurrent-ruby"><img src="https://badge.fury.io/rb/concurrent-ruby.png" alt="Gem Version"></a> <a href="https://travis-ci.org/ruby-concurrency/concurrent-ruby"><img src="https://travis-ci.org/ruby-concurrency/concurrent-ruby.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/r/ruby-concurrency/concurrent-ruby"><img src="https://coveralls.io/repos/ruby-concurrency/concurrent-ruby/badge.png" alt="Coverage Status"></a> <a href="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby"><img src="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby.png" alt="Code Climate"></a> <a href="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby"><img src="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby.png" alt="Inline docs"></a> <a href="https://gemnasium.com/ruby-concurrency/concurrent-ruby"><img src="https://gemnasium.com/ruby-concurrency/concurrent-ruby.png" alt="Dependency Status"></a></p>
+<p><a href="http://badge.fury.io/rb/concurrent-ruby"><img src="https://badge.fury.io/rb/concurrent-ruby.png" alt="Gem Version"></a> <a href="https://travis-ci.org/ruby-concurrency/concurrent-ruby"><img src="https://travis-ci.org/ruby-concurrency/concurrent-ruby.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/r/ruby-concurrency/concurrent-ruby"><img src="https://coveralls.io/repos/ruby-concurrency/concurrent-ruby/badge.png" alt="Coverage Status"></a> <a href="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby"><img src="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby.png" alt="Code Climate"></a> <a href="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby"><img src="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby.png" alt="Inline docs"></a> <a href="https://gemnasium.com/ruby-concurrency/concurrent-ruby"><img src="https://gemnasium.com/ruby-concurrency/concurrent-ruby.png" alt="Dependency Status"></a> <a href="https://gitter.im/ruby-concurrency/concurrent-ruby"><img src="https://badges.gitter.im/ruby-concurrency/concurrent-ruby.png" alt="Gitter chat"></a></p>
 
 <table>
   <tr>
@@ -72,7 +72,7 @@
         Modern concurrency tools for Ruby. Inspired by
         <a href="http://www.erlang.org/doc/reference_manual/processes.html">Erlang</a>,
         <a href="http://clojure.org/concurrent_programming">Clojure</a>,
-        <a href="http://www.scala-lang.org/api/current/index.html#scala.actors.Actor">Scala</a>,
+        <a href="http://akka.io/">Scala</a>,
         <a href="http://www.haskell.org/haskellwiki/Applications_and_libraries/Concurrency_and_parallelism#Concurrent_Haskell">Haskell</a>,
         <a href="http://blogs.msdn.com/b/dsyme/archive/2010/02/15/async-and-parallel-design-patterns-in-f-part-3-agents.aspx">F#</a>,
         <a href="http://msdn.microsoft.com/en-us/library/vstudio/hh191443.aspx">C#</a>,
@@ -116,7 +116,7 @@
 <h2>Features &amp; Documentation</h2>
 
 <p>Please see the <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki">Concurrent Ruby Wiki</a>
-or the <a href="http://ruby-concurrency.github.io/concurrent-ruby/frames.html">API documentation</a>)
+or the <a href="http://ruby-concurrency.github.io/concurrent-ruby/frames.html">API documentation</a>
 for more information or join our <a href="http://groups.google.com/group/concurrent-ruby">mailing list</a>.</p>
 
 <p>There are many concurrency abstractions in this library. These abstractions can be broadly categorized
@@ -130,8 +130,6 @@ into several general groups:</p>
 <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Promise">Promise</a>,
 <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/ScheduledTask">ScheduledTask</a>,
 and <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/TimerTask">TimerTask</a> </li>
-<li>Erlang-inspired <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Supervisor">Supervisor</a> and other lifecycle classes/mixins
-for managing long-running threads</li>
 <li>Thread-safe variables including <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/MVar-(M-Structure)">M-Structures</a>,
 <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/IVar-(I-Structure)">I-Structures</a>,
 <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/ThreadLocalVar">thread-local variables</a>,
@@ -196,7 +194,7 @@ This one simple example shows some of the power of this gem.</p>
 </span><span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 25.96
 </span></code></pre>
 
-<h2>Contributors</h2>
+<h2>Maintainers</h2>
 
 <ul>
 <li><a href="https://github.com/jdantonio">Jerry D&#39;Antonio</a></li>
@@ -204,17 +202,27 @@ This one simple example shows some of the power of this gem.</p>
 <li><a href="https://github.com/chrisseaton">Chris Seaton</a></li>
 <li><a href="https://github.com/lucasallan">Lucas Allan</a></li>
 <li><a href="https://github.com/pitr-ch">Petr Chalupa</a></li>
-<li><a href="https://github.com/brainopia">Ravil Bayramgalin</a></li>
-<li><a href="https://github.com/larrylv">Larry Lv</a></li>
-<li><a href="https://github.com/gcapizzi">Giuseppe Capizzi</a></li>
+</ul>
+
+<h3>Contributors</h3>
+
+<ul>
 <li><a href="https://github.com/billdueber">Bill Dueber</a></li>
 <li><a href="https://github.com/brixen">Brian Shirai</a></li>
 <li><a href="https://github.com/chip-miller">Chip Miller</a></li>
+<li><a href="https://github.com/gcapizzi">Giuseppe Capizzi</a></li>
 <li><a href="https://github.com/jamiehodge">Jamie Hodge</a></li>
+<li><a href="https://github.com/mastfish">Justin Lambert</a></li>
+<li><a href="https://github.com/larrylv">Larry Lv</a></li>
+<li><a href="https://github.com/maximchick">Maxim Chechel</a></li>
+<li><a href="https://github.com/brainopia">Ravil Bayramgalin</a></li>
+<li><a href="https://github.com/rrrene">René Föhring</a></li>
+<li><a href="https://github.com/ShaneWilton">Shane Wilton</a></li>
+<li><a href="https://github.com/sheaney">sheaney</a></li>
 <li><a href="https://github.com/zph">Zander Hill</a></li>
 </ul>
 
-<h2>Contributing</h2>
+<h3>Contributing</h3>
 
 <ol>
 <li>Fork it</li>
@@ -234,9 +242,9 @@ It is Copyright &copy; 2014 <a href="https://twitter.com/jerrydantonio">Jerry D&
 </div></div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:32 2014 by
+  Generated on Wed Jul 30 19:36:26 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

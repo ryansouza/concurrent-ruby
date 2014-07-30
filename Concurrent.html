@@ -84,7 +84,7 @@
   
     <dt class="r2 last">Defined in:</dt>
     <dd class="r2 last">lib/concurrent.rb<span class="defines">,<br />
-  lib/concurrent/tvar.rb,<br /> lib/concurrent/mvar.rb,<br /> lib/concurrent/ivar.rb,<br /> lib/concurrent/delay.rb,<br /> lib/concurrent/agent.rb,<br /> lib/concurrent/async.rb,<br /> lib/concurrent/future.rb,<br /> lib/concurrent/errors.rb,<br /> lib/concurrent/actress.rb,<br /> lib/concurrent/logging.rb,<br /> lib/concurrent/promise.rb,<br /> lib/concurrent/version.rb,<br /> lib/concurrent/dataflow.rb,<br /> lib/concurrent/runnable.rb,<br /> lib/concurrent/stoppable.rb,<br /> lib/concurrent/exchanger.rb,<br /> lib/concurrent/obligation.rb,<br /> lib/concurrent/observable.rb,<br /> lib/concurrent/supervisor.rb,<br /> lib/concurrent/timer_task.rb,<br /> lib/concurrent/actor/actor.rb,<br /> lib/concurrent/actress/core.rb,<br /> lib/concurrent/atomic/event.rb,<br /> lib/concurrent/configuration.rb,<br /> lib/concurrent/atomic/atomic.rb,<br /> lib/concurrent/utility/timer.rb,<br /> lib/concurrent/options_parser.rb,<br /> lib/concurrent/scheduled_task.rb,<br /> lib/concurrent/actor/postable.rb,<br /> lib/concurrent/actress/ad_hoc.rb,<br /> lib/concurrent/actress/errors.rb,<br /> lib/concurrent/utility/timeout.rb,<br /> lib/concurrent/dereferenceable.rb,<br /> lib/concurrent/channel/channel.rb,<br /> lib/concurrent/actress/context.rb,<br /> lib/concurrent/actress/envelope.rb,<br /> lib/concurrent/atomic/condition.rb,<br /> lib/concurrent/actress/reference.rb,<br /> lib/concurrent/executor/executor.rb,<br /> lib/concurrent/actress/type_check.rb,<br /> lib/concurrent/executor/timer_set.rb,<br /> lib/concurrent/atomic/atomic_fixnum.rb,<br /> lib/concurrent/atomic/atomic_boolean.rb,<br /> lib/concurrent/atomic/cyclic_barrier.rb,<br /> lib/concurrent/channel/waitable_list.rb,<br /> lib/concurrent/collection/ring_buffer.rb,<br /> lib/concurrent/atomic/count_down_latch.rb,<br /> lib/concurrent/utility/processor_count.rb,<br /> lib/concurrent/atomic/thread_local_var.rb,<br /> lib/concurrent/channel/buffered_channel.rb,<br /> lib/concurrent/actress/core_delegations.rb,<br /> lib/concurrent/collection/priority_queue.rb,<br /> lib/concurrent/channel/unbuffered_channel.rb,<br /> lib/concurrent/executor/fixed_thread_pool.rb,<br /> lib/concurrent/executor/safe_task_executor.rb,<br /> lib/concurrent/executor/cached_thread_pool.rb,<br /> lib/concurrent/executor/immediate_executor.rb,<br /> lib/concurrent/executor/per_thread_executor.rb,<br /> lib/concurrent/executor/serialized_execution.rb,<br /> lib/concurrent/executor/thread_pool_executor.rb,<br /> lib/concurrent/executor/single_thread_executor.rb,<br /> lib/concurrent/collection/blocking_ring_buffer.rb,<br /> lib/concurrent/executor/java_fixed_thread_pool.rb,<br /> lib/concurrent/executor/ruby_fixed_thread_pool.rb,<br /> lib/concurrent/executor/java_cached_thread_pool.rb,<br /> lib/concurrent/executor/ruby_thread_pool_worker.rb,<br /> lib/concurrent/executor/ruby_cached_thread_pool.rb,<br /> lib/concurrent/atomic/copy_on_write_observer_set.rb,<br /> lib/concurrent/executor/java_thread_pool_executor.rb,<br /> lib/concurrent/atomic/copy_on_notify_observer_set.rb,<br /> lib/concurrent/executor/ruby_thread_pool_executor.rb,<br /> lib/concurrent/executor/ruby_single_thread_executor.rb,<br /> lib/concurrent/executor/java_single_thread_executor.rb</span>
+  lib/concurrent/tvar.rb,<br /> lib/concurrent/mvar.rb,<br /> lib/concurrent/ivar.rb,<br /> lib/concurrent/agent.rb,<br /> lib/concurrent/async.rb,<br /> lib/concurrent/delay.rb,<br /> lib/concurrent/actor.rb,<br /> lib/extension_helper.rb,<br /> lib/concurrent/future.rb,<br /> lib/concurrent/errors.rb,<br /> lib/concurrent/logging.rb,<br /> lib/concurrent/promise.rb,<br /> lib/concurrent/version.rb,<br /> lib/concurrent/dataflow.rb,<br /> lib/concurrent/exchanger.rb,<br /> lib/concurrent/obligation.rb,<br /> lib/concurrent/actor/root.rb,<br /> lib/concurrent/observable.rb,<br /> lib/concurrent/timer_task.rb,<br /> lib/concurrent/actor/core.rb,<br /> lib/concurrent/atomic/event.rb,<br /> lib/concurrent/actor/errors.rb,<br /> lib/concurrent/actor/utills.rb,<br /> lib/concurrent/actor/ad_hoc.rb,<br /> lib/concurrent/actor/context.rb,<br /> lib/concurrent/lazy_register.rb,<br /> lib/concurrent/configuration.rb,<br /> lib/concurrent/utility/timer.rb,<br /> lib/concurrent/actor/envelope.rb,<br /> lib/concurrent/scheduled_task.rb,<br /> lib/concurrent/options_parser.rb,<br /> lib/concurrent/actor/reference.rb,<br /> lib/concurrent/utility/timeout.rb,<br /> lib/concurrent/dereferenceable.rb,<br /> lib/concurrent/actor/behaviour.rb,<br /> lib/concurrent/channel/channel.rb,<br /> lib/concurrent/actor/type_check.rb,<br /> lib/concurrent/atomic/condition.rb,<br /> lib/concurrent/executor/executor.rb,<br /> lib/concurrent/executor/timer_set.rb,<br /> lib/concurrent/atomic_reference/rbx.rb,<br /> lib/concurrent/atomic/atomic_fixnum.rb,<br /> lib/concurrent/atomic/atomic_boolean.rb,<br /> lib/concurrent/atomic_reference/ruby.rb,<br /> lib/concurrent/atomic/cyclic_barrier.rb,<br /> lib/concurrent/channel/waitable_list.rb,<br /> lib/concurrent/actor/utils/broadcast.rb,<br /> lib/concurrent/atomic/synchronization.rb,<br /> lib/concurrent/collection/ring_buffer.rb,<br /> lib/concurrent/atomic_reference/jruby.rb,<br /> lib/concurrent/actor/behaviour/buffer.rb,<br /> lib/concurrent/actor/behaviour/awaits.rb,<br /> lib/concurrent/actor/behaviour/pausing.rb,<br /> lib/concurrent/atomic/thread_local_var.rb,<br /> lib/concurrent/atomic/count_down_latch.rb,<br /> lib/concurrent/utility/processor_count.rb,<br /> lib/concurrent/actor/behaviour/linking.rb,<br /> lib/concurrent/actor/behaviour/abstract.rb,<br /> lib/concurrent/channel/buffered_channel.rb,<br /> lib/concurrent/actor/public_delegations.rb,<br /> lib/concurrent/collection/priority_queue.rb,<br /> lib/concurrent/channel/unbuffered_channel.rb,<br /> lib/concurrent/actor/internal_delegations.rb,<br /> lib/concurrent/executor/fixed_thread_pool.rb,<br /> lib/concurrent/actor/behaviour/supervised.rb,<br /> lib/concurrent/actor/behaviour/supervising.rb,<br /> lib/concurrent/executor/cached_thread_pool.rb,<br /> lib/concurrent/executor/immediate_executor.rb,<br /> lib/concurrent/executor/safe_task_executor.rb,<br /> lib/concurrent/actor/behaviour/termination.rb,<br /> lib/concurrent/atomic/ensure_new_visibility.rb,<br /> lib/concurrent/actor/behaviour/sets_results.rb,<br /> lib/concurrent/executor/per_thread_executor.rb,<br /> lib/concurrent/atomic_reference/mutex_atomic.rb,<br /> lib/concurrent/executor/thread_pool_executor.rb,<br /> lib/concurrent/executor/serialized_execution.rb,<br /> lib/concurrent/actor/behaviour/removes_child.rb,<br /> lib/concurrent/atomic_reference/direct_update.rb,<br /> lib/concurrent/executor/java_fixed_thread_pool.rb,<br /> lib/concurrent/executor/single_thread_executor.rb,<br /> lib/concurrent/executor/ruby_fixed_thread_pool.rb,<br /> lib/concurrent/collection/blocking_ring_buffer.rb,<br /> lib/concurrent/actor/behaviour/executes_context.rb,<br /> lib/concurrent/executor/java_cached_thread_pool.rb,<br /> lib/concurrent/executor/ruby_thread_pool_worker.rb,<br /> lib/concurrent/executor/ruby_cached_thread_pool.rb,<br /> lib/concurrent/atomic/copy_on_write_observer_set.rb,<br /> lib/concurrent/actor/default_dead_letter_handler.rb,<br /> lib/concurrent/atomic/copy_on_notify_observer_set.rb,<br /> lib/concurrent/executor/java_thread_pool_executor.rb,<br /> lib/concurrent/executor/ruby_thread_pool_executor.rb,<br /> lib/concurrent/actor/behaviour/terminates_children.rb,<br /> lib/concurrent/atomic_reference/numeric_cas_wrapper.rb,<br /> lib/concurrent/executor/ruby_single_thread_executor.rb,<br /> lib/concurrent/executor/java_single_thread_executor.rb,<br /> lib/concurrent/atomic_reference/concurrent_update_error.rb,<br /> lib/concurrent/actor/behaviour/errors_on_unknown_message.rb,<br /> ext/concurrent_ruby_ext/rb_concurrent.c</span>
 </dd>
   
 </dl>
@@ -116,11 +116,11 @@ F#, C#, Java, and classic concurrency patterns.</p>
 <p class="children">
   
     
-      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Concurrent/Actress.html" title="Concurrent::Actress (module)">Actress</a></span>, <span class='object_link'><a href="Concurrent/Async.html" title="Concurrent::Async (module)">Async</a></span>, <span class='object_link'><a href="Concurrent/Channel.html" title="Concurrent::Channel (module)">Channel</a></span>, <span class='object_link'><a href="Concurrent/Dereferenceable.html" title="Concurrent::Dereferenceable (module)">Dereferenceable</a></span>, <span class='object_link'><a href="Concurrent/Executor.html" title="Concurrent::Executor (module)">Executor</a></span>, <span class='object_link'><a href="Concurrent/JavaExecutor.html" title="Concurrent::JavaExecutor (module)">JavaExecutor</a></span>, <span class='object_link'><a href="Concurrent/Logging.html" title="Concurrent::Logging (module)">Logging</a></span>, <span class='object_link'><a href="Concurrent/Obligation.html" title="Concurrent::Obligation (module)">Obligation</a></span>, <span class='object_link'><a href="Concurrent/Observable.html" title="Concurrent::Observable (module)">Observable</a></span>, <span class='object_link'><a href="Concurrent/OptionsParser.html" title="Concurrent::OptionsParser (module)">OptionsParser</a></span>, <span class='object_link'><a href="Concurrent/Postable.html" title="Concurrent::Postable (module)">Postable</a></span>, <span class='object_link'><a href="Concurrent/RubyExecutor.html" title="Concurrent::RubyExecutor (module)">RubyExecutor</a></span>, <span class='object_link'><a href="Concurrent/Runnable.html" title="Concurrent::Runnable (module)">Runnable</a></span>, <span class='object_link'><a href="Concurrent/Stoppable.html" title="Concurrent::Stoppable (module)">Stoppable</a></span>, <span class='object_link'><a href="Concurrent/ThreadLocalJavaStorage.html" title="Concurrent::ThreadLocalJavaStorage (module)">ThreadLocalJavaStorage</a></span>, <span class='object_link'><a href="Concurrent/ThreadLocalNewStorage.html" title="Concurrent::ThreadLocalNewStorage (module)">ThreadLocalNewStorage</a></span>, <span class='object_link'><a href="Concurrent/ThreadLocalOldStorage.html" title="Concurrent::ThreadLocalOldStorage (module)">ThreadLocalOldStorage</a></span>, <span class='object_link'><a href="Concurrent/ThreadLocalSymbolAllocator.html" title="Concurrent::ThreadLocalSymbolAllocator (module)">ThreadLocalSymbolAllocator</a></span>
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Concurrent/Actor.html" title="Concurrent::Actor (module)">Actor</a></span>, <span class='object_link'><a href="Concurrent/Async.html" title="Concurrent::Async (module)">Async</a></span>, <span class='object_link'><a href="Concurrent/AtomicDirectUpdate.html" title="Concurrent::AtomicDirectUpdate (module)">AtomicDirectUpdate</a></span>, <span class='object_link'><a href="Concurrent/AtomicNumericCompareAndSetWrapper.html" title="Concurrent::AtomicNumericCompareAndSetWrapper (module)">AtomicNumericCompareAndSetWrapper</a></span>, <span class='object_link'><a href="Concurrent/Channel.html" title="Concurrent::Channel (module)">Channel</a></span>, <span class='object_link'><a href="Concurrent/Dereferenceable.html" title="Concurrent::Dereferenceable (module)">Dereferenceable</a></span>, <span class='object_link'><a href="Concurrent/EnsureNewVisibility.html" title="Concurrent::EnsureNewVisibility (module)">EnsureNewVisibility</a></span>, <span class='object_link'><a href="Concurrent/Executor.html" title="Concurrent::Executor (module)">Executor</a></span>, <span class='object_link'><a href="Concurrent/JavaExecutor.html" title="Concurrent::JavaExecutor (module)">JavaExecutor</a></span>, <span class='object_link'><a href="Concurrent/Logging.html" title="Concurrent::Logging (module)">Logging</a></span>, <span class='object_link'><a href="Concurrent/Obligation.html" title="Concurrent::Obligation (module)">Obligation</a></span>, <span class='object_link'><a href="Concurrent/Observable.html" title="Concurrent::Observable (module)">Observable</a></span>, <span class='object_link'><a href="Concurrent/OptionsParser.html" title="Concurrent::OptionsParser (module)">OptionsParser</a></span>, <span class='object_link'><a href="Concurrent/RubyExecutor.html" title="Concurrent::RubyExecutor (module)">RubyExecutor</a></span>, <span class='object_link'><a href="Concurrent/SerialExecutor.html" title="Concurrent::SerialExecutor (module)">SerialExecutor</a></span>, <span class='object_link'><a href="Concurrent/Synchronization.html" title="Concurrent::Synchronization (module)">Synchronization</a></span>, <span class='object_link'><a href="Concurrent/ThreadLocalJavaStorage.html" title="Concurrent::ThreadLocalJavaStorage (module)">ThreadLocalJavaStorage</a></span>, <span class='object_link'><a href="Concurrent/ThreadLocalRubyStorage.html" title="Concurrent::ThreadLocalRubyStorage (module)">ThreadLocalRubyStorage</a></span>
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Concurrent/Actor.html" title="Concurrent::Actor (class)">Actor</a></span>, <span class='object_link'><a href="Concurrent/Agent.html" title="Concurrent::Agent (class)">Agent</a></span>, <span class='object_link'><a href="Concurrent/Atomic.html" title="Concurrent::Atomic (class)">Atomic</a></span>, <span class='object_link'><a href="Concurrent/AtomicBoolean.html" title="Concurrent::AtomicBoolean (class)">AtomicBoolean</a></span>, <span class='object_link'><a href="Concurrent/AtomicFixnum.html" title="Concurrent::AtomicFixnum (class)">AtomicFixnum</a></span>, <span class='object_link'><a href="Concurrent/BlockingRingBuffer.html" title="Concurrent::BlockingRingBuffer (class)">BlockingRingBuffer</a></span>, <span class='object_link'><a href="Concurrent/BufferedChannel.html" title="Concurrent::BufferedChannel (class)">BufferedChannel</a></span>, <span class='object_link'><a href="Concurrent/CachedThreadPool.html" title="Concurrent::CachedThreadPool (class)">CachedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/Condition.html" title="Concurrent::Condition (class)">Condition</a></span>, <span class='object_link'><a href="Concurrent/Configuration.html" title="Concurrent::Configuration (class)">Configuration</a></span>, <span class='object_link'><a href="Concurrent/CopyOnNotifyObserverSet.html" title="Concurrent::CopyOnNotifyObserverSet (class)">CopyOnNotifyObserverSet</a></span>, <span class='object_link'><a href="Concurrent/CopyOnWriteObserverSet.html" title="Concurrent::CopyOnWriteObserverSet (class)">CopyOnWriteObserverSet</a></span>, <span class='object_link'><a href="Concurrent/CountDownLatch.html" title="Concurrent::CountDownLatch (class)">CountDownLatch</a></span>, <span class='object_link'><a href="Concurrent/CyclicBarrier.html" title="Concurrent::CyclicBarrier (class)">CyclicBarrier</a></span>, <span class='object_link'><a href="Concurrent/Delay.html" title="Concurrent::Delay (class)">Delay</a></span>, <span class='object_link'><a href="Concurrent/Event.html" title="Concurrent::Event (class)">Event</a></span>, <span class='object_link'><a href="Concurrent/Exchanger.html" title="Concurrent::Exchanger (class)">Exchanger</a></span>, <span class='object_link'><a href="Concurrent/FixedThreadPool.html" title="Concurrent::FixedThreadPool (class)">FixedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/Future.html" title="Concurrent::Future (class)">Future</a></span>, <span class='object_link'><a href="Concurrent/IVar.html" title="Concurrent::IVar (class)">IVar</a></span>, <span class='object_link'><a href="Concurrent/ImmediateExecutor.html" title="Concurrent::ImmediateExecutor (class)">ImmediateExecutor</a></span>, <span class='object_link'><a href="Concurrent/JavaAtomicBoolean.html" title="Concurrent::JavaAtomicBoolean (class)">JavaAtomicBoolean</a></span>, <span class='object_link'><a href="Concurrent/JavaAtomicFixnum.html" title="Concurrent::JavaAtomicFixnum (class)">JavaAtomicFixnum</a></span>, <span class='object_link'><a href="Concurrent/JavaCachedThreadPool.html" title="Concurrent::JavaCachedThreadPool (class)">JavaCachedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/JavaCountDownLatch.html" title="Concurrent::JavaCountDownLatch (class)">JavaCountDownLatch</a></span>, <span class='object_link'><a href="Concurrent/JavaFixedThreadPool.html" title="Concurrent::JavaFixedThreadPool (class)">JavaFixedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/JavaPriorityQueue.html" title="Concurrent::JavaPriorityQueue (class)">JavaPriorityQueue</a></span>, <span class='object_link'><a href="Concurrent/JavaSingleThreadExecutor.html" title="Concurrent::JavaSingleThreadExecutor (class)">JavaSingleThreadExecutor</a></span>, <span class='object_link'><a href="Concurrent/JavaThreadPoolExecutor.html" title="Concurrent::JavaThreadPoolExecutor (class)">JavaThreadPoolExecutor</a></span>, <span class='object_link'><a href="Concurrent/MVar.html" title="Concurrent::MVar (class)">MVar</a></span>, <span class='object_link'><a href="Concurrent/MutexAtomic.html" title="Concurrent::MutexAtomic (class)">MutexAtomic</a></span>, <span class='object_link'><a href="Concurrent/MutexAtomicBoolean.html" title="Concurrent::MutexAtomicBoolean (class)">MutexAtomicBoolean</a></span>, <span class='object_link'><a href="Concurrent/MutexAtomicFixnum.html" title="Concurrent::MutexAtomicFixnum (class)">MutexAtomicFixnum</a></span>, <span class='object_link'><a href="Concurrent/MutexCountDownLatch.html" title="Concurrent::MutexCountDownLatch (class)">MutexCountDownLatch</a></span>, <span class='object_link'><a href="Concurrent/MutexPriorityQueue.html" title="Concurrent::MutexPriorityQueue (class)">MutexPriorityQueue</a></span>, <span class='object_link'><a href="Concurrent/PerThreadExecutor.html" title="Concurrent::PerThreadExecutor (class)">PerThreadExecutor</a></span>, <span class='object_link'><a href="Concurrent/PriorityQueue.html" title="Concurrent::PriorityQueue (class)">PriorityQueue</a></span>, <span class='object_link'><a href="Concurrent/ProcessorCounter.html" title="Concurrent::ProcessorCounter (class)">ProcessorCounter</a></span>, <span class='object_link'><a href="Concurrent/Promise.html" title="Concurrent::Promise (class)">Promise</a></span>, <span class='object_link'><a href="Concurrent/RingBuffer.html" title="Concurrent::RingBuffer (class)">RingBuffer</a></span>, <span class='object_link'><a href="Concurrent/RubyCachedThreadPool.html" title="Concurrent::RubyCachedThreadPool (class)">RubyCachedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/RubyFixedThreadPool.html" title="Concurrent::RubyFixedThreadPool (class)">RubyFixedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/RubySingleThreadExecutor.html" title="Concurrent::RubySingleThreadExecutor (class)">RubySingleThreadExecutor</a></span>, <span class='object_link'><a href="Concurrent/RubyThreadPoolExecutor.html" title="Concurrent::RubyThreadPoolExecutor (class)">RubyThreadPoolExecutor</a></span>, <span class='object_link'><a href="Concurrent/SafeTaskExecutor.html" title="Concurrent::SafeTaskExecutor (class)">SafeTaskExecutor</a></span>, <span class='object_link'><a href="Concurrent/ScheduledTask.html" title="Concurrent::ScheduledTask (class)">ScheduledTask</a></span>, <span class='object_link'><a href="Concurrent/SerializedExecution.html" title="Concurrent::SerializedExecution (class)">SerializedExecution</a></span>, <span class='object_link'><a href="Concurrent/SingleThreadExecutor.html" title="Concurrent::SingleThreadExecutor (class)">SingleThreadExecutor</a></span>, <span class='object_link'><a href="Concurrent/Supervisor.html" title="Concurrent::Supervisor (class)">Supervisor</a></span>, <span class='object_link'><a href="Concurrent/TVar.html" title="Concurrent::TVar (class)">TVar</a></span>, <span class='object_link'><a href="Concurrent/ThreadLocalVar.html" title="Concurrent::ThreadLocalVar (class)">ThreadLocalVar</a></span>, <span class='object_link'><a href="Concurrent/ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span>, <span class='object_link'><a href="Concurrent/TimerSet.html" title="Concurrent::TimerSet (class)">TimerSet</a></span>, <span class='object_link'><a href="Concurrent/TimerTask.html" title="Concurrent::TimerTask (class)">TimerTask</a></span>, <span class='object_link'><a href="Concurrent/Transaction.html" title="Concurrent::Transaction (class)">Transaction</a></span>, <span class='object_link'><a href="Concurrent/UnbufferedChannel.html" title="Concurrent::UnbufferedChannel (class)">UnbufferedChannel</a></span>, <span class='object_link'><a href="Concurrent/WaitableList.html" title="Concurrent::WaitableList (class)">WaitableList</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Concurrent/AbstractThreadLocalVar.html" title="Concurrent::AbstractThreadLocalVar (class)">AbstractThreadLocalVar</a></span>, <span class='object_link'><a href="Concurrent/Agent.html" title="Concurrent::Agent (class)">Agent</a></span>, <span class='object_link'><a href="Concurrent/Atomic.html" title="Concurrent::Atomic (class)">Atomic</a></span>, <span class='object_link'><a href="Concurrent/AtomicBoolean.html" title="Concurrent::AtomicBoolean (class)">AtomicBoolean</a></span>, <span class='object_link'><a href="Concurrent/AtomicFixnum.html" title="Concurrent::AtomicFixnum (class)">AtomicFixnum</a></span>, <span class='object_link'><a href="Concurrent/BlockingRingBuffer.html" title="Concurrent::BlockingRingBuffer (class)">BlockingRingBuffer</a></span>, <span class='object_link'><a href="Concurrent/BufferedChannel.html" title="Concurrent::BufferedChannel (class)">BufferedChannel</a></span>, <span class='object_link'><a href="Concurrent/CAtomic.html" title="Concurrent::CAtomic (class)">CAtomic</a></span>, <span class='object_link'><a href="Concurrent/CAtomicBoolean.html" title="Concurrent::CAtomicBoolean (class)">CAtomicBoolean</a></span>, <span class='object_link'><a href="Concurrent/CAtomicFixnum.html" title="Concurrent::CAtomicFixnum (class)">CAtomicFixnum</a></span>, <span class='object_link'><a href="Concurrent/CachedThreadPool.html" title="Concurrent::CachedThreadPool (class)">CachedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/ConcurrentUpdateError.html" title="Concurrent::ConcurrentUpdateError (class)">ConcurrentUpdateError</a></span>, <span class='object_link'><a href="Concurrent/Condition.html" title="Concurrent::Condition (class)">Condition</a></span>, <span class='object_link'><a href="Concurrent/Configuration.html" title="Concurrent::Configuration (class)">Configuration</a></span>, <span class='object_link'><a href="Concurrent/CopyOnNotifyObserverSet.html" title="Concurrent::CopyOnNotifyObserverSet (class)">CopyOnNotifyObserverSet</a></span>, <span class='object_link'><a href="Concurrent/CopyOnWriteObserverSet.html" title="Concurrent::CopyOnWriteObserverSet (class)">CopyOnWriteObserverSet</a></span>, <span class='object_link'><a href="Concurrent/CountDownLatch.html" title="Concurrent::CountDownLatch (class)">CountDownLatch</a></span>, <span class='object_link'><a href="Concurrent/CyclicBarrier.html" title="Concurrent::CyclicBarrier (class)">CyclicBarrier</a></span>, <span class='object_link'><a href="Concurrent/Delay.html" title="Concurrent::Delay (class)">Delay</a></span>, <span class='object_link'><a href="Concurrent/Event.html" title="Concurrent::Event (class)">Event</a></span>, <span class='object_link'><a href="Concurrent/Exchanger.html" title="Concurrent::Exchanger (class)">Exchanger</a></span>, <span class='object_link'><a href="Concurrent/FixedThreadPool.html" title="Concurrent::FixedThreadPool (class)">FixedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/Future.html" title="Concurrent::Future (class)">Future</a></span>, <span class='object_link'><a href="Concurrent/IVar.html" title="Concurrent::IVar (class)">IVar</a></span>, <span class='object_link'><a href="Concurrent/ImmediateExecutor.html" title="Concurrent::ImmediateExecutor (class)">ImmediateExecutor</a></span>, <span class='object_link'><a href="Concurrent/JavaAtomic.html" title="Concurrent::JavaAtomic (class)">JavaAtomic</a></span>, <span class='object_link'><a href="Concurrent/JavaAtomicBoolean.html" title="Concurrent::JavaAtomicBoolean (class)">JavaAtomicBoolean</a></span>, <span class='object_link'><a href="Concurrent/JavaAtomicFixnum.html" title="Concurrent::JavaAtomicFixnum (class)">JavaAtomicFixnum</a></span>, <span class='object_link'><a href="Concurrent/JavaCachedThreadPool.html" title="Concurrent::JavaCachedThreadPool (class)">JavaCachedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/JavaCountDownLatch.html" title="Concurrent::JavaCountDownLatch (class)">JavaCountDownLatch</a></span>, <span class='object_link'><a href="Concurrent/JavaFixedThreadPool.html" title="Concurrent::JavaFixedThreadPool (class)">JavaFixedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/JavaPriorityQueue.html" title="Concurrent::JavaPriorityQueue (class)">JavaPriorityQueue</a></span>, <span class='object_link'><a href="Concurrent/JavaSingleThreadExecutor.html" title="Concurrent::JavaSingleThreadExecutor (class)">JavaSingleThreadExecutor</a></span>, <span class='object_link'><a href="Concurrent/JavaThreadPoolExecutor.html" title="Concurrent::JavaThreadPoolExecutor (class)">JavaThreadPoolExecutor</a></span>, <span class='object_link'><a href="Concurrent/LazyRegister.html" title="Concurrent::LazyRegister (class)">LazyRegister</a></span>, <span class='object_link'><a href="Concurrent/MVar.html" title="Concurrent::MVar (class)">MVar</a></span>, <span class='object_link'><a href="Concurrent/MutexAtomic.html" title="Concurrent::MutexAtomic (class)">MutexAtomic</a></span>, <span class='object_link'><a href="Concurrent/MutexAtomicBoolean.html" title="Concurrent::MutexAtomicBoolean (class)">MutexAtomicBoolean</a></span>, <span class='object_link'><a href="Concurrent/MutexAtomicFixnum.html" title="Concurrent::MutexAtomicFixnum (class)">MutexAtomicFixnum</a></span>, <span class='object_link'><a href="Concurrent/MutexCountDownLatch.html" title="Concurrent::MutexCountDownLatch (class)">MutexCountDownLatch</a></span>, <span class='object_link'><a href="Concurrent/MutexPriorityQueue.html" title="Concurrent::MutexPriorityQueue (class)">MutexPriorityQueue</a></span>, <span class='object_link'><a href="Concurrent/PerThreadExecutor.html" title="Concurrent::PerThreadExecutor (class)">PerThreadExecutor</a></span>, <span class='object_link'><a href="Concurrent/PriorityQueue.html" title="Concurrent::PriorityQueue (class)">PriorityQueue</a></span>, <span class='object_link'><a href="Concurrent/ProcessorCounter.html" title="Concurrent::ProcessorCounter (class)">ProcessorCounter</a></span>, <span class='object_link'><a href="Concurrent/Promise.html" title="Concurrent::Promise (class)">Promise</a></span>, <span class='object_link'><a href="Concurrent/RbxAtomic.html" title="Concurrent::RbxAtomic (class)">RbxAtomic</a></span>, <span class='object_link'><a href="Concurrent/RingBuffer.html" title="Concurrent::RingBuffer (class)">RingBuffer</a></span>, <span class='object_link'><a href="Concurrent/RubyCachedThreadPool.html" title="Concurrent::RubyCachedThreadPool (class)">RubyCachedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/RubyFixedThreadPool.html" title="Concurrent::RubyFixedThreadPool (class)">RubyFixedThreadPool</a></span>, <span class='object_link'><a href="Concurrent/RubySingleThreadExecutor.html" title="Concurrent::RubySingleThreadExecutor (class)">RubySingleThreadExecutor</a></span>, <span class='object_link'><a href="Concurrent/RubyThreadPoolExecutor.html" title="Concurrent::RubyThreadPoolExecutor (class)">RubyThreadPoolExecutor</a></span>, <span class='object_link'><a href="Concurrent/SafeTaskExecutor.html" title="Concurrent::SafeTaskExecutor (class)">SafeTaskExecutor</a></span>, <span class='object_link'><a href="Concurrent/ScheduledTask.html" title="Concurrent::ScheduledTask (class)">ScheduledTask</a></span>, <span class='object_link'><a href="Concurrent/SerializedExecution.html" title="Concurrent::SerializedExecution (class)">SerializedExecution</a></span>, <span class='object_link'><a href="Concurrent/SerializedExecutionDelegator.html" title="Concurrent::SerializedExecutionDelegator (class)">SerializedExecutionDelegator</a></span>, <span class='object_link'><a href="Concurrent/SingleThreadExecutor.html" title="Concurrent::SingleThreadExecutor (class)">SingleThreadExecutor</a></span>, <span class='object_link'><a href="Concurrent/TVar.html" title="Concurrent::TVar (class)">TVar</a></span>, <span class='object_link'><a href="Concurrent/ThreadLocalVar.html" title="Concurrent::ThreadLocalVar (class)">ThreadLocalVar</a></span>, <span class='object_link'><a href="Concurrent/ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span>, <span class='object_link'><a href="Concurrent/TimerSet.html" title="Concurrent::TimerSet (class)">TimerSet</a></span>, <span class='object_link'><a href="Concurrent/TimerTask.html" title="Concurrent::TimerTask (class)">TimerTask</a></span>, <span class='object_link'><a href="Concurrent/Transaction.html" title="Concurrent::Transaction (class)">Transaction</a></span>, <span class='object_link'><a href="Concurrent/UnbufferedChannel.html" title="Concurrent::UnbufferedChannel (class)">UnbufferedChannel</a></span>, <span class='object_link'><a href="Concurrent/WaitableList.html" title="Concurrent::WaitableList (class)">WaitableList</a></span>
     
   
 </p>
@@ -243,7 +243,7 @@ possibly because of a reject policy or other internal error.</p>
         <dt id="VERSION-constant" class="">VERSION =
           
         </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0.6.0</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0.7.0.rc2</span><span class='tstring_end'>&#39;</span></span></pre></dd>
       
     </dl>
   
@@ -304,6 +304,28 @@ possibly because of a reject policy or other internal error.</p>
   
     <span class="summary_desc"><div class='inline'><p>Run a block that reads and writes <code>TVar</code>s as a single atomic transaction.</p>
 </div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#call_dataflow-class_method" title="call_dataflow (class method)">+ (Object) <strong>call_dataflow</strong>(method, executor, *inputs, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -379,7 +401,51 @@ possibly because of a reject policy or other internal error.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#dataflow%21-class_method" title="dataflow! (class method)">+ (Object) <strong>dataflow!</strong>(*inputs, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#dataflow_with-class_method" title="dataflow_with (class method)">+ (Object) <strong>dataflow_with</strong>(executor, *inputs, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dataflow_with%21-class_method" title="dataflow_with! (class method)">+ (Object) <strong>dataflow_with!</strong>(executor, *inputs, &amp;block) </a>
     
 
     
@@ -516,6 +582,28 @@ possibly because of a reject policy or other internal error.</p>
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#use_c_extensions%3F-class_method" title="use_c_extensions? (class method)">+ (Boolean) <strong>use_c_extensions?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -566,12 +654,12 @@ possibly because of a reject policy or other internal error.</p>
       <pre class="lines">
 
 
-140
-141
-142</pre>
+138
+139
+140</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 138</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_abort_transaction'>abort_transaction</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Transaction</span><span class='op'>::</span><span class='const'>AbortError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -649,6 +737,8 @@ properties from database transactions.</p>
       <pre class="lines">
 
 
+84
+85
 86
 87
 88
@@ -698,12 +788,10 @@ properties from database transactions.</p>
 132
 133
 134
-135
-136
-137</pre>
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 84</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_atomically'>atomically</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -719,7 +807,7 @@ properties from database transactions.</p>
 </span>
     <span class='kw'>begin</span>
       <span class='comment'># Retry loop
-</span>      
+</span>
       <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
 
         <span class='comment'># Create a new transaction
@@ -763,6 +851,96 @@ properties from database transactions.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="call_dataflow-class_method">
+  
+    + (<tt>Object</tt>) <strong>call_dataflow</strong>(method, executor, *inputs, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/dataflow.rb', line 85</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_call_dataflow'>call_dataflow</span><span class='lparen'>(</span><span class='id identifier rubyid_method'>method</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>an executor must be provided</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_executor'>executor</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>not all dependencies are IVars</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_input'>input</span><span class='op'>|</span> <span class='id identifier rubyid_input'>input</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>IVar</span> <span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='const'>Future</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>executor:</span> <span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_values'>values</span> <span class='op'>=</span> <span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_input'>input</span><span class='op'>|</span> <span class='id identifier rubyid_input'>input</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_method'>method</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_values'>values</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+    <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_counter'>counter</span> <span class='op'>=</span> <span class='const'>DependencyCounter</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span> <span class='rbrace'>}</span>
+
+    <span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_input'>input</span><span class='op'>|</span>
+      <span class='id identifier rubyid_input'>input</span><span class='period'>.</span><span class='id identifier rubyid_add_observer'>add_observer</span> <span class='id identifier rubyid_counter'>counter</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_result'>result</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="configuration-class_method">
   
     + (<tt><span class='object_link'><a href="Concurrent/Configuration.html" title="Concurrent::Configuration (class)">Configuration</a></span></tt>) <strong>configuration</strong> 
@@ -799,12 +977,12 @@ properties from database transactions.</p>
       <pre class="lines">
 
 
-118
-119
-120</pre>
+120
+121
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 118</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span>
   <span class='ivar'>@configuration</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
@@ -875,12 +1053,12 @@ properties from database transactions.</p>
       <pre class="lines">
 
 
-126
-127
-128</pre>
+128
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 126</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 128</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_configure'>configure</span>
   <span class='kw'>yield</span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='rparen'>)</span>
@@ -1079,7 +1257,37 @@ and dynamic in that you can create more tasks within other tasks.</p>
       <pre class="code"><span class="info file"># File 'lib/concurrent/dataflow.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dataflow'>dataflow</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_dataflow_with'>dataflow_with</span><span class='lparen'>(</span><span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span><span class='period'>.</span><span class='id identifier rubyid_global_task_pool'>global_task_pool</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dataflow_with'>dataflow_with</span><span class='lparen'>(</span><span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span><span class='period'>.</span><span class='id identifier rubyid_global_operation_pool'>global_operation_pool</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dataflow!-class_method">
+  
+    + (<tt>Object</tt>) <strong>dataflow!</strong>(*inputs, &amp;block) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+73
+74
+75</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/dataflow.rb', line 73</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dataflow!'>dataflow!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dataflow_with!'>dataflow_with!</span><span class='lparen'>(</span><span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span><span class='period'>.</span><span class='id identifier rubyid_global_task_pool'>global_task_pool</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1095,29 +1303,7 @@ and dynamic in that you can create more tasks within other tasks.</p>
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
@@ -1125,51 +1311,43 @@ and dynamic in that you can create more tasks within other tasks.</p>
 
 68
 69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89</pre>
+70</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/dataflow.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dataflow_with'>dataflow_with</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>an executor must be provided</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_executor'>executor</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>not all dependencies are IVars</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_input'>input</span><span class='op'>|</span> <span class='id identifier rubyid_input'>input</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>IVar</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_call_dataflow'>call_dataflow</span><span class='lparen'>(</span><span class='symbol'>:value</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dataflow_with!-class_method">
+  
+    + (<tt>Object</tt>) <strong>dataflow_with!</strong>(executor, *inputs, &amp;block) 
+  
 
-  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='const'>Future</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>executor:</span> <span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_values'>values</span> <span class='op'>=</span> <span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_input'>input</span><span class='op'>|</span> <span class='id identifier rubyid_input'>input</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='rbrace'>}</span>
-    <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_values'>values</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
+  
 
-  <span class='kw'>if</span> <span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
-    <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
-  <span class='kw'>else</span>
-    <span class='id identifier rubyid_counter'>counter</span> <span class='op'>=</span> <span class='const'>DependencyCounter</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span> <span class='rbrace'>}</span>
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
 
-    <span class='id identifier rubyid_inputs'>inputs</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_input'>input</span><span class='op'>|</span>
-      <span class='id identifier rubyid_input'>input</span><span class='period'>.</span><span class='id identifier rubyid_add_observer'>add_observer</span> <span class='id identifier rubyid_counter'>counter</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
 
-  <span class='id identifier rubyid_result'>result</span>
+78
+79
+80</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/dataflow.rb', line 78</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dataflow_with!'>dataflow_with!</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_call_dataflow'>call_dataflow</span><span class='lparen'>(</span><span class='symbol'>:value!</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_inputs'>inputs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1286,12 +1464,12 @@ and dynamic in that you can create more tasks within other tasks.</p>
       <pre class="lines">
 
 
-146
-147
-148</pre>
+148
+149
+150</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/utility/processor_count.rb', line 146</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/utility/processor_count.rb', line 148</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_physical_processor_count'>physical_processor_count</span>
   <span class='id identifier rubyid_processor_counter'>processor_counter</span><span class='period'>.</span><span class='id identifier rubyid_physical_processor_count'>physical_processor_count</span>
@@ -1316,12 +1494,12 @@ and dynamic in that you can create more tasks within other tasks.</p>
       <pre class="lines">
 
 
-142
-143
-144</pre>
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/utility/processor_count.rb', line 142</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/utility/processor_count.rb', line 144</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span>
   <span class='id identifier rubyid_processor_counter'>processor_counter</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span>
@@ -1572,14 +1750,70 @@ in the allotted number of seconds.</p>
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="use_c_extensions?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>use_c_extensions?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+4
+5
+6
+7
+8</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/extension_helper.rb', line 4</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_use_c_extensions?'>use_c_extensions?</span>
+  <span class='id identifier rubyid_host_os'>host_os</span> <span class='op'>=</span> <span class='const'>RbConfig</span><span class='op'>::</span><span class='const'>CONFIG</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>host_os</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_ruby_name'>ruby_name</span> <span class='op'>=</span> <span class='const'>RbConfig</span><span class='op'>::</span><span class='const'>CONFIG</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ruby_install_name</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='lparen'>(</span><span class='id identifier rubyid_ruby_name'>ruby_name</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^ruby$</span><span class='regexp_end'>/i</span></span> <span class='op'>||</span> <span class='id identifier rubyid_host_os'>host_os</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>mswin32</span><span class='regexp_end'>/i</span></span> <span class='op'>||</span> <span class='id identifier rubyid_host_os'>host_os</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>mingw32</span><span class='regexp_end'>/i</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:33 2014 by
+  Generated on Wed Jul 30 19:36:26 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

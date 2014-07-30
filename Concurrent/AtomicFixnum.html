@@ -97,7 +97,7 @@
   
     <dt class="r2 last">Defined in:</dt>
     <dd class="r2 last">lib/concurrent/atomic/atomic_fixnum.rb<span class="defines">,<br />
-  lib/concurrent/atomic/atomic_fixnum.rb</span>
+  lib/concurrent/atomic/atomic_fixnum.rb,<br /> lib/concurrent/atomic/atomic_fixnum.rb</span>
 </dd>
   
 </dl>
@@ -108,6 +108,19 @@
     <p>A numeric value that can be updated atomically. Reads and writes to an atomic
 fixnum and thread-safe and guaranteed to succeed. Reads and writes may block
 briefly but no explicit locking is required.</p>
+
+<pre class="code ruby"><code class="ruby">Testing with ruby 2.1.2
+Testing with Concurrent::MutexAtomicFixnum...
+  3.130000   0.000000   3.130000 (  3.136505)
+Testing with Concurrent::CAtomicFixnum...
+  0.790000   0.000000   0.790000 (  0.785550)
+
+Testing with jruby 1.9.3
+Testing with Concurrent::MutexAtomicFixnum...
+  5.460000   2.460000   7.920000 (  3.715000)
+Testing with Concurrent::JavaAtomicFixnum...
+  4.520000   0.030000   4.550000 (  1.187000)
+</code></pre>
 
 
   </div>
@@ -121,23 +134,11 @@ briefly but no explicit locking is required.</p>
       <li><a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/atomic/AtomicLong.html" target="_parent" title="java.util.concurrent.atomic.AtomicLong">java.util.concurrent.atomic.AtomicLong</a></li>
     
   </ul>
-<p class="tag_title">Since:</p>
-<ul class="since">
-  
-    <li>
-      
-      
-      
-      
-        
-        <div class='inline'><p>0.5.0</p>
-</div>
-      
-    </li>
-  
-</ul>
 
 </div>
+  <h2>Constant Summary</h2>
+  
+
 
 
 
@@ -157,9 +158,9 @@ briefly but no explicit locking is required.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:39 2014 by
+  Generated on Wed Jul 30 19:36:29 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

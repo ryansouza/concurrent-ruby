@@ -119,11 +119,6 @@
         </dt>
         <dd><pre class="code"><span class='const'>Object</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span></pre></dd>
       
-        <dt id="CURRENT_TRANSACTION-constant" class="">CURRENT_TRANSACTION =
-          
-        </dt>
-        <dd><pre class="code"><span class='const'>ThreadLocalVar</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span></pre></dd>
-      
         <dt id="AbortError-constant" class="">AbortError =
           
         </dt>
@@ -387,19 +382,19 @@
       <pre class="lines">
 
 
-159
-160
-161
-162
-163</pre>
+155
+156
+157
+158
+159</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 155</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@write_set</span> <span class='op'>=</span> <span class='const'>Set</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@read_log</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  <span class='ivar'>@undo_log</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='ivar'>@read_log</span>  <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='ivar'>@undo_log</span>  <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -428,15 +423,15 @@
       <pre class="lines">
 
 
-242
-243
-244</pre>
+238
+239
+240</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 242</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 238</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span>
-  <span class='const'>CURRENT_TRANSACTION</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
+  <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='lbracket'>[</span><span class='symbol'>:current_tvar_transaction</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -458,15 +453,15 @@
       <pre class="lines">
 
 
-246
-247
-248</pre>
+242
+243
+244</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 246</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 242</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current='>current=</span><span class='lparen'>(</span><span class='id identifier rubyid_transaction'>transaction</span><span class='rparen'>)</span>
-  <span class='const'>CURRENT_TRANSACTION</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_transaction'>transaction</span>
+  <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='lbracket'>[</span><span class='symbol'>:current_tvar_transaction</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_transaction'>transaction</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -494,16 +489,16 @@
       <pre class="lines">
 
 
+200
+201
+202
+203
 204
 205
-206
-207
-208
-209
-210</pre>
+206</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 204</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 200</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_abort'>abort</span>
   <span class='ivar'>@undo_log</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_entry'>entry</span><span class='op'>|</span>
@@ -532,20 +527,20 @@
       <pre class="lines">
 
 
+208
+209
+210
+211
 212
 213
 214
 215
 216
 217
-218
-219
-220
-221
-222</pre>
+218</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 212</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 208</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_commit'>commit</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id identifier rubyid_valid?'>valid?</span>
@@ -555,7 +550,7 @@
   <span class='kw'>end</span>
 
   <span class='id identifier rubyid_unlock'>unlock</span>
-  
+
   <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -578,14 +573,14 @@
       <pre class="lines">
 
 
-165
-166
-167
-168
-169</pre>
+161
+162
+163
+164
+165</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 165</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 161</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='id identifier rubyid_tvar'>tvar</span><span class='rparen'>)</span>
   <span class='const'>Concurrent</span><span class='op'>::</span><span class='id identifier rubyid_abort_transaction'>abort_transaction</span> <span class='kw'>unless</span> <span class='id identifier rubyid_valid?'>valid?</span>
@@ -612,14 +607,14 @@
       <pre class="lines">
 
 
-236
-237
-238
-239
-240</pre>
+232
+233
+234
+235
+236</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 236</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 232</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unlock'>unlock</span>
   <span class='ivar'>@write_set</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tvar'>tvar</span><span class='op'>|</span>
@@ -668,20 +663,20 @@
       <pre class="lines">
 
 
+220
+221
+222
+223
 224
 225
 226
 227
 228
 229
-230
-231
-232
-233
-234</pre>
+230</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 224</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 220</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid?'>valid?</span>
   <span class='ivar'>@read_log</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_log_entry'>log_entry</span><span class='op'>|</span>
@@ -714,6 +709,10 @@
       <pre class="lines">
 
 
+167
+168
+169
+170
 171
 172
 173
@@ -741,14 +740,10 @@
 195
 196
 197
-198
-199
-200
-201
-202</pre>
+198</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 171</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 167</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_tvar'>tvar</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='comment'># Have we already written to this TVar?
@@ -792,9 +787,9 @@
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:34 2014 by
+  Generated on Wed Jul 30 19:36:27 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

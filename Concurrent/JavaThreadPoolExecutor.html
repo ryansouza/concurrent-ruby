@@ -292,7 +292,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Does the task queue have a maximum size?.</p>
+</div></span>
   
 </li>
 
@@ -587,6 +588,34 @@
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialized%3F-instance_method" title="#serialized? (instance method)">- (Boolean) <strong>serialized?</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Executor.html#serialized%3F-instance_method" title="Concurrent::Executor#serialized? (method)">Executor</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Does this executor guarantee serialization of its operations?.</p>
+</div></span>
+  
+</li>
+
+      
         <li class="protected ">
   <span class="summary_signature">
     
@@ -622,6 +651,11 @@
 
     
   </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="JavaExecutor.html#shutdown-instance_method" title="Concurrent::JavaExecutor#shutdown (method)">JavaExecutor</a></span>
+    </span>
   
   
   
@@ -719,7 +753,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Boolean) <strong>wait_for_termination</strong>(timeout) </a>
+      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Boolean) <strong>wait_for_termination</strong>(timeout = nil) </a>
     
 
     
@@ -817,7 +851,8 @@
 87
 88
 89
-90</pre>
+90
+91</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 65</span>
@@ -831,6 +866,7 @@
 
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>max_threads must be greater than zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_max_length'>max_length</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>min_threads cannot be less than zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_min_length'>min_length</span> <span class='op'>&lt;</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>min_threads cannot be more than max_threads</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_min_length'>min_length</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_max_length'>max_length</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@overflow_policy</span><span class='embexpr_end'>}</span><span class='tstring_content'> is not a valid overflow policy</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>OVERFLOW_POLICIES</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='ivar'>@overflow_policy</span><span class='rparen'>)</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_min_length'>min_length</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@max_queue</span> <span class='op'>==</span> <span class='int'>0</span>
@@ -902,12 +938,12 @@
       <pre class="lines">
 
 
-106
-107
-108</pre>
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 106</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 108</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_max_length'>max_length</span>
   <span class='ivar'>@max_length</span>
@@ -1082,7 +1118,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Does the task queue have a maximum size?</p>
+
 
   </div>
 </div>
@@ -1098,6 +1135,10 @@
       
       
       
+        &mdash;
+        <div class='inline'><p>True if the task queue has a maximum size else false.</p>
+</div>
+      
     </li>
   
 </ul>
@@ -1108,12 +1149,12 @@
       <pre class="lines">
 
 
-92
-93
-94</pre>
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 92</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_can_overflow?'>can_overflow?</span>
   <span class='ivar'>@max_queue</span> <span class='op'>!=</span> <span class='int'>0</span>
@@ -1165,12 +1206,12 @@
       <pre class="lines">
 
 
-135
-136
-137</pre>
+137
+138
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 135</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 137</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_completed_task_count'>completed_task_count</span>
   <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getCompletedTaskCount'>getCompletedTaskCount</span>
@@ -1222,12 +1263,12 @@
       <pre class="lines">
 
 
-142
-143
-144</pre>
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 142</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 144</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_idletime'>idletime</span>
   <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getKeepAliveTime'>getKeepAliveTime</span><span class='lparen'>(</span><span class='id identifier rubyid_java'>java</span><span class='period'>.</span><span class='id identifier rubyid_util'>util</span><span class='period'>.</span><span class='id identifier rubyid_concurrent'>concurrent</span><span class='period'>.</span><span class='const'>TimeUnit</span><span class='op'>::</span><span class='const'>SECONDS</span><span class='rparen'>)</span>
@@ -1255,7 +1296,7 @@
   <div class="discussion">
     <p>Begin an immediate shutdown. In-progress tasks will be allowed to
 complete but enqueued tasks will be dismissed and no new tasks
-will be accepted. Has no additional effect if the executor is
+will be accepted. Has no additional effect if the thread pool is
 not running.</p>
 
 
@@ -1309,12 +1350,12 @@ not running.</p>
       <pre class="lines">
 
 
-121
-122
-123</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_largest_length'>largest_length</span>
   <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getLargestPoolSize'>getLargestPoolSize</span>
@@ -1370,12 +1411,12 @@ not running.</p>
       <pre class="lines">
 
 
-113
-114
-115</pre>
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_length'>length</span>
   <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getPoolSize'>getPoolSize</span>
@@ -1427,12 +1468,12 @@ not running.</p>
       <pre class="lines">
 
 
-99
-100
-101</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 101</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_min_length'>min_length</span>
   <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getCorePoolSize'>getCorePoolSize</span>
@@ -1582,12 +1623,12 @@ is not running</p>
       <pre class="lines">
 
 
-149
-150
-151</pre>
+151
+152
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 149</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 151</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_queue_length'>queue_length</span>
   <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getQueue'>getQueue</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
@@ -1640,12 +1681,12 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-157
-158
-159</pre>
+159
+160
+161</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 157</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 159</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remaining_capacity'>remaining_capacity</span>
   <span class='ivar'>@max_queue</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>?</span> <span class='op'>-</span><span class='int'>1</span> <span class='op'>:</span> <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getQueue'>getQueue</span><span class='period'>.</span><span class='id identifier rubyid_remainingCapacity'>remainingCapacity</span>
@@ -1697,15 +1738,15 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-173
-174
-175</pre>
+175
+176
+177</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 175</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_running?'>running?</span>
-  <span class='kw'>super</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span> <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_isTerminating'>isTerminating</span>
+  <span class='kw'>super</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_isTerminating'>isTerminating</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1754,12 +1795,12 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-128
-129
-130</pre>
+130
+131
+132</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 128</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 130</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_scheduled_task_count'>scheduled_task_count</span>
   <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getTaskCount'>getTaskCount</span>
@@ -1767,6 +1808,59 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
     </td>
   </tr>
 </table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="serialized?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>serialized?</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Executor.html#serialized%3F-instance_method" title="Concurrent::Executor#serialized? (method)">Executor</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>false</code></p>
+</div>
+  </div>
+
+<p>Does this executor guarantee serialization of its operations?</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>True if the executor guarantees that all operations
+will be post in the order they are received and no two operations may
+occur simultaneously. Else false.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       <div class="method_details ">
@@ -1795,6 +1889,11 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
   
 
   
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="JavaExecutor.html#shutdown-instance_method" title="Concurrent::JavaExecutor#shutdown (method)">JavaExecutor</a></span>
+    </span>
+  
 </h3><div class="docstring">
   <div class="discussion">
     <p>Begin an orderly shutdown. Tasks already in the queue will be executed,
@@ -1807,29 +1906,7 @@ thread pool is not running.</p>
 <div class="tags">
   
 
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-180
-181
-182
-183
-184</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 180</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_shutdown'>shutdown</span>
-  <span class='kw'>super</span>
-  <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_getQueue'>getQueue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
-  <span class='kw'>nil</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
+</div>
 </div>
     
       <div class="method_details ">
@@ -1947,14 +2024,14 @@ provide a way to get the thread status. So we return an empty Array instead.</p>
       <pre class="lines">
 
 
-164
-165
 166
 167
-168</pre>
+168
+169
+170</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_thread_pool_executor.rb', line 166</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_status'>status</span>
   <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] `status` is deprecated and will be removed soon.</span><span class='tstring_end'>&#39;</span></span>
@@ -1969,7 +2046,7 @@ provide a way to get the thread status. So we return an empty Array instead.</p>
       <div class="method_details ">
   <h3 class="signature " id="wait_for_termination-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>wait_for_termination</strong>(timeout) 
+    - (<tt>Boolean</tt>) <strong>wait_for_termination</strong>(timeout = nil) 
   
 
   
@@ -2008,6 +2085,8 @@ passed.</p>
         <span class='type'>(<tt>Integer</tt>)</span>
       
       
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
       
         &mdash;
         <div class='inline'><p>the maximum number of seconds to wait for shutdown to complete</p>
@@ -2043,9 +2122,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:42 2014 by
+  Generated on Wed Jul 30 19:36:32 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

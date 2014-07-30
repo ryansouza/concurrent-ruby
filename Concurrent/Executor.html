@@ -78,7 +78,7 @@
   
   
     <dt class="r1">Included in:</dt>
-    <dd class="r1"><span class='object_link'><a href="ImmediateExecutor.html" title="Concurrent::ImmediateExecutor (class)">ImmediateExecutor</a></span>, <span class='object_link'><a href="JavaExecutor.html" title="Concurrent::JavaExecutor (module)">JavaExecutor</a></span>, <span class='object_link'><a href="PerThreadExecutor.html" title="Concurrent::PerThreadExecutor (class)">PerThreadExecutor</a></span>, <span class='object_link'><a href="RubyExecutor.html" title="Concurrent::RubyExecutor (module)">RubyExecutor</a></span></dd>
+    <dd class="r1"><span class='object_link'><a href="JavaExecutor.html" title="Concurrent::JavaExecutor (module)">JavaExecutor</a></span>, <span class='object_link'><a href="PerThreadExecutor.html" title="Concurrent::PerThreadExecutor (class)">PerThreadExecutor</a></span>, <span class='object_link'><a href="RubyExecutor.html" title="Concurrent::RubyExecutor (module)">RubyExecutor</a></span>, <span class='object_link'><a href="SerialExecutor.html" title="Concurrent::SerialExecutor (module)">SerialExecutor</a></span></dd>
     
   
   
@@ -120,7 +120,31 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Does the task queue have a maximum size?.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialized%3F-instance_method" title="#serialized? (instance method)">- (Boolean) <strong>serialized?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Does this executor guarantee serialization of its operations?.</p>
+</div></span>
   
 </li>
 
@@ -146,6 +170,14 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>false</code></p>
+</div>
+  </div>
+
+<p>Does the task queue have a maximum size?</p>
+
 
   </div>
 </div>
@@ -161,6 +193,10 @@
       
       
       
+        &mdash;
+        <div class='inline'><p>True if the task queue has a maximum size else false.</p>
+</div>
+      
     </li>
   
 </ul>
@@ -171,14 +207,80 @@
       <pre class="lines">
 
 
-8
-9
-10</pre>
+16
+17
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_can_overflow?'>can_overflow?</span>
+  <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="serialized?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>serialized?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>false</code></p>
+</div>
+  </div>
+
+<p>Does this executor guarantee serialization of its operations?</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>True if the executor guarantees that all operations
+will be post in the order they are received and no two operations may
+occur simultaneously. Else false.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 29</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_serialized?'>serialized?</span>
   <span class='kw'>false</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -191,9 +293,9 @@
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:34 2014 by
+  Generated on Wed Jul 30 19:36:26 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

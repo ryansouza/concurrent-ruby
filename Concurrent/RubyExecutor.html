@@ -241,7 +241,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Does the task queue have a maximum size?.</p>
+</div></span>
   
 </li>
 
@@ -285,7 +286,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Initialize the executor by creating and initializing all the internal synchronization objects.</p>
+</div></span>
   
 </li>
 
@@ -330,7 +332,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Callback method called when the executor has been killed.</p>
+</div></span>
   
 </li>
 
@@ -412,6 +415,34 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#serialized%3F-instance_method" title="#serialized? (instance method)">- (Boolean) <strong>serialized?</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Executor.html#serialized%3F-instance_method" title="Concurrent::Executor#serialized? (method)">Executor</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Does this executor guarantee serialization of its operations?.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#shutdown-instance_method" title="#shutdown (instance method)">- (Object) <strong>shutdown</strong> </a>
     
 
@@ -472,7 +503,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Callback method called when an orderly shutdown has completed.</p>
+</div></span>
   
 </li>
 
@@ -562,12 +594,12 @@
       <pre class="lines">
 
 
-108
-109
-110</pre>
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mutex'>mutex</span>
   <span class='ivar'>@mutex</span>
@@ -604,12 +636,12 @@
       <pre class="lines">
 
 
-108
-109
-110</pre>
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_stop_event'>stop_event</span>
   <span class='ivar'>@stop_event</span>
@@ -646,12 +678,12 @@
       <pre class="lines">
 
 
-108
-109
-110</pre>
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_stopped_event'>stopped_event</span>
   <span class='ivar'>@stopped_event</span>
@@ -729,13 +761,13 @@
       <pre class="lines">
 
 
-41
-42
-43
-44</pre>
+94
+95
+96
+97</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='op'>&lt;&lt;</span><span class='lparen'>(</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
@@ -763,6 +795,14 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>false</code></p>
+</div>
+  </div>
+
+<p>Does the task queue have a maximum size?</p>
+
 
   </div>
 </div>
@@ -777,6 +817,10 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'><p>True if the task queue has a maximum size else false.</p>
+</div>
       
     </li>
   
@@ -822,12 +866,12 @@
       <pre class="lines">
 
 
-116
-117
-118</pre>
+186
+187
+188</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 186</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span>
@@ -846,20 +890,31 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Initialize the executor by creating and initializing all the
+internal synchronization objects.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-110
-111
-112
-113
-114</pre>
+179
+180
+181
+182
+183</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 179</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_init_executor'>init_executor</span>
   <span class='ivar'>@mutex</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -899,18 +954,18 @@ not running.</p>
       <pre class="lines">
 
 
-83
-84
-85
-86
-87
-88
-89
-90
-91</pre>
+146
+147
+148
+149
+150
+151
+152
+153
+154</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 146</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kill'>kill</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -935,18 +990,29 @@ not running.</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Callback method called when the executor has been killed.
+The default behavior is to do nothing.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-124
-125
-126</pre>
+202
+203
+204</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 124</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 202</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kill_execution'>kill_execution</span>
   <span class='comment'># do nothing
@@ -1147,17 +1213,17 @@ is not running</p>
       <pre class="lines">
 
 
-27
-28
-29
-30
-31
-32
-33
-34</pre>
+78
+79
+80
+81
+82
+83
+84
+85</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -1214,12 +1280,12 @@ is not running</p>
       <pre class="lines">
 
 
-49
-50
-51</pre>
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 104</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_running?'>running?</span>
   <span class='op'>!</span> <span class='id identifier rubyid_stop_event'>stop_event</span><span class='period'>.</span><span class='id identifier rubyid_set?'>set?</span>
@@ -1227,6 +1293,59 @@ is not running</p>
     </td>
   </tr>
 </table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="serialized?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>serialized?</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Executor.html#serialized%3F-instance_method" title="Concurrent::Executor#serialized? (method)">Executor</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>false</code></p>
+</div>
+  </div>
+
+<p>Does this executor guarantee serialization of its operations?</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>True if the executor guarantees that all operations
+will be post in the order they are received and no two operations may
+occur simultaneously. Else false.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       <div class="method_details ">
@@ -1256,17 +1375,17 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-70
-71
-72
-73
-74
-75
-76
-77</pre>
+131
+132
+133
+134
+135
+136
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 131</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_shutdown'>shutdown</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -1323,12 +1442,12 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-63
-64
-65</pre>
+122
+123
+124</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 122</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_shutdown?'>shutdown?</span>
   <span class='id identifier rubyid_stopped_event'>stopped_event</span><span class='period'>.</span><span class='id identifier rubyid_set?'>set?</span>
@@ -1347,18 +1466,29 @@ thread pool is not running.</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Callback method called when an orderly shutdown has completed.
+The default behavior is to signal all waiting threads.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-120
-121
-122</pre>
+194
+195
+196</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 120</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 194</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_shutdown_execution'>shutdown_execution</span>
   <span class='id identifier rubyid_stopped_event'>stopped_event</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span>
@@ -1410,12 +1540,12 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-56
-57
-58</pre>
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 113</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_shuttingdown?'>shuttingdown?</span>
   <span class='op'>!</span> <span class='lparen'>(</span><span class='id identifier rubyid_running?'>running?</span> <span class='op'>||</span> <span class='id identifier rubyid_shutdown?'>shutdown?</span><span class='rparen'>)</span>
@@ -1497,12 +1627,12 @@ passed.</p>
       <pre class="lines">
 
 
-102
-103
-104</pre>
+167
+168
+169</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 167</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for_termination'>wait_for_termination</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_stopped_event'>stopped_event</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
@@ -1517,9 +1647,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:34 2014 by
+  Generated on Wed Jul 30 19:36:26 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

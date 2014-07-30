@@ -227,14 +227,14 @@ is used as part of a transaction - see <code>Concurrent::atomically</code>.</p>
       <pre class="lines">
 
 
+10
+11
 12
 13
-14
-15
-16</pre>
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@value</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
@@ -278,14 +278,14 @@ is used as part of a transaction - see <code>Concurrent::atomically</code>.</p>
       <pre class="lines">
 
 
+17
+18
 19
 20
-21
-22
-23</pre>
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value'>value</span>
   <span class='const'>Concurrent</span><span class='op'>::</span><span class='id identifier rubyid_atomically'>atomically</span> <span class='kw'>do</span>
@@ -322,14 +322,14 @@ is used as part of a transaction - see <code>Concurrent::atomically</code>.</p>
       <pre class="lines">
 
 
+24
+25
 26
 27
-28
-29
-30</pre>
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/tvar.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value='>value=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='const'>Concurrent</span><span class='op'>::</span><span class='id identifier rubyid_atomically'>atomically</span> <span class='kw'>do</span>
@@ -346,9 +346,9 @@ is used as part of a transaction - see <code>Concurrent::atomically</code>.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:34 2014 by
+  Generated on Wed Jul 30 19:36:27 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

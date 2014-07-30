@@ -143,29 +143,6 @@ A good example of an agent is a shared incrementing counter, such as the score i
 
 
 </div>
-  <h2>Constant Summary</h2>
-  
-    <dl class="constants">
-      
-        <dt id="TIMEOUT-constant" class="">TIMEOUT =
-          <div class="docstring">
-  <div class="discussion">
-    <p>The default timeout value (in seconds); used when no timeout option
-is given at initialization</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='int'>5</span></pre></dd>
-      
-    </dl>
-  
-
 
 
 
@@ -593,7 +570,7 @@ is given at initialization</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#post_off-instance_method" title="#post_off (instance method)">- (true<sup>?</sup>) <strong>post_off</strong> {|value| ... }</a>
+      <a href="#post_off-instance_method" title="#post_off (instance method)">- (true<sup>?</sup>) <strong>post_off</strong>(timeout = nil) {|value| ... }</a>
     
 
     
@@ -853,21 +830,6 @@ is given at initialization</p>
     <ul class="option">
       
         <li>
-          <span class="name">:timeout</span>
-          <span class="type">(<tt>Fixnum</tt>)</span>
-          <span class="default">
-            
-              &mdash; default:
-              <tt>TIMEOUT</tt>
-            
-          </span>
-          
-            &mdash; <div class='inline'><p>maximum number of seconds before an update is cancelled</p>
-</div>
-          
-        </li>
-      
-        <li>
           <span class="name">:operation</span>
           <span class="type">(<tt>Boolean</tt>)</span>
           <span class="default">
@@ -953,27 +915,25 @@ returning the value returned from the proc</p>
       <pre class="lines">
 
 
+58
+59
+60
+61
+62
+63
 64
 65
 66
 67
-68
-69
-70
-71
-72
-73
-74
-75</pre>
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial'>initial</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@value</span>                <span class='op'>=</span> <span class='id identifier rubyid_initial'>initial</span>
   <span class='ivar'>@rescuers</span>             <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='ivar'>@validator</span>            <span class='op'>=</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_result'>result</span><span class='op'>|</span> <span class='kw'>true</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@timeout</span>              <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:timeout</span><span class='comma'>,</span> <span class='const'>TIMEOUT</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_observers'>observers</span>        <span class='op'>=</span> <span class='const'>CopyOnWriteObserverSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@serialized_execution</span> <span class='op'>=</span> <span class='const'>SerializedExecution</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@task_executor</span>        <span class='op'>=</span> <span class='const'>OptionsParser</span><span class='period'>.</span><span class='id identifier rubyid_get_task_executor_from'>get_task_executor_from</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1047,12 +1007,12 @@ returning the value returned from the proc</p>
       <pre class="lines">
 
 
-45
-46
-47</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_operation_executor'>operation_executor</span>
   <span class='ivar'>@operation_executor</span>
@@ -1089,12 +1049,12 @@ returning the value returned from the proc</p>
       <pre class="lines">
 
 
-45
-46
-47</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_task_executor'>task_executor</span>
   <span class='ivar'>@task_executor</span>
@@ -1341,9 +1301,7 @@ returning the value returned from the proc</p>
 226
 227
 228
-229
-230
-231</pre>
+229</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 36</span>
@@ -1353,18 +1311,12 @@ returning the value returned from the proc</p>
   <span class='id identifier rubyid_include'>include</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Observable</span>
   <span class='id identifier rubyid_include'>include</span> <span class='const'>Logging</span>
 
-  <span class='comment'># The default timeout value (in seconds); used when no timeout option
-</span>  <span class='comment'># is given at initialization
-</span>  <span class='const'>TIMEOUT</span> <span class='op'>=</span> <span class='int'>5</span>
-
   <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:timeout</span><span class='comma'>,</span> <span class='symbol'>:task_executor</span><span class='comma'>,</span> <span class='symbol'>:operation_executor</span>
 
   <span class='comment'># Initialize a new Agent with the given initial value and provided options.
 </span>  <span class='comment'>#
 </span>  <span class='comment'># @param [Object] initial the initial value
 </span>  <span class='comment'># @param [Hash] opts the options used to define the behavior at update and deref
-</span>  <span class='comment'>#
-</span>  <span class='comment'># @option opts [Fixnum] :timeout (TIMEOUT) maximum number of seconds before an update is cancelled
 </span>  <span class='comment'>#
 </span>  <span class='comment'># @option opts [Boolean] :operation (false) when `true` will execute the future on the global
 </span>  <span class='comment'>#   operation pool (for long-running operations), when `false` will execute the future on the
@@ -1380,7 +1332,6 @@ returning the value returned from the proc</p>
     <span class='ivar'>@value</span>                <span class='op'>=</span> <span class='id identifier rubyid_initial'>initial</span>
     <span class='ivar'>@rescuers</span>             <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
     <span class='ivar'>@validator</span>            <span class='op'>=</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_result'>result</span><span class='op'>|</span> <span class='kw'>true</span> <span class='rbrace'>}</span>
-    <span class='ivar'>@timeout</span>              <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:timeout</span><span class='comma'>,</span> <span class='const'>TIMEOUT</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
     <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_observers'>observers</span>        <span class='op'>=</span> <span class='const'>CopyOnWriteObserverSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
     <span class='ivar'>@serialized_execution</span> <span class='op'>=</span> <span class='const'>SerializedExecution</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
     <span class='ivar'>@task_executor</span>        <span class='op'>=</span> <span class='const'>OptionsParser</span><span class='period'>.</span><span class='id identifier rubyid_get_task_executor_from'>get_task_executor_from</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1460,12 +1411,19 @@ returning the value returned from the proc</p>
   <span class='comment'># Update the current value with the result of the given block operation,
 </span>  <span class='comment'># block can do blocking calls
 </span>  <span class='comment'>#
+</span>  <span class='comment'># @param [Fixnum, nil] timeout maximum number of seconds before an update is cancelled
+</span>  <span class='comment'>#
 </span>  <span class='comment'># @yield the operation to be performed with the current value in order to calculate
 </span>  <span class='comment'>#   the new value
 </span>  <span class='comment'># @yieldparam [Object] value the current value
 </span>  <span class='comment'># @yieldreturn [Object] the new value
 </span>  <span class='comment'># @return [true, nil] nil when no block is given
-</span>  <span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_block'>block</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_timeout'>timeout</span>
+              <span class='id identifier rubyid_lambda'>lambda</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='id identifier rubyid_timeout'>timeout</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span>
+            <span class='kw'>else</span>
+              <span class='id identifier rubyid_block'>block</span>
+            <span class='kw'>end</span>
     <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@operation_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 
@@ -1518,10 +1476,8 @@ returning the value returned from the proc</p>
 </span>    <span class='id identifier rubyid_validator'>validator</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='lbracket'>[</span><span class='ivar'>@validator</span><span class='comma'>,</span> <span class='ivar'>@value</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
 
     <span class='kw'>begin</span>
-      <span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_valid'>valid</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='id identifier rubyid_timeout'>timeout</span><span class='lparen'>(</span><span class='ivar'>@timeout</span><span class='rparen'>)</span> <span class='kw'>do</span>
-        <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_handler'>handler</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-        <span class='lbracket'>[</span><span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_validator'>validator</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span><span class='rbracket'>]</span>
-      <span class='kw'>end</span>
+      <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_handler'>handler</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_valid'>valid</span>  <span class='op'>=</span> <span class='id identifier rubyid_validator'>validator</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
     <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_ex'>ex</span>
       <span class='id identifier rubyid_exception'>exception</span> <span class='op'>=</span> <span class='id identifier rubyid_ex'>ex</span>
     <span class='kw'>end</span>
@@ -2191,12 +2147,12 @@ the new value</p>
       <pre class="lines">
 
 
-141
-142
-143</pre>
+134
+135
+136</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 141</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 134</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@task_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -2209,7 +2165,7 @@ the new value</p>
       <div class="method_details ">
   <h3 class="signature " id="post_off-instance_method">
   
-    - (<tt>true</tt><sup>?</sup>) <strong>post_off</strong> {|value| ... }
+    - (<tt>true</tt><sup>?</sup>) <strong>post_off</strong>(timeout = nil) {|value| ... }
   
 
   
@@ -2224,7 +2180,28 @@ block can do blocking calls</p>
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>timeout</span>
+      
+      
+        <span class='type'>(<tt>Fixnum</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>maximum number of seconds before an update is cancelled</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Yields:</p>
 <ul class="yield">
   
@@ -2303,14 +2280,24 @@ the new value</p>
       <pre class="lines">
 
 
+148
+149
+150
+151
+152
 153
 154
 155</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 153</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 148</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_block'>block</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_timeout'>timeout</span>
+            <span class='id identifier rubyid_lambda'>lambda</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='id identifier rubyid_timeout'>timeout</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span>
+          <span class='kw'>else</span>
+            <span class='id identifier rubyid_block'>block</span>
+          <span class='kw'>end</span>
   <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@operation_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -2425,17 +2412,17 @@ caught exceptions will be suppressed.</p>
       <pre class="lines">
 
 
-98
-99
-100
-101
-102
-103
-104
-105</pre>
+91
+92
+93
+94
+95
+96
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 91</span>
 
 <span class='kw'>def</span> <span class='kw'>rescue</span><span class='lparen'>(</span><span class='id identifier rubyid_clazz'>clazz</span> <span class='op'>=</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -2649,21 +2636,21 @@ the result is valid</p>
       <pre class="lines">
 
 
+110
+111
+112
+113
+114
+115
+116
 117
 118
 119
 120
-121
-122
-123
-124
-125
-126
-127
-128</pre>
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 
@@ -2840,9 +2827,9 @@ or Haskell) as we are likely to get in Ruby.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:35 2014 by
+  Generated on Wed Jul 30 19:36:27 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

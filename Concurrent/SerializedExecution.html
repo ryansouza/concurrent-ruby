@@ -248,14 +248,14 @@
       <pre class="lines">
 
 
-15
-16
 17
 18
-19</pre>
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@being_executed</span> <span class='op'>=</span> <span class='kw'>false</span>
@@ -480,8 +480,6 @@ is not running</p>
       <pre class="lines">
 
 
-33
-34
 35
 36
 37
@@ -499,10 +497,12 @@ is not running</p>
 49
 50
 51
-52</pre>
+52
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -534,9 +534,9 @@ is not running</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:41 2014 by
+  Generated on Wed Jul 30 19:36:31 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

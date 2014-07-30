@@ -101,7 +101,46 @@
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>When running on the JVM (JRuby) this class will inherit from <code>JavaFixedThreadPool</code>.
+On all other platforms it will inherit from <code>RubyFixedThreadPool</code>.</p>
+</div>
+  </div>
 
+<p>A thread pool with a set number of threads. The number of threads in the pool
+is set on construction and remains constant. When all threads are busy new
+tasks <code>#post</code> to the thread pool are enqueued until a thread becomes available.
+Should a thread crash for any reason the thread will immediately be removed
+from the pool and replaced.</p>
+
+<p>The API and behavior of this class are based on Java&#39;s <code>FixedThreadPool</code></p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="RubyFixedThreadPool.html" title="Concurrent::RubyFixedThreadPool (class)">RubyFixedThreadPool</a></span></li>
+    
+      <li><span class='object_link'><a href="" title="Concurrent::JavaFixedThreadPool (class)">JavaFixedThreadPool</a></span></li>
+    
+      <li><a href="http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html" target="_parent" title="http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html">http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html</a></li>
+    
+      <li><a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html" target="_parent" title="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html">http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html</a></li>
+    
+      <li><a href="http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html" target="_parent" title="http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html">http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html</a></li>
+    
+  </ul>
+
+</div>
   <h2>Constant Summary</h2>
   
 
@@ -242,7 +281,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>A new instance of JavaFixedThreadPool.</p>
+    <span class="summary_desc"><div class='inline'><p>Create a new thread pool.</p>
 </div></span>
   
 </li>
@@ -271,13 +310,60 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns a new instance of JavaFixedThreadPool</p>
+    <p>Create a new thread pool.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>opts</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the options defining pool behavior.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    
+    
+    <p class="tag_title">Options Hash (<tt>opts</tt>):</p>
+    <ul class="option">
+      
+        <li>
+          <span class="name">:overflow_policy</span>
+          <span class="type">(<tt>Symbol</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>`:abort`</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>the overflow policy</p>
+</div>
+          
+        </li>
+      
+    </ul>
+  
+
 <p class="tag_title">Raises:</p>
 <ul class="raise">
   
@@ -288,9 +374,33 @@
       
       
       
+        &mdash;
+        <div class='inline'><p>if <code>num_threads</code> is less than or equal to zero</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>if <code>overflow_policy</code> is not a known policy</p>
+</div>
+      
     </li>
   
 </ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-" target="_parent" title="http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-">http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-</a></li>
+    
+  </ul>
 
 </div><table class="source_code">
   <tr>
@@ -309,21 +419,37 @@
 27
 28
 29
-30</pre>
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_fixed_thread_pool.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_num_threads'>num_threads</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='ivar'>@overflow_policy</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:overflow_policy</span><span class='comma'>,</span> <span class='symbol'>:abort</span><span class='rparen'>)</span>
-  <span class='ivar'>@max_queue</span> <span class='op'>=</span> <span class='int'>0</span>
 
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>number of threads must be greater than zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_num_threads'>num_threads</span> <span class='op'>&lt;</span> <span class='int'>1</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@overflow_policy</span><span class='embexpr_end'>}</span><span class='tstring_content'> is not a valid overflow policy</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>OVERFLOW_POLICIES</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='ivar'>@overflow_policy</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='label'>min_threads:</span> <span class='id identifier rubyid_num_threads'>num_threads</span><span class='comma'>,</span>
+      <span class='label'>max_threads:</span> <span class='id identifier rubyid_num_threads'>num_threads</span>
+  <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
 
-  <span class='ivar'>@executor</span> <span class='op'>=</span> <span class='id identifier rubyid_java'>java</span><span class='period'>.</span><span class='id identifier rubyid_util'>util</span><span class='period'>.</span><span class='id identifier rubyid_concurrent'>concurrent</span><span class='period'>.</span><span class='const'>Executors</span><span class='period'>.</span><span class='id identifier rubyid_newFixedThreadPool'>newFixedThreadPool</span><span class='lparen'>(</span><span class='id identifier rubyid_num_threads'>num_threads</span><span class='rparen'>)</span>
-  <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_setRejectedExecutionHandler'>setRejectedExecutionHandler</span><span class='lparen'>(</span><span class='const'>OVERFLOW_POLICIES</span><span class='lbracket'>[</span><span class='ivar'>@overflow_policy</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span>
 
+  <span class='comment'>#@overflow_policy = opts.fetch(:overflow_policy, :abort)
+</span>  <span class='comment'>#@max_queue = 0
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#raise ArgumentError.new(&#39;number of threads must be greater than zero&#39;) if num_threads &lt; 1
+</span>  <span class='comment'>#raise ArgumentError.new(&quot;#{@overflow_policy} is not a valid overflow policy&quot;) unless OVERFLOW_POLICIES.keys.include?(@overflow_policy)
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#@executor = java.util.concurrent.Executors.newFixedThreadPool(num_threads)
+</span>  <span class='comment'>#@executor.setRejectedExecutionHandler(OVERFLOW_POLICIES[@overflow_policy].new)
+</span>
   <span class='id identifier rubyid_set_shutdown_hook'>set_shutdown_hook</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -446,9 +572,9 @@
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:41 2014 by
+  Generated on Wed Jul 30 19:36:31 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

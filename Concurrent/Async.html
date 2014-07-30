@@ -264,7 +264,7 @@ the result of the method call. Calling a method with <code>async</code> will ret
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#async-instance_method" title="#async (instance method)">- (Concurrent::Future) <strong>async</strong> </a>
+      <a href="#async-instance_method" title="#async (instance method)">- (Concurrent::IVar) <strong>async</strong> </a>
     
 
     
@@ -351,7 +351,7 @@ the result of the method call. Calling a method with <code>async</code> will ret
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Initialize the internal mutex and other synchronization objects.</p>
+    <span class="summary_desc"><div class='inline'><p>Initialize the internal serializer and other synchronization objects.</p>
 </div></span>
   
 </li>
@@ -546,7 +546,7 @@ set of arguments matches the required arity.</p>
       <div class="method_details first">
   <h3 class="signature first" id="async-instance_method">
   
-    - (<tt><span class='object_link'><a href="Future.html" title="Concurrent::Future (class)">Concurrent::Future</a></span></tt>) <strong>async</strong> 
+    - (<tt><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">Concurrent::IVar</a></span></tt>) <strong>async</strong> 
   
 
   
@@ -573,9 +573,9 @@ between threads.</p>
 
 <p>Causes the chained method call to be performed asynchronously on the
 global thread pool. The method called by this method will return a
-<code>Future</code> object in the <code>:pending</code> state and the method call will have
+future object in the <code>:pending</code> state and the method call will have
 been scheduled on the global thread pool. The final disposition of the
-method call can be obtained by inspecting the returned <code>Future</code>.</p>
+method call can be obtained by inspecting the returned future.</p>
 
 <p>Before scheduling the method on the global thread pool a best-effort
 attempt will be made to validate that the method exists on the object
@@ -595,7 +595,7 @@ the documentation for the <code>validate_argc</code> method.</p>
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="Future.html" title="Concurrent::Future (class)">Concurrent::Future</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">Concurrent::IVar</a></span></tt>)</span>
       
       
       
@@ -653,7 +653,7 @@ the documentation for the <code>validate_argc</code> method.</p>
   <p class="tag_title">See Also:</p>
   <ul class="see">
     
-      <li><span class='object_link'><a href="Future.html" title="Concurrent::Future (class)">Future</a></span></li>
+      <li><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">IVar</a></span></li>
     
   </ul>
 <p class="tag_title">Since:</p>
@@ -678,16 +678,16 @@ the documentation for the <code>validate_argc</code> method.</p>
       <pre class="lines">
 
 
-248
-249
-250
-251</pre>
+211
+212
+213
+214</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 248</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 211</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_async'>async</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async__mutex__</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async_initialized__</span>
   <span class='ivar'>@__async_delegator__</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -830,16 +830,16 @@ the documentation for the <code>validate_argc</code> method.</p>
       <pre class="lines">
 
 
-282
-283
-284
-285</pre>
+245
+246
+247
+248</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 282</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 245</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_await'>await</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async__mutex__</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async_initialized__</span>
   <span class='ivar'>@__await_delegator__</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -917,18 +917,18 @@ the documentation for the <code>validate_argc</code> method.</p>
       <pre class="lines">
 
 
-292
-293
-294
-295
-296</pre>
+255
+256
+257
+258
+259</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 292</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 255</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_executor='>executor=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async__mutex__</span>
-  <span class='ivar'>@__async__executor__</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async_initialized__</span>
+  <span class='ivar'>@__async_executor__</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>executor has already been set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -956,7 +956,7 @@ This is the only way thread-safe initialization can be guaranteed.</p>
 </div>
   </div>
 
-<p>Initialize the internal mutex and other synchronization objects. This method
+<p>Initialize the internal serializer and other synchronization objects. This method
 <em>must</em> be called from the constructor of the including class or explicitly
 by the caller prior to calling any other methods. If <code>init_mutex</code> is <em>not</em>
 called explicitly the async/await/executor methods will raize a
@@ -1007,25 +1007,29 @@ initialization can be guaranteed.</p>
       <pre class="lines">
 
 
-310
-311
-312
-313
-314
-315
-316
-317</pre>
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 310</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 273</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_init_mutex'>init_mutex</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was already called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@__async__mutex__</span>
-  <span class='lparen'>(</span><span class='ivar'>@__async__mutex__</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
-  <span class='ivar'>@__async__executor__</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span><span class='period'>.</span><span class='id identifier rubyid_global_operation_pool'>global_operation_pool</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@__await_delegator__</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='const'>AwaitDelegator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='ivar'>@__async__mutex__</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@__async_delegator__</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='const'>AsyncDelegator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='ivar'>@__async__executor__</span><span class='comma'>,</span> <span class='ivar'>@__async__mutex__</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@__async__mutex__</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was already called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@__async_initialized__</span>
+  <span class='ivar'>@__async_initialized__</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='id identifier rubyid_serializer'>serializer</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>SerializedExecution</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@__async_executor__</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span><span class='period'>.</span><span class='id identifier rubyid_global_operation_pool'>global_operation_pool</span> <span class='rbrace'>}</span>
+  <span class='ivar'>@__await_delegator__</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='const'>AsyncDelegator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+    <span class='kw'>self</span><span class='comma'>,</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ImmediateExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='id identifier rubyid_serializer'>serializer</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='ivar'>@__async_delegator__</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='const'>AsyncDelegator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+    <span class='kw'>self</span><span class='comma'>,</span> <span class='ivar'>@__async_executor__</span><span class='comma'>,</span> <span class='id identifier rubyid_serializer'>serializer</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1037,9 +1041,9 @@ initialization can be guaranteed.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:33 2014 by
+  Generated on Wed Jul 30 19:36:26 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

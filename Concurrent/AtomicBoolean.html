@@ -97,7 +97,7 @@
   
     <dt class="r2 last">Defined in:</dt>
     <dd class="r2 last">lib/concurrent/atomic/atomic_boolean.rb<span class="defines">,<br />
-  lib/concurrent/atomic/atomic_boolean.rb</span>
+  lib/concurrent/atomic/atomic_boolean.rb,<br /> lib/concurrent/atomic/atomic_boolean.rb</span>
 </dd>
   
 </dl>
@@ -108,6 +108,19 @@
     <p>A boolean value that can be updated atomically. Reads and writes to an atomic
 boolean and thread-safe and guaranteed to succeed. Reads and writes may block
 briefly but no explicit locking is required.</p>
+
+<pre class="code ruby"><code class="ruby">Testing with ruby 2.1.2
+Testing with Concurrent::MutexAtomicBoolean...
+  2.790000   0.000000   2.790000 (  2.791454)
+Testing with Concurrent::CAtomicBoolean...
+  0.740000   0.000000   0.740000 (  0.740206)
+
+Testing with jruby 1.9.3
+Testing with Concurrent::MutexAtomicBoolean...
+  5.240000   2.520000   7.760000 (  3.683000)
+Testing with Concurrent::JavaAtomicBoolean...
+  3.340000   0.010000   3.350000 (  0.855000)
+</code></pre>
 
 
   </div>
@@ -121,21 +134,6 @@ briefly but no explicit locking is required.</p>
       <li><a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/atomic/AtomicBoolean.html" target="_parent" title="java.util.concurrent.atomic.AtomicBoolean">java.util.concurrent.atomic.AtomicBoolean</a></li>
     
   </ul>
-<p class="tag_title">Since:</p>
-<ul class="since">
-  
-    <li>
-      
-      
-      
-      
-        
-        <div class='inline'><p>0.6.0</p>
-</div>
-      
-    </li>
-  
-</ul>
 
 </div>
 
@@ -157,9 +155,9 @@ briefly but no explicit locking is required.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:39 2014 by
+  Generated on Wed Jul 30 19:36:30 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

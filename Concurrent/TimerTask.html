@@ -538,29 +538,6 @@ the observer will receive a <code>Concurrent::TimeoutError</code> object as the 
 </li>
 
       
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#run%21-class_method" title="run! (class method)">+ (Object) <strong>run!</strong>(*args, &amp;block) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></span>
-  
-</li>
-
-      
     </ul>
   
     <h2>
@@ -620,29 +597,7 @@ the observer will receive a <code>Concurrent::TimeoutError</code> object as the 
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#cancel-instance_method" title="#cancel (instance method)">- (Object) <strong>cancel</strong>(*args) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
+    <span class="summary_desc"><div class='inline'><p>Does the task queue have a maximum size?.</p>
 </div></span>
   
 </li>
@@ -777,7 +732,8 @@ the observer will receive a <code>Concurrent::TimeoutError</code> object as the 
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Initialize the executor by creating and initializing all the internal synchronization objects.</p>
+</div></span>
   
 </li>
 
@@ -891,52 +847,6 @@ the observer will receive a <code>Concurrent::TimeoutError</code> object as the 
 </li>
 
       
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#run-instance_method" title="#run (instance method)">- (Object) <strong>run</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#run%21-instance_method" title="#run! (instance method)">- (Object) <strong>run!</strong>(*args) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></span>
-  
-</li>
-
-      
         <li class="public ">
   <span class="summary_signature">
     
@@ -955,6 +865,34 @@ the observer will receive a <code>Concurrent::TimeoutError</code> object as the 
 
   
     <span class="summary_desc"><div class='inline'><p>Is the executor running?.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialized%3F-instance_method" title="#serialized? (instance method)">- (Boolean) <strong>serialized?</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Executor.html#serialized%3F-instance_method" title="Concurrent::Executor#serialized? (method)">Executor</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Does this executor guarantee serialization of its operations?.</p>
 </div></span>
   
 </li>
@@ -1067,52 +1005,6 @@ the observer will receive a <code>Concurrent::TimeoutError</code> object as the 
 
   
     <span class="summary_desc"><div class='inline'><p>Is the executor shuttingdown?.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#stop-instance_method" title="#stop (instance method)">- (Object) <strong>stop</strong>(*args) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#terminate-instance_method" title="#terminate (instance method)">- (Object) <strong>terminate</strong>(*args) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
 </div></span>
   
 </li>
@@ -1417,6 +1309,9 @@ refer to the execution context of the block rather than the running
       <pre class="lines">
 
 
+183
+184
+185
 186
 187
 188
@@ -1427,13 +1322,10 @@ refer to the execution context of the block rather than the running
 193
 194
 195
-196
-197
-198
-199</pre>
+196</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 186</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 183</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -1505,15 +1397,15 @@ task is performed again.</p>
       <pre class="lines">
 
 
+246
+247
+248
 249
 250
-251
-252
-253
-254</pre>
+251</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 249</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 246</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execution_interval'>execution_interval</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -1688,15 +1580,15 @@ considered to have failed.</p>
       <pre class="lines">
 
 
+272
+273
+274
 275
 276
-277
-278
-279
-280</pre>
+277</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 275</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 272</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_timeout_interval'>timeout_interval</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -1925,58 +1817,15 @@ refer to the execution context of the block rather than the running
       <pre class="lines">
 
 
-242
-243
-244</pre>
+239
+240
+241</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 242</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 239</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='const'>TimerTask</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="run!-class_method">
-  
-    + (<tt>Object</tt>) <strong>run!</strong>(*args, &amp;block) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></div>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-311
-312
-313
-314</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 311</span>
-
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_run!'>run!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>[DEPRECATED] `run!` is deprecated, please use `execute` instead.</span><span class='tstring_end'>&quot;</span></span>
-  <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Runnable</span><span class='op'>::</span><span class='const'>Context</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='const'>TimerTask</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2050,6 +1899,14 @@ refer to the execution context of the block rather than the running
 </h3><div class="docstring">
   <div class="discussion">
     
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>false</code></p>
+</div>
+  </div>
+
+<p>Does the task queue have a maximum size?</p>
+
 
   </div>
 </div>
@@ -2065,48 +1922,15 @@ refer to the execution context of the block rather than the running
       
       
       
+        &mdash;
+        <div class='inline'><p>True if the task queue has a maximum size else false.</p>
+</div>
+      
     </li>
   
 </ul>
 
 </div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="cancel-instance_method">
-  
-    - (<tt>Object</tt>) <strong>cancel</strong>(*args) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></div>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-305</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 305</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_cancel'>cancel</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span> <span class='id identifier rubyid_deprecated'>deprecated</span><span class='lparen'>(</span><span class='symbol'>:cancel</span><span class='comma'>,</span> <span class='symbol'>:shutdown</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
 </div>
     
       <div class="method_details ">
@@ -2319,18 +2143,18 @@ refer to the execution context of the block rather than the running
       <pre class="lines">
 
 
+220
+221
+222
 223
 224
 225
 226
 227
-228
-229
-230
-231</pre>
+228</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 223</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 220</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -2360,7 +2184,18 @@ refer to the execution context of the block rather than the running
         <span class='object_link'><a href="RubyExecutor.html#init_executor-instance_method" title="Concurrent::RubyExecutor#init_executor (method)">RubyExecutor</a></span>
     </span>
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Initialize the executor by creating and initializing all the
+internal synchronization objects.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 </div>
     
       <div class="method_details ">
@@ -2530,103 +2365,6 @@ not running.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="run-instance_method">
-  
-    - (<tt>Object</tt>) <strong>run</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></div>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Concurrent::Runnable::LifecycleError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-317
-318
-319
-320
-321
-322</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 317</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Runnable</span><span class='op'>::</span><span class='const'>LifecycleError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>already running</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@running</span><span class='period'>.</span><span class='id identifier rubyid_true?'>true?</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_wait_for_termination'>wait_for_termination</span>
-  <span class='kw'>true</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="run!-instance_method">
-  
-    - (<tt>Object</tt>) <strong>run!</strong>(*args) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></div>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-308</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 308</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_run!'>run!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span> <span class='id identifier rubyid_deprecated'>deprecated</span><span class='lparen'>(</span><span class='symbol'>:run!</span><span class='comma'>,</span> <span class='symbol'>:execute</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="running?-instance_method">
   
     - (<tt>Boolean</tt>) <strong>running?</strong> 
@@ -2668,12 +2406,12 @@ not running.</p>
       <pre class="lines">
 
 
-204
-205
-206</pre>
+201
+202
+203</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 204</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 201</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_running?'>running?</span>
   <span class='ivar'>@running</span><span class='period'>.</span><span class='id identifier rubyid_true?'>true?</span>
@@ -2681,6 +2419,59 @@ not running.</p>
     </td>
   </tr>
 </table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="serialized?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>serialized?</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Executor.html#serialized%3F-instance_method" title="Concurrent::Executor#serialized? (method)">Executor</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Always returns <code>false</code></p>
+</div>
+  </div>
+
+<p>Does this executor guarantee serialization of its operations?</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>True if the executor guarantees that all operations
+will be post in the order they are received and no two operations may
+occur simultaneously. Else false.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       <div class="method_details ">
@@ -2915,80 +2706,6 @@ thread pool is not running.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="stop-instance_method">
-  
-    - (<tt>Object</tt>) <strong>stop</strong>(*args) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></div>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-302</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 302</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_stop'>stop</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span> <span class='id identifier rubyid_deprecated'>deprecated</span><span class='lparen'>(</span><span class='symbol'>:stop</span><span class='comma'>,</span> <span class='symbol'>:shutdown</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="terminate-instance_method">
-  
-    - (<tt>Object</tt>) <strong>terminate</strong>(*args) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Updated to use <code>Executor</code> instead of <code>Runnable</code></p>
-</div></div>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-299</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 299</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_terminate'>terminate</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span> <span class='id identifier rubyid_deprecated'>deprecated</span><span class='lparen'>(</span><span class='symbol'>:terminate</span><span class='comma'>,</span> <span class='symbol'>:kill</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="value-instance_method">
   
     - (<tt>Object</tt>) <strong>value</strong> 
@@ -3220,9 +2937,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:37 2014 by
+  Generated on Wed Jul 30 19:36:28 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>

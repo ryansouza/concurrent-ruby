@@ -317,14 +317,14 @@
       <pre class="lines">
 
 
-19
 20
 21
 22
-23</pre>
+23
+24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/channel/unbuffered_channel.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/channel/unbuffered_channel.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pop'>pop</span>
   <span class='id identifier rubyid_probe'>probe</span> <span class='op'>=</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>Probe</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -384,13 +384,15 @@
 14
 15
 16
-17</pre>
+17
+18</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/channel/unbuffered_channel.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='kw'>until</span> <span class='ivar'>@probe_set</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span><span class='period'>.</span><span class='id identifier rubyid_set_unless_assigned'>set_unless_assigned</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='kw'>self</span><span class='rparen'>)</span>
+  <span class='comment'># TODO set_unless_assigned define on IVar as #set_state? or #try_set_state
+</span>  <span class='kw'>until</span> <span class='ivar'>@probe_set</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span><span class='period'>.</span><span class='id identifier rubyid_set_unless_assigned'>set_unless_assigned</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='kw'>self</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -413,12 +415,12 @@
       <pre class="lines">
 
 
-29
 30
-31</pre>
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/channel/unbuffered_channel.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/channel/unbuffered_channel.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remove_probe'>remove_probe</span><span class='lparen'>(</span><span class='id identifier rubyid_probe'>probe</span><span class='rparen'>)</span>
   <span class='ivar'>@probe_set</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_probe'>probe</span><span class='rparen'>)</span>
@@ -443,12 +445,12 @@
       <pre class="lines">
 
 
-25
 26
-27</pre>
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/channel/unbuffered_channel.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/channel/unbuffered_channel.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='id identifier rubyid_probe'>probe</span><span class='rparen'>)</span>
   <span class='ivar'>@probe_set</span><span class='period'>.</span><span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_probe'>probe</span><span class='rparen'>)</span>
@@ -463,9 +465,9 @@
 </div>
 
     <div id="footer">
-  Generated on Sat Jun 14 13:05:40 2014 by
+  Generated on Wed Jul 30 19:36:31 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.0).
+  0.8.7.4 (ruby-2.1.2).
 </div>
 
 <script>
