@@ -280,17 +280,17 @@ guarantees serialized execution of tasks.</p>
       <pre class="lines">
 
 
-100
-101
-102
-103
-104</pre>
+113
+114
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 113</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
-  <span class='ivar'>@executor</span> <span class='op'>=</span> <span class='id identifier rubyid_executor'>executor</span>
+  <span class='ivar'>@executor</span>   <span class='op'>=</span> <span class='id identifier rubyid_executor'>executor</span>
   <span class='ivar'>@serializer</span> <span class='op'>=</span> <span class='const'>SerializedExecution</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -453,14 +453,14 @@ is not running</p>
       <pre class="lines">
 
 
-107
-108
-109
-110
-111</pre>
+120
+121
+122
+123
+124</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 107</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -530,7 +530,7 @@ occur simultaneously. Else false.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Jul 30 19:36:31 2014 by
+  Generated on Wed Aug 13 18:20:40 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.2).
 </div>

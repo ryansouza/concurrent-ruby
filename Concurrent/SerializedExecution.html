@@ -91,7 +91,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><span class='object_link'><a href="Logging.html" title="Concurrent::Logging (module)">Logging</a></span></dd>
+      <dd class="r2"><span class='object_link'><a href="Logging.html" title="Concurrent::Logging (module)">Logging</a></span>, <span class='object_link'><a href="Synchronization.html" title="Concurrent::Synchronization (module)">Synchronization</a></span></dd>
       
     
   
@@ -214,10 +214,35 @@
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#posts-instance_method" title="#posts (instance method)">- (Object) <strong>posts</strong>(posts) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>As <span class='object_link'><a href="#post-instance_method" title="Concurrent::SerializedExecution#post (method)">#post</a></span> but allows to submit multiple tasks at once, it&#39;s guaranteed that they will not be interleaved by other tasks.</p>
+</div></span>
+  
+</li>
+
+      
     </ul>
   
 
 
+  
+  
   
   
   <div id="constructor_details" class="method_details_list">
@@ -248,19 +273,21 @@
       <pre class="lines">
 
 
-17
-18
 19
 20
-21</pre>
+21
+22
+23
+24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
-  <span class='ivar'>@being_executed</span> <span class='op'>=</span> <span class='kw'>false</span>
-  <span class='ivar'>@stash</span>          <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  <span class='ivar'>@mutex</span>          <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+    <span class='ivar'>@being_executed</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='ivar'>@stash</span>          <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -480,48 +507,117 @@ is not running</p>
       <pre class="lines">
 
 
-35
-36
-37
 38
 39
 40
-41
-42
-43
-44
-45
-46
-47
+41</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 38</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_posts'>posts</span> <span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_task'>task</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+  <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="posts-instance_method">
+  
+    - (<tt>Object</tt>) <strong>posts</strong>(posts) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>As <span class='object_link'><a href="#post-instance_method" title="Concurrent::SerializedExecution#post (method)">#post</a></span> but allows to submit multiple tasks at once, it&#39;s guaranteed that they will not
+be interleaved by other tasks.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>posts</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Array(<span class='object_link'><a href="Executor.html" title="Concurrent::Executor (module)">Executor</a></span>, Array&lt;Object&gt;, Proc)&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>array of triplets where
+first is a <span class='object_link'><a href="Executor.html" title="Concurrent::Executor (module)">Executor</a></span>, second is array of args for task, third is a task (Proc)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
 48
 49
 50
 51
 52
 53
-54</pre>
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 48</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_posts'>posts</span><span class='lparen'>(</span><span class='id identifier rubyid_posts'>posts</span><span class='rparen'>)</span>
+  <span class='comment'># if can_overflow?
+</span>  <span class='comment'>#   raise ArgumentError, &#39;SerializedExecution does not support thread-pools which can overflow&#39;
+</span>  <span class='comment'># end
+</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_posts'>posts</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
 
-  <span class='id identifier rubyid_job'>job</span> <span class='op'>=</span> <span class='const'>Job</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_task'>task</span>
+  <span class='id identifier rubyid_jobs'>jobs</span> <span class='op'>=</span> <span class='id identifier rubyid_posts'>posts</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_task'>task</span><span class='op'>|</span> <span class='const'>Job</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_task'>task</span> <span class='rbrace'>}</span>
 
-  <span class='kw'>begin</span>
-    <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
-    <span class='id identifier rubyid_post'>post</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='ivar'>@being_executed</span>
-             <span class='ivar'>@stash</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_job'>job</span>
-             <span class='kw'>false</span>
-           <span class='kw'>else</span>
-             <span class='ivar'>@being_executed</span> <span class='op'>=</span> <span class='kw'>true</span>
-           <span class='kw'>end</span>
-  <span class='kw'>ensure</span>
-    <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+  <span class='id identifier rubyid_job_to_post'>job_to_post</span> <span class='op'>=</span> <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+    <span class='kw'>if</span> <span class='ivar'>@being_executed</span>
+      <span class='ivar'>@stash</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_jobs'>jobs</span><span class='rparen'>)</span>
+      <span class='kw'>nil</span>
+    <span class='kw'>else</span>
+      <span class='ivar'>@being_executed</span> <span class='op'>=</span> <span class='kw'>true</span>
+      <span class='ivar'>@stash</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_jobs'>jobs</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_jobs'>jobs</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+    <span class='kw'>end</span>
   <span class='kw'>end</span>
 
-  <span class='id identifier rubyid_call_job'>call_job</span> <span class='id identifier rubyid_job'>job</span> <span class='kw'>if</span> <span class='id identifier rubyid_post'>post</span>
+  <span class='id identifier rubyid_call_job'>call_job</span> <span class='id identifier rubyid_job_to_post'>job_to_post</span> <span class='kw'>if</span> <span class='id identifier rubyid_job_to_post'>job_to_post</span>
   <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -534,7 +630,7 @@ is not running</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Jul 30 19:36:31 2014 by
+  Generated on Wed Aug 13 18:20:40 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.2).
 </div>

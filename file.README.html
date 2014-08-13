@@ -63,7 +63,7 @@
 
     <div id="content"><div id='filecontents'><h1>Concurrent Ruby</h1>
 
-<p><a href="http://badge.fury.io/rb/concurrent-ruby"><img src="https://badge.fury.io/rb/concurrent-ruby.png" alt="Gem Version"></a> <a href="https://travis-ci.org/ruby-concurrency/concurrent-ruby"><img src="https://travis-ci.org/ruby-concurrency/concurrent-ruby.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/r/ruby-concurrency/concurrent-ruby"><img src="https://coveralls.io/repos/ruby-concurrency/concurrent-ruby/badge.png" alt="Coverage Status"></a> <a href="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby"><img src="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby.png" alt="Code Climate"></a> <a href="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby"><img src="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby.png" alt="Inline docs"></a> <a href="https://gemnasium.com/ruby-concurrency/concurrent-ruby"><img src="https://gemnasium.com/ruby-concurrency/concurrent-ruby.png" alt="Dependency Status"></a> <a href="https://gitter.im/ruby-concurrency/concurrent-ruby"><img src="https://badges.gitter.im/ruby-concurrency/concurrent-ruby.png" alt="Gitter chat"></a></p>
+<p><a href="http://badge.fury.io/rb/concurrent-ruby"><img src="https://badge.fury.io/rb/concurrent-ruby.png" alt="Gem Version"></a> <a href="https://travis-ci.org/ruby-concurrency/concurrent-ruby"><img src="https://travis-ci.org/ruby-concurrency/concurrent-ruby.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/r/ruby-concurrency/concurrent-ruby"><img src="https://coveralls.io/repos/ruby-concurrency/concurrent-ruby/badge.png" alt="Coverage Status"></a> <a href="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby"><img src="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby.png" alt="Code Climate"></a> <a href="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby"><img src="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby.png" alt="Inline docs"></a> <a href="https://gemnasium.com/ruby-concurrency/concurrent-ruby"><img src="https://gemnasium.com/ruby-concurrency/concurrent-ruby.png" alt="Dependency Status"></a> <a href="http://opensource.org/licenses/MIT"><img src="http://img.shields.io/license/MIT.png?color=green" alt="License"></a> <a href="https://gitter.im/ruby-concurrency/concurrent-ruby"><img src="https://badges.gitter.im/ruby-concurrency/concurrent-ruby.png" alt="Gitter chat"></a></p>
 
 <table>
   <tr>
@@ -99,20 +99,6 @@
   </tr>
 </table>
 
-<h2>Install</h2>
-
-<pre class="code shell"><code class="shell">gem install concurrent-ruby
-</code></pre>
-
-<p>or add the following line to Gemfile:</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent-ruby</span><span class='tstring_end'>&#39;</span></span>
-</code></pre>
-
-<p>and run <code>bundle install</code> from your shell.</p>
-
-<p><em>NOTE: There is an old gem from 2007 called &quot;concurrent&quot; that does not appear to be under active development. That isn&#39;t us. Please do not run* <code>gem install concurrent</code>*. It is not the droid you are looking for.</em></p>
-
 <h2>Features &amp; Documentation</h2>
 
 <p>Please see the <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki">Concurrent Ruby Wiki</a>
@@ -124,21 +110,27 @@ into several general groups:</p>
 
 <ul>
 <li>Asynchronous concurrency abstractions including
-<a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Async">Async</a>,
-<a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Agent">Agent</a>,
-<a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Future">Future</a>,
-<a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Promise">Promise</a>,
-<a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/ScheduledTask">ScheduledTask</a>,
-and <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/TimerTask">TimerTask</a> </li>
-<li>Thread-safe variables including <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/MVar-(M-Structure)">M-Structures</a>,
-<a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/IVar-(I-Structure)">I-Structures</a>,
-<a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/ThreadLocalVar">thread-local variables</a>,
-atomic counters, and <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/TVar-(STM)">software transactional memory</a></li>
-<li>Thread synchronization classes and algorithms including <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Dataflow">dataflow</a>, 
-timeout, condition, countdown latch, dependency counter, and event</li>
-<li>Java-inspired <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Thread%20Pools">thread pools</a></li>
-<li>New fast light-weighted <a href="http://ruby-concurrency.github.io/concurrent-ruby/frames.html#!Concurrent/Actress.html">Actor model</a> implementation. </li>
-<li>And many more...</li>
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Agent.html">Agent</a>,
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Async.html">Async</a>,
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Future.html">Future</a>,
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Promise.html">Promise</a>,
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ScheduledTask.html">ScheduledTask</a>,
+and <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/TimerTask.html">TimerTask</a> </li>
+<li>Fast, light-weight <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Actor.html">Actor model</a> implementation. </li>
+<li>Thread-safe variables including
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/IVar.html">I-Structures</a>,
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/MVar.html">M-Structures</a>,
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ThreadLocalVar.html">thread-local variables</a>,
+and <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/TVar-(STM)">software transactional memory</a></li>
+<li>Thread synchronization classes and algorithms including
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Condition.html">condition</a>,
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/CountDownLatch.html">countdown latch</a>,
+<a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Dataflow">dataflow</a>, 
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Event.html">event</a>,
+<a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Exchanger.html">exchanger</a>,
+and <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent.html#timeout-class_method">timeout</a></li>
+<li>Java-inspired <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/Thread%20Pools">executors</a> (thread pools and more)</li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/index.html">And many more</a>...</li>
 </ul>
 
 <h3>Semantic Versioning</h3>
@@ -153,8 +145,9 @@ It should be fully compatible with any interpreter that is compliant with Ruby 1
 
 <h3>Examples</h3>
 
-<p>Many more code examples can be found in the documentation for each class (linked above).
-This one simple example shows some of the power of this gem.</p>
+<p>Many more code examples can be found in the documentation for each class (linked above).</p>
+
+<p>Future and ScheduledTask:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent</span><span class='tstring_end'>&#39;</span></span>
 <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>thread</span><span class='tstring_end'>&#39;</span></span>   <span class='comment'># for Queue
@@ -175,24 +168,89 @@ This one simple example shows some of the power of this gem.</p>
 </span><span class='id identifier rubyid_price'>price</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 63.65
 </span><span class='id identifier rubyid_price'>price</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span> <span class='comment'>#=&gt; :fulfilled
 </span>
-<span class='comment'># Promise
-</span><span class='id identifier rubyid_prices'>prices</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Promise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='id identifier rubyid_puts'>puts</span> <span class='const'>Ticker</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_get_year_end_closing'>get_year_end_closing</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AAPL</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='int'>2013</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span>
-           <span class='id identifier rubyid_then'>then</span><span class='lbrace'>{</span> <span class='id identifier rubyid_puts'>puts</span> <span class='const'>Ticker</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_get_year_end_closing'>get_year_end_closing</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>MSFT</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='int'>2013</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span>
-           <span class='id identifier rubyid_then'>then</span><span class='lbrace'>{</span> <span class='id identifier rubyid_puts'>puts</span> <span class='const'>Ticker</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_get_year_end_closing'>get_year_end_closing</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>GOOG</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='int'>2013</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span>
-           <span class='id identifier rubyid_then'>then</span><span class='lbrace'>{</span> <span class='id identifier rubyid_puts'>puts</span> <span class='const'>Ticker</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_get_year_end_closing'>get_year_end_closing</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AMZN</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='int'>2013</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
-<span class='id identifier rubyid_prices'>prices</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span> <span class='comment'>#=&gt; :pending
-</span><span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span>     <span class='comment'># do other stuff
-</span><span class='comment'>#=&gt; 561.02
-</span><span class='comment'>#=&gt; 37.41
-</span><span class='comment'>#=&gt; 1120.71
-</span><span class='comment'>#=&gt; 398.79
-</span>
 <span class='comment'># ScheduledTask
 </span><span class='id identifier rubyid_task'>task</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ScheduledTask</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='const'>Ticker</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_get_year_end_closing'>get_year_end_closing</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>INTC</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='int'>2013</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
 <span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span> <span class='comment'>#=&gt; :pending
 </span><span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='int'>3</span><span class='rparen'>)</span>   <span class='comment'># do other stuff
 </span><span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 25.96
 </span></code></pre>
+
+<p>Actor:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Counter</span> <span class='op'>&lt;</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Actor</span><span class='op'>::</span><span class='const'>Context</span>
+  <span class='comment'># Include context of an actor which gives this class access to reference
+</span>  <span class='comment'># and other information about the actor
+</span>
+  <span class='comment'># use initialize as you wish
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial_value'>initial_value</span><span class='rparen'>)</span>
+    <span class='ivar'>@count</span> <span class='op'>=</span> <span class='id identifier rubyid_initial_value'>initial_value</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># override on_message to define actor&#39;s behaviour
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_on_message'>on_message</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='const'>Integer</span> <span class='op'>===</span> <span class='id identifier rubyid_message'>message</span>
+      <span class='ivar'>@count</span> <span class='op'>+=</span> <span class='id identifier rubyid_message'>message</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span> <span class='comment'>#
+</span>
+<span class='comment'># Create new actor naming the instance &#39;first&#39;.
+</span><span class='comment'># Return value is a reference to the actor, the actual actor is never returned.
+</span><span class='id identifier rubyid_counter'>counter</span> <span class='op'>=</span> <span class='const'>Counter</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='symbol'>:first</span><span class='comma'>,</span> <span class='int'>5</span><span class='rparen'>)</span>
+
+<span class='comment'># Tell a message and forget returning self.
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_tell'>tell</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_counter'>counter</span> <span class='op'>&lt;&lt;</span> <span class='int'>1</span>
+<span class='comment'># (First counter now contains 7.)
+</span>
+<span class='comment'># Send a messages asking for a result.
+</span><span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>
+<span class='id identifier rubyid_counter'>counter</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
+</code></pre>
+
+<h2>Installing and Building</h2>
+
+<p>This gem includes several platform-specific optimizations. To reduce the possibility of
+compilation errors, we provide pre-compiled gem packages for several platforms as well
+as a pure-Ruby build. Installing the gem should be no different than installing any other
+Rubygems-hosted gem.</p>
+
+<h3>Installing</h3>
+
+<pre class="code shell"><code class="shell">gem install concurrent-ruby
+</code></pre>
+
+<p>or add the following line to Gemfile:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent-ruby</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>and run <code>bundle install</code> from your shell.</p>
+
+<h3>Building</h3>
+
+<p>Because we provide pre-compiled gem builds, users should never need to build the gem manually.
+The build process for this gem is completely automated using open source tools. All of
+the automation components are available in the <a href="https://github.com/ruby-concurrency/rake-compiler-dev-box">ruby-concurrency/rake-compiler-dev-box</a>
+GitHub repository.</p>
+
+<p>This gem will compile native C code under MRI and native Java code under JRuby. It is
+also possible to build a pure-Ruby version. All builds have identical functionality.
+The only difference is performance. Additionally, pure-Ruby classes are always available,
+even when using the native optimizations. Please see the <a href="http://ruby-concurrency.github.io/concurrent-ruby/">documentation</a>
+for more details.</p>
+
+<p>To build and package the gem using MRI or JRuby, install the necessary build dependencies and run:</p>
+
+<pre class="code shell"><code class="shell">bundle exec rake compile
+bundle exec rake build
+</code></pre>
+
+<p>To build and package a pure-Ruby gem, on <em>any</em> platform and interpreter
+(including MRI and JRuby), run:</p>
+
+<pre class="code shell"><code class="shell">BUILD_PURE_RUBY=&#39;true&#39; bundle exec rake build
+</code></pre>
 
 <h2>Maintainers</h2>
 
@@ -202,24 +260,6 @@ This one simple example shows some of the power of this gem.</p>
 <li><a href="https://github.com/chrisseaton">Chris Seaton</a></li>
 <li><a href="https://github.com/lucasallan">Lucas Allan</a></li>
 <li><a href="https://github.com/pitr-ch">Petr Chalupa</a></li>
-</ul>
-
-<h3>Contributors</h3>
-
-<ul>
-<li><a href="https://github.com/billdueber">Bill Dueber</a></li>
-<li><a href="https://github.com/brixen">Brian Shirai</a></li>
-<li><a href="https://github.com/chip-miller">Chip Miller</a></li>
-<li><a href="https://github.com/gcapizzi">Giuseppe Capizzi</a></li>
-<li><a href="https://github.com/jamiehodge">Jamie Hodge</a></li>
-<li><a href="https://github.com/mastfish">Justin Lambert</a></li>
-<li><a href="https://github.com/larrylv">Larry Lv</a></li>
-<li><a href="https://github.com/maximchick">Maxim Chechel</a></li>
-<li><a href="https://github.com/brainopia">Ravil Bayramgalin</a></li>
-<li><a href="https://github.com/rrrene">René Föhring</a></li>
-<li><a href="https://github.com/ShaneWilton">Shane Wilton</a></li>
-<li><a href="https://github.com/sheaney">sheaney</a></li>
-<li><a href="https://github.com/zph">Zander Hill</a></li>
 </ul>
 
 <h3>Contributing</h3>
@@ -242,7 +282,7 @@ It is Copyright &copy; 2014 <a href="https://twitter.com/jerrydantonio">Jerry D&
 </div></div>
 
     <div id="footer">
-  Generated on Wed Jul 30 19:36:26 2014 by
+  Generated on Wed Aug 13 18:20:35 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.2).
 </div>

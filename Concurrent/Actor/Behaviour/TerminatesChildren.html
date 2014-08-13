@@ -329,7 +329,7 @@
       <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/terminates_children.rb', line 6</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_event'>on_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span> <span class='id identifier rubyid_ch'>ch</span> <span class='op'>&lt;&lt;</span> <span class='symbol'>:terminate!</span> <span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id identifier rubyid_event'>event</span> <span class='op'>==</span> <span class='symbol'>:terminated</span>
+  <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span> <span class='id identifier rubyid_ch'>ch</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span> <span class='symbol'>:terminate!</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:wait</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_event'>event</span> <span class='op'>==</span> <span class='symbol'>:terminated</span>
   <span class='kw'>super</span> <span class='id identifier rubyid_event'>event</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -342,7 +342,7 @@
 </div>
 
     <div id="footer">
-  Generated on Wed Jul 30 19:36:32 2014 by
+  Generated on Wed Aug 13 18:20:41 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.2).
 </div>
