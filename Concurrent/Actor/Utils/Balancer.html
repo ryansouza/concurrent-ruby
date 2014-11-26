@@ -106,7 +106,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>Distributes messages between subscribed actors. Each actor&#39;ll get only one message then
-it&#39;s unsubscribed. The actor needs to resubscribe when it&#39;s ready to receive next message.</p>
+it&#39;s unsubscribed. The actor needs to resubscribe when it&#39;s ready to receive next message.
+It will buffer the messages if there is no worker registered.</p>
 
 
   </div>
@@ -284,13 +285,13 @@ it&#39;s unsubscribed. The actor needs to resubscribe when it&#39;s ready to rec
       <pre class="lines">
 
 
-10
 11
 12
-13</pre>
+13
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/utils/balancer.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/utils/balancer.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@receivers</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -357,18 +358,18 @@ it&#39;s unsubscribed. The actor needs to resubscribe when it&#39;s ready to rec
       <pre class="lines">
 
 
-32
-33
 34
 35
-36</pre>
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/utils/balancer.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/utils/balancer.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_distribute'>distribute</span>
   <span class='kw'>while</span> <span class='op'>!</span><span class='ivar'>@receivers</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='ivar'>@buffer</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
-    <span class='ivar'>@receivers</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span> <span class='op'>&lt;&lt;</span> <span class='ivar'>@buffer</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
+    <span class='id identifier rubyid_redirect'>redirect</span> <span class='ivar'>@receivers</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span><span class='comma'>,</span> <span class='ivar'>@buffer</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -391,7 +392,6 @@ it&#39;s unsubscribed. The actor needs to resubscribe when it&#39;s ready to rec
       <pre class="lines">
 
 
-15
 16
 17
 18
@@ -406,10 +406,12 @@ it&#39;s unsubscribed. The actor needs to resubscribe when it&#39;s ready to rec
 27
 28
 29
-30</pre>
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/utils/balancer.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/utils/balancer.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_message'>on_message</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_message'>message</span>
@@ -423,8 +425,9 @@ it&#39;s unsubscribed. The actor needs to resubscribe when it&#39;s ready to rec
   <span class='kw'>when</span> <span class='symbol'>:subscribed?</span>
     <span class='ivar'>@receivers</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_envelope'>envelope</span><span class='period'>.</span><span class='id identifier rubyid_sender'>sender</span>
   <span class='kw'>else</span>
-    <span class='ivar'>@buffer</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_message'>message</span>
+    <span class='ivar'>@buffer</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_envelope'>envelope</span>
     <span class='id identifier rubyid_distribute'>distribute</span>
+    <span class='const'>Behaviour</span><span class='op'>::</span><span class='const'>MESSAGE_PROCESSED</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -437,9 +440,9 @@ it&#39;s unsubscribed. The actor needs to resubscribe when it&#39;s ready to rec
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:29 2014 by
+  Generated on Wed Nov 26 09:45:06 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

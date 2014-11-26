@@ -105,26 +105,31 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>An agent is a single atomic value that represents an identity. The current value
-of the agent can be requested at any time (<code>#deref</code>). Each agent has a work queue and operates on
-the global thread pool. Consumers can <code>#post</code> code blocks to the agent. The code block (function)
-will receive the current value of the agent as its sole parameter. The return value of the block
-will become the new value of the agent. Agents support two error handling modes: fail and continue.
-A good example of an agent is a shared incrementing counter, such as the score in a video game.</p>
+    <p><p><code>Agent</code>s are inspired by <a href="http://clojure.org/">Clojure&#39;s</a> <a href="http://clojure.org/agents">agent</a> function. An <code>Agent</code> is a single atomic value that represents an identity. The current value of the <code>Agent</code> can be requested at any time (<code>deref</code>). Each <code>Agent</code> has a work queue and operates on the global thread pool (see below). Consumers can <code>post</code> code blocks to the <code>Agent</code>. The code block (function) will receive the current value of the <code>Agent</code> as its sole parameter. The return value of the block will become the new value of the <code>Agent</code>. <code>Agent</code>s support two error handling modes: fail and continue. A good example of an <code>Agent</code> is a shared incrementing counter, such as the score in a video game. </p>
 
+<p>An <code>Agent</code> must be initialize with an initial value. This value is always accessible via the <code>value</code> (or <code>deref</code>) methods. Code blocks sent to the <code>Agent</code> will be processed in the order received. As each block is processed the current value is updated with the result from the block. This update is an atomic operation so a <code>deref</code> will never block and will always return the current value. </p>
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'><p>Basic usage</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_score'>score</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Agent</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>10</span><span class='rparen'>)</span>
+<p>When an <code>Agent</code> is created it may be given an optional <code>validate</code> block and zero or more <code>rescue</code> blocks. When a new value is calculated the value will be checked against the validator, if present. If the validator returns <code>true</code> the new value will be accepted. If it returns <code>false</code> it will be rejected. If a block raises an exception during execution the list of <code>rescue</code> blocks will be seacrhed in order until one matching the current exception is found. That <code>rescue</code> block will then be called an passed the exception object. If no matching <code>rescue</code> block is found, or none were configured, then the exception will be suppressed. </p>
+
+<p><code>Agent</code>s also implement Ruby&#39;s <a href="http://ruby-doc.org/stdlib-2.0/libdoc/observer/rdoc/Observable.html">Observable</a>. Code that observes an <code>Agent</code> will receive a callback with the new value any time the value is changed. </p>
+
+<h2>Copy Options</h2>
+
+<p>Object references in Ruby are mutable. This can lead to serious problems when the value of an <code>Agent</code> is a mutable reference. Which is always the case unless the value is a <code>Fixnum</code>, <code>Symbol</code>, or similar &quot;primative&quot; data type. Each <code>Agent</code> instance can be configured with a few options that can help protect the program from potentially dangerous operations. Each of these options can be optionally set when the <code>Agent</code> is created: </p>
+
+<ul>
+<li><code>:dup_on_deref</code> when true the <code>Agent</code> will call the <code>#dup</code> method on the <code>value</code> object every time the <code>#value</code> methid is called (default: false)</li>
+<li><code>:freeze_on_deref</code> when true the <code>Agent</code> will call the <code>#freeze</code> method on the <code>value</code> object every time the <code>#value</code> method is called (default: false)</li>
+<li><code>:copy_on_deref</code> when given a <code>Proc</code> object the <code>Proc</code> will be run every time   the <code>#value</code> method is called. The <code>Proc</code> will be given the current <code>value</code> as   its only parameter and the result returned by the block will be the return   value of the <code>#value</code> call. When <code>nil</code> this option will be ignored (default:   nil)</li>
+</ul>
+
+<h2>Examples</h2>
+
+<p>A simple example:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_score'>score</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Agent</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>10</span><span class='rparen'>)</span>
 <span class='id identifier rubyid_score'>score</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 10
 </span>
 <span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>+</span> <span class='int'>100</span> <span class='rbrace'>}</span>
@@ -137,10 +142,57 @@ A good example of an agent is a shared incrementing counter, such as the score i
 </span>
 <span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>-</span> <span class='int'>50</span> <span class='rbrace'>}</span>
 <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.1</span><span class='rparen'>)</span>
-<span class='id identifier rubyid_score'>score</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 170</span></code></pre>
-    
-  </div>
+<span class='id identifier rubyid_score'>score</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 170
+</span></code></pre>
 
+<p>With validation and error handling:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_score'>score</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Agent</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_validate'>validate</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>&lt;=</span> <span class='int'>1024</span> <span class='rbrace'>}</span><span class='period'>.</span>
+          <span class='id identifier rubyid_rescue'>rescue</span><span class='lparen'>(</span><span class='const'>NoMethodError</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_ex'>ex</span><span class='op'>|</span> <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Bam!</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='period'>.</span>
+          <span class='id identifier rubyid_rescue'>rescue</span><span class='lparen'>(</span><span class='const'>ArgumentError</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_ex'>ex</span><span class='op'>|</span> <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Pow!</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='period'>.</span>
+          <span class='id identifier rubyid_rescue'>rescue</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_ex'>ex</span><span class='op'>|</span> <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Boom!</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_score'>score</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 0
+</span>
+<span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>+</span> <span class='int'>2048</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.1</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_score'>score</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 0
+</span>
+<span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.1</span><span class='rparen'>)</span>
+<span class='comment'>#=&gt; puts &quot;Pow!&quot;
+</span><span class='id identifier rubyid_score'>score</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 0
+</span>
+<span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>+</span> <span class='int'>100</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.1</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_score'>score</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 100
+</span></code></pre>
+
+<p>With observation:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bingo'>bingo</span> <span class='op'>=</span> <span class='const'>Class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_time'>time</span><span class='comma'>,</span> <span class='id identifier rubyid_score'>score</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Bingo! [score: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_score'>score</span><span class='embexpr_end'>}</span><span class='tstring_content'>, time: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_time'>time</span><span class='embexpr_end'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_score'>score</span> <span class='op'>&gt;=</span> <span class='int'>100</span>
+  <span class='kw'>end</span>
+<span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+
+<span class='id identifier rubyid_score'>score</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Agent</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_score'>score</span><span class='period'>.</span><span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='id identifier rubyid_bingo'>bingo</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.1</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>+=</span> <span class='int'>30</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.1</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>+=</span> <span class='int'>30</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.1</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>+=</span> <span class='int'>30</span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_proc'>proc</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_current'>current</span><span class='op'>|</span> <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.1</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>+=</span> <span class='int'>30</span> <span class='rbrace'>}</span>
+
+<span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span>
+<span class='comment'>#=&gt; Bingo! [score: 120, time: 2013-07-22 21:26:08 -0400]
+</span></code></pre>
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
 
 </div>
 
@@ -915,20 +967,20 @@ returning the value returned from the proc</p>
       <pre class="lines">
 
 
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68</pre>
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial'>initial</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@value</span>                <span class='op'>=</span> <span class='id identifier rubyid_initial'>initial</span>
@@ -1007,12 +1059,12 @@ returning the value returned from the proc</p>
       <pre class="lines">
 
 
-41
-42
-43</pre>
+20
+21
+22</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_operation_executor'>operation_executor</span>
   <span class='ivar'>@operation_executor</span>
@@ -1049,12 +1101,12 @@ returning the value returned from the proc</p>
       <pre class="lines">
 
 
-41
-42
-43</pre>
+20
+21
+22</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_task_executor'>task_executor</span>
   <span class='ivar'>@task_executor</span>
@@ -1108,6 +1160,27 @@ returning the value returned from the proc</p>
       <pre class="lines">
 
 
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
 36
 37
 38
@@ -1280,31 +1353,10 @@ returning the value returned from the proc</p>
 205
 206
 207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229</pre>
+208</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 15</span>
 
 <span class='kw'>class</span> <span class='const'>Agent</span>
   <span class='id identifier rubyid_include'>include</span> <span class='const'>Dereferenceable</span>
@@ -1592,13 +1644,13 @@ the new value</p>
       <pre class="lines">
 
 
-164
-165
-166
-167</pre>
+143
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 143</span>
 
 <span class='kw'>def</span> <span class='op'>&lt;&lt;</span><span class='lparen'>(</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1716,14 +1768,14 @@ the new value</p>
       <pre class="lines">
 
 
-173
-174
-175
-176
-177</pre>
+152
+153
+154
+155
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 152</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_await'>await</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_done'>done</span> <span class='op'>=</span> <span class='const'>Event</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -2147,12 +2199,12 @@ the new value</p>
       <pre class="lines">
 
 
-134
-135
-136</pre>
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 113</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@task_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -2280,17 +2332,17 @@ the new value</p>
       <pre class="lines">
 
 
-148
-149
-150
-151
-152
-153
-154
-155</pre>
+127
+128
+129
+130
+131
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 148</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 127</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_block'>block</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_timeout'>timeout</span>
@@ -2412,17 +2464,17 @@ caught exceptions will be suppressed.</p>
       <pre class="lines">
 
 
-91
-92
-93
-94
-95
-96
-97
-98</pre>
+70
+71
+72
+73
+74
+75
+76
+77</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='kw'>rescue</span><span class='lparen'>(</span><span class='id identifier rubyid_clazz'>clazz</span> <span class='op'>=</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -2636,21 +2688,21 @@ the result is valid</p>
       <pre class="lines">
 
 
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121</pre>
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 
@@ -2693,10 +2745,13 @@ the result is valid</p>
 by the <code>#set_deref_options</code> method.</p>
 
 <p>When multiple deref options are set the order of operations is strictly defined.
-The order of deref operations is:
-* <code>:copy_on_deref</code>
-* <code>:dup_on_deref</code>
-* <code>:freeze_on_deref</code></p>
+The order of deref operations is:</p>
+
+<ul>
+<li><code>:copy_on_deref</code></li>
+<li><code>:dup_on_deref</code></li>
+<li><code>:freeze_on_deref</code></li>
+</ul>
 
 <p>Because of this ordering there is no need to <code>#freeze</code> an object created by a
 provided <code>:copy_on_deref</code> block. Simply set <code>:freeze_on_deref</code> to <code>true</code>.
@@ -2827,9 +2882,9 @@ or Haskell) as we are likely to get in Ruby.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:27 2014 by
+  Generated on Wed Nov 26 09:45:03 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

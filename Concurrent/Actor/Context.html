@@ -103,7 +103,8 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>Basic Context of an Actor.</p>
+    <p>Basic Context of an Actor. It does not support supervision and pausing.
+It simply terminates on error.</p>
 
 <ul>
 <li>  linking</li>
@@ -281,12 +282,12 @@ TODO usage</p>
       <pre class="lines">
 
 
-134
 135
-136</pre>
+136
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_behaviour_definition'>behaviour_definition</span>
   <span class='const'>Behaviour</span><span class='period'>.</span><span class='id identifier rubyid_basic_behaviour_definition'>basic_behaviour_definition</span>
@@ -301,9 +302,9 @@ TODO usage</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:28 2014 by
+  Generated on Wed Nov 26 09:45:05 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

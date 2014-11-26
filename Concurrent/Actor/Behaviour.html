@@ -80,7 +80,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">lib/concurrent/actor/behaviour.rb<span class="defines">,<br />
-  lib/concurrent/actor/behaviour/awaits.rb,<br /> lib/concurrent/actor/behaviour/buffer.rb,<br /> lib/concurrent/actor/behaviour/linking.rb,<br /> lib/concurrent/actor/behaviour/pausing.rb,<br /> lib/concurrent/actor/behaviour/abstract.rb,<br /> lib/concurrent/actor/behaviour/supervised.rb,<br /> lib/concurrent/actor/behaviour/supervising.rb,<br /> lib/concurrent/actor/behaviour/termination.rb,<br /> lib/concurrent/actor/behaviour/sets_results.rb,<br /> lib/concurrent/actor/behaviour/removes_child.rb,<br /> lib/concurrent/actor/behaviour/executes_context.rb,<br /> lib/concurrent/actor/behaviour/terminates_children.rb,<br /> lib/concurrent/actor/behaviour/errors_on_unknown_message.rb</span>
+  lib/concurrent/actor/behaviour/buffer.rb,<br /> lib/concurrent/actor/behaviour/awaits.rb,<br /> lib/concurrent/actor/behaviour/pausing.rb,<br /> lib/concurrent/actor/behaviour/linking.rb,<br /> lib/concurrent/actor/behaviour/abstract.rb,<br /> lib/concurrent/actor/behaviour/supervised.rb,<br /> lib/concurrent/actor/behaviour/supervising.rb,<br /> lib/concurrent/actor/behaviour/termination.rb,<br /> lib/concurrent/actor/behaviour/sets_results.rb,<br /> lib/concurrent/actor/behaviour/removes_child.rb,<br /> lib/concurrent/actor/behaviour/executes_context.rb,<br /> lib/concurrent/actor/behaviour/terminates_children.rb,<br /> lib/concurrent/actor/behaviour/errors_on_unknown_message.rb</span>
 </dd>
   
 </dl>
@@ -96,8 +96,9 @@ behaviours react based on their responsibility. listing few as an example:</p>
 <li><p><span class='object_link'><a href="Behaviour/Linking.html" title="Concurrent::Actor::Behaviour::Linking (class)">Linking</a></span>:</p>
 
 <blockquote>
-<p><p>Links the actor to other actors and sends events to them,
-like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
+<p><p>Links the actor to other actors and sends actor&#39;s events to them,
+like: <code>:terminated</code>, <code>:paused</code>, errors, etc
+TODO example</p>
 </p>
 </blockquote></li>
 <li><p><span class='object_link'><a href="Behaviour/Awaits.html" title="Concurrent::Actor::Behaviour::Awaits (class)">Awaits</a></span>:</p>
@@ -457,9 +458,9 @@ If needed new behaviours can be added, or old one removed to get required behavi
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:26 2014 by
+  Generated on Wed Nov 26 09:45:02 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

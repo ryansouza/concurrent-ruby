@@ -86,42 +86,14 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>This module depends on several internal synchronization objects that
-must be initialized prior to calling any of the async/await/executor methods.
-The best practice is to call <code>init_mutex</code> from within the constructor
-of the including class. A less ideal but acceptable practice is for the
-thread creating the asynchronous object to explicitly call the <code>init_mutex</code>
-method prior to calling any of the async/await/executor methods. If
-<code>init_mutex</code> is <em>not</em> called explicitly the async/await/executor methods
-will raize a <code>Concurrent::InitializationError</code>. This is the only way 
-thread-safe initialization can be guaranteed.</p>
-</div>
-  </div>
-
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Thread safe guarantees can only be made when asynchronous method calls
-are not mixed with synchronous method calls. Use only synchronous calls
-when the object is used exclusively on a single thread. Use only
-<code>async</code> and <code>await</code> when the object is shared between threads. Once you
-call a method using <code>async</code>, you should no longer call any methods
-directly on the object. Use <code>async</code> and <code>await</code> exclusively from then on.
-With careful programming it is possible to switch back and forth but it&#39;s
-also very easy to create race conditions and break your application.
-Basically, it&#39;s &quot;async all the way down.&quot;</p>
-</div>
-  </div>
-
-<p>A mixin module that provides simple asynchronous behavior to any standard
+    <p><p>A mixin module that provides simple asynchronous behavior to any standard
 class/object or object. </p>
 
-<p>Scenario:
-    As a stateful, plain old Ruby class/object
-    I want safe, asynchronous behavior
-    So my long-running methods don&#39;t block the main thread</p>
+<pre class="code cucumber"><code class="cucumber">Feature:
+  As a stateful, plain old Ruby class/object
+  I want safe, asynchronous behavior
+  So my long-running methods don&#39;t block the main thread
+</code></pre>
 
 <p>Stateful, mutable objects must be managed carefully when used asynchronously.
 But Ruby is an object-oriented language so designing with objects and classes
@@ -141,19 +113,68 @@ the result of the method call. Calling a method with <code>async</code> will ret
 
 <p>Very loosely based on the <code>async</code> and <code>await</code> keywords in C#.</p>
 
+<h4>An Important Note About Initialization</h4>
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'><p>Defining an asynchronous class</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='kw'>class</span> <span class='const'>Echo</span>
+<blockquote>
+<p>This module depends on several internal synchronization objects that
+must be initialized prior to calling any of the async/await/executor methods.
+The best practice is to call <code>init_mutex</code> from within the constructor
+of the including class. A less ideal but acceptable practice is for the
+thread creating the asynchronous object to explicitly call the <code>init_mutex</code>
+method prior to calling any of the async/await/executor methods. If
+<code>init_mutex</code> is <em>not</em> called explicitly the async/await/executor methods
+will raise a <code>Concurrent::InitializationError</code>. This is the only way 
+thread-safe initialization can be guaranteed.</p>
+</blockquote>
+
+<h4>An Important Note About Thread Safe Guarantees</h4>
+
+<blockquote>
+<p>Thread safe guarantees can only be made when asynchronous method calls
+are not mixed with synchronous method calls. Use only synchronous calls
+when the object is used exclusively on a single thread. Use only
+<code>async</code> and <code>await</code> when the object is shared between threads. Once you
+call a method using <code>async</code>, you should no longer call any methods
+directly on the object. Use <code>async</code> and <code>await</code> exclusively from then on.
+With careful programming it is possible to switch back and forth but it&#39;s
+also very easy to create race conditions and break your application.
+Basically, it&#39;s &quot;async all the way down.&quot;</p>
+</blockquote>
+
+<h3>Examples</h3>
+
+<h4>Defining an asynchronous class</h4>
+
+<pre class="code cucumber"><code class="cucumber">Scenario: Defining an asynchronous class
+  Given a class definition
+  When I include the Concurrent::Async module
+  Then an `async` method is defined for all objects of the class
+  And an `await` method is defined for all objects of the class
+
+Scenario: Calling the `async` method
+  Given a class which includes Concurrent::Async module
+  When I call a normal method through the `async` delegate method
+  Then the method returns a Concurrent::Future object
+  And the method is executed on a background thread using the global thread pool
+  And the current thread does not block
+  And thread safety is provided with respect to other `async` and `await` calls
+  And the returned future can be interrogated for the status of the method call
+  And the returned future will eventually contain the `value` of the method call
+  Or the returned future will eventually contain the `reason` the method call failed
+
+Scenario: Calling the `await` method
+  Given a class which includes Concurrent::Async module
+  When I call a normal method through the `await` delegate method
+  Then the method returns a Concurrent::IVar object
+  And the method is executed on the current thread
+  And thread safety is provided with respect to other `async` and `await` calls
+  And the returned ivar will be in the :fulfilled state
+  Or the returned ivar will be in the :rejected state
+  And the returned ivar will immediately contain the `value` of the method call
+  Or the returned ivar will immediately contain the `reason` the method call failed
+</code></pre>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Echo</span>
   <span class='id identifier rubyid_include'>include</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Async</span>
 
   <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
@@ -171,13 +192,22 @@ the result of the method call. Calling a method with <code>async</code> will ret
 <span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># synchronous, not thread-safe
 </span>
 <span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_async'>async</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>one</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># asynchronous, non-blocking, thread-safe
-</span><span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_await'>await</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>two</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># synchronous, blocking, thread-safe</span></code></pre>
-    
-      
-        <p class="example_title"><div class='inline'><p>Monkey-patching an existing object</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_numbers'>numbers</span> <span class='op'>=</span> <span class='int'>1_000_000</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lbrace'>{</span> <span class='id identifier rubyid_rand'>rand</span> <span class='rbrace'>}</span>
+</span><span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_await'>await</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>two</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># synchronous, blocking, thread-safe
+</span></code></pre>
+
+<h4>Monkey-patching an existing object</h4>
+
+<pre class="code cucumber"><code class="cucumber">Scenario: Monkey-patching an existing object
+  Given an object of a class that does not include the Concurrent::Async module
+  When I extend the object with the Concurrent::Async module
+  Then an `async` method is monkey-patched onto the object
+  And an `await` method is monkey-patched onto the object
+  And the object behaved as though Concurrent::Async were included in the class
+  And the `async` and `await` methods perform as expected
+  And no other objects of that class are affected
+</code></pre>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_numbers'>numbers</span> <span class='op'>=</span> <span class='int'>1_000_000</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lbrace'>{</span> <span class='id identifier rubyid_rand'>rand</span> <span class='rbrace'>}</span>
 <span class='id identifier rubyid_numbers'>numbers</span><span class='period'>.</span><span class='id identifier rubyid_extend'>extend</span><span class='lparen'>(</span><span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Async</span><span class='rparen'>)</span>
 <span class='id identifier rubyid_numbers'>numbers</span><span class='period'>.</span><span class='id identifier rubyid_init_mutex'>init_mutex</span> <span class='comment'># initialize the internal synchronization objects
 </span>
@@ -187,10 +217,15 @@ the result of the method call. Calling a method with <code>async</code> will ret
 <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span>
 
 <span class='id identifier rubyid_future'>future</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span> <span class='comment'>#=&gt; :fulfilled
-</span><span class='id identifier rubyid_future'>future</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 0.999999138918843</span></code></pre>
-    
-  </div>
+</span><span class='id identifier rubyid_future'>future</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 0.999999138918843
+</span></code></pre>
+</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
 
   <p class="tag_title">See Also:</p>
   <ul class="see">
@@ -508,19 +543,19 @@ set of arguments matches the required arity.</p>
       <pre class="lines">
 
 
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124</pre>
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_validate_argc'>validate_argc</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='comma'>,</span> <span class='id identifier rubyid_method'>method</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_argc'>argc</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span>
@@ -678,13 +713,13 @@ the documentation for the <code>validate_argc</code> method.</p>
       <pre class="lines">
 
 
-211
-212
-213
-214</pre>
+133
+134
+135
+136</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 211</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_async'>async</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async_initialized__</span>
@@ -830,13 +865,13 @@ the documentation for the <code>validate_argc</code> method.</p>
       <pre class="lines">
 
 
-245
-246
-247
-248</pre>
+167
+168
+169
+170</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 245</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 167</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_await'>await</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async_initialized__</span>
@@ -917,14 +952,14 @@ the documentation for the <code>validate_argc</code> method.</p>
       <pre class="lines">
 
 
-255
-256
-257
-258
-259</pre>
+177
+178
+179
+180
+181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 255</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 177</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_executor='>executor=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was never called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@__async_initialized__</span>
@@ -1007,19 +1042,19 @@ initialization can be guaranteed.</p>
       <pre class="lines">
 
 
-273
-274
-275
-276
-277
-278
-279
-280
-281
-282</pre>
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 273</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 195</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_init_mutex'>init_mutex</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>InitializationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>#init_mutex was already called</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@__async_initialized__</span>
@@ -1041,9 +1076,9 @@ initialization can be guaranteed.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:26 2014 by
+  Generated on Wed Nov 26 09:45:02 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

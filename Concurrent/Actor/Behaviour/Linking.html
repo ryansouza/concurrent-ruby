@@ -103,8 +103,9 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>Links the actor to other actors and sends events to them,
-like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
+    <p>Links the actor to other actors and sends actor&#39;s events to them,
+like: <code>:terminated</code>, <code>:paused</code>, errors, etc
+TODO example</p>
 
 
   </div>
@@ -350,13 +351,13 @@ like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
       <pre class="lines">
 
 
-8
 9
 10
-11</pre>
+11
+12</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_core'>core</span><span class='comma'>,</span> <span class='id identifier rubyid_subsequent'>subsequent</span><span class='rparen'>)</span>
   <span class='kw'>super</span> <span class='id identifier rubyid_core'>core</span><span class='comma'>,</span> <span class='id identifier rubyid_subsequent'>subsequent</span>
@@ -452,13 +453,13 @@ like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
       <pre class="lines">
 
 
-24
-25
-26
-27</pre>
+27
+28
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_link'>link</span><span class='lparen'>(</span><span class='id identifier rubyid_ref'>ref</span><span class='rparen'>)</span>
   <span class='ivar'>@linked</span><span class='period'>.</span><span class='id identifier rubyid_add'>add</span><span class='lparen'>(</span><span class='id identifier rubyid_ref'>ref</span><span class='rparen'>)</span>
@@ -484,7 +485,6 @@ like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
       <pre class="lines">
 
 
-13
 14
 15
 16
@@ -493,10 +493,13 @@ like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
 19
 20
 21
-22</pre>
+22
+23
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_envelope'>on_envelope</span><span class='lparen'>(</span><span class='id identifier rubyid_envelope'>envelope</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_envelope'>envelope</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span>
@@ -504,6 +507,8 @@ like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
     <span class='id identifier rubyid_link'>link</span> <span class='id identifier rubyid_envelope'>envelope</span><span class='period'>.</span><span class='id identifier rubyid_sender'>sender</span>
   <span class='kw'>when</span> <span class='symbol'>:unlink</span>
     <span class='id identifier rubyid_unlink'>unlink</span> <span class='id identifier rubyid_envelope'>envelope</span><span class='period'>.</span><span class='id identifier rubyid_sender'>sender</span>
+  <span class='kw'>when</span> <span class='symbol'>:linked?</span>
+    <span class='ivar'>@linked</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_envelope'>envelope</span><span class='period'>.</span><span class='id identifier rubyid_sender'>sender</span>
   <span class='kw'>else</span>
     <span class='id identifier rubyid_pass'>pass</span> <span class='id identifier rubyid_envelope'>envelope</span>
   <span class='kw'>end</span>
@@ -528,14 +533,14 @@ like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
       <pre class="lines">
 
 
-34
-35
-36
 37
-38</pre>
+38
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_event'>on_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
   <span class='ivar'>@linked</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span> <span class='id identifier rubyid_a'>a</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_event'>event</span> <span class='rbrace'>}</span>
@@ -562,13 +567,13 @@ like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
       <pre class="lines">
 
 
-29
-30
-31
-32</pre>
+32
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/linking.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unlink'>unlink</span><span class='lparen'>(</span><span class='id identifier rubyid_ref'>ref</span><span class='rparen'>)</span>
   <span class='ivar'>@linked</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_ref'>ref</span><span class='rparen'>)</span>
@@ -584,9 +589,9 @@ like: <code>:terminated</code>, <code>:paused</code>, errors, etc</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:30 2014 by
+  Generated on Wed Nov 26 09:45:06 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

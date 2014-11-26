@@ -161,6 +161,169 @@ rejected in accordance with the configured <code>overflow_policy</code>.</li>
 <li><code>:caller_runs</code>: Execute the task on the calling thread.</li>
 </ul>
 
+<p><h1>Thread Pools</h1>
+
+<p>A Thread Pool is an abstraction that you can give a unit of work to, and the work will be executed by one of possibly several threads in the pool. One motivation for using thread pools is the overhead of creating and destroying threads. Creating a pool of reusable worker threads then repeatedly re-using threads from the pool can have huge performace benefits for a long-running application like a service.</p>
+
+<p><code>concurrent-ruby</code> also offers some higher level abstractions than thread pools. For many problems, you will be better served by using one of these -- if you are thinking of using a thread pool, we especially recommend you look at and understand <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Future.html">Future</a>s before deciding to use thread pools directly instead.  Futures are implemented using thread pools, but offer a higher level abstraction.</p>
+
+<p>But there are some problems for which directly using a thread pool is an appropriate solution. Or, you may wish to make your own thread pool to run Futures on, to be separate or have different characteristics than the global thread pool that Futures run on by default.</p>
+
+<p>Thread pools are considered &#39;executors&#39; -- an object you can give a unit of work to, to have it exeucted.  In fact, thread pools are the main kind of executor you will see, others are mainly for testing or odd edge cases. In some documentation or source code you&#39;ll see reference to an &#39;executor&#39; -- this is commonly a thread pool, or else something similar that executes units of work (usually supplied as ruby blocks).</p>
+
+<h2>FixedThreadPool</h2>
+
+<p>A <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/FixedThreadPool.html">FixedThreadPool</a> contains a fixed number of threads. When you give a unit if work to it, an available thread will be used to execute.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>FixedThreadPool</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>5</span><span class='rparen'>)</span> <span class='comment'># 5 threads
+</span><span class='id identifier rubyid_pool'>pool</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='kw'>do</span>
+   <span class='comment'># some parallel work
+</span><span class='kw'>end</span>
+<span class='comment'># As with all thread pools, execution resumes immediately here in the caller thread,
+</span><span class='comment'># while work is concurrently being done in the thread pool, at some possibly future point.
+</span></code></pre>
+
+<p>What happens if you post new work when all (eg) 5 threads are currently busy? It will be added to a queue, and executed when a thread becomes available.  In a <code>FixedThreadPool</code>, if you post work to the pool much faster than the work can be completed, the queue may grow without bounds, as the work piles up in the holding queue, using up memory without bounds.  To limit the queue and apply some form of &#39;back pressure&#39; instead, you can use the more configurable <code>ThreadPoolExecutor</code> (See below).</p>
+
+<p>If you&#39;d like to base the number of threads in the pool on the number of processors available, your code can consult <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ProcessorCounter.html#processor_count-instance_method">Concurrent.processor_count</a>.</p>
+
+<p>The <code>FixedThreadPool</code> is based on the semantics used in Java for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool(int)">java.util.concurrent.Executors.newFixedThreadPool(int nThreads)</a></p>
+
+<h2>CachedThreadPool</h2>
+
+<p>A <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/CachedThreadPool.html">CachedThreadPool</a> will create as many threads as neccesary for work posted to it. If you post work to a <code>CachedThreadPool</code> when all it&#39;s existing threads are busy, it will create a new thread to execute that work, and then keep that thread cached for future work. Cached threads are reclaimed (destroyed) after they are idle for a while.</p>
+
+<p>CachedThreadPools typically improve the performance of programs that execute many short-lived asynchronous tasks.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>CachedThreadPool</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_pool'>pool</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='kw'>do</span>
+  <span class='comment'># some parallel work
+</span><span class='kw'>end</span>
+</code></pre>
+
+<p>The behavior of <code>CachedThreadPool</code> is based on Java&#39;s <a href="https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool()">java.util.concurrent.Executors.newCachedThreadPool()</a></p>
+
+<p>If you&#39;d like to configure a maximum number of threads, you can use the more general configurable <code>ThreadPoolExecutor</code>.</p>
+
+<h2>ThreadPoolExecutor</h2>
+
+<p>A <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ThreadPoolExecutor.html">ThreadPoolExecutor</a> is a general-purpose thread pool that can be configured to have various behaviors.</p>
+
+<p>The <code>CachedThreadPool</code> and <code>FixedThreadPool</code> are simply <code>ThreadPoolExecutor</code>s with certain configuration pre-determined. For instance, to create a <code>ThreadPoolExecutor</code> that works just like a <code>FixedThreadPool.new 5</code>, you could:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+   <span class='label'>min_threads:</span> <span class='int'>5</span><span class='comma'>,</span>
+   <span class='label'>max_threads:</span> <span class='int'>5</span><span class='comma'>,</span>
+   <span class='label'>max_queue:</span> <span class='int'>0</span> <span class='comment'># unbounded work queue
+</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>If you want to provide a maximum queue size, you may also consider the <code>overflow_policy</code> -- what will happen if work is posted to a pool when the queue of waiting work has reached the maximum size? Available policies:</p>
+
+<ul>
+<li>abort: Raise a <code>Concurrent::RejectedExecutionError</code> exception and discard the task. (default policy)</li>
+<li>discard: Silently discard the task and return nil as the task result.</li>
+<li>caller_runs: The work will be executed in the thread of the caller, instead of being given to another thread in the pool</li>
+</ul>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+   <span class='label'>min_threads:</span> <span class='int'>5</span><span class='comma'>,</span>
+   <span class='label'>max_threads:</span> <span class='int'>5</span><span class='comma'>,</span>
+   <span class='label'>max_queue:</span> <span class='int'>100</span><span class='comma'>,</span>
+   <span class='label'>overflow_policy:</span> <span class='symbol'>:caller_runs</span>
+<span class='rparen'>)</span>
+</code></pre>
+
+<p>Similarly, you can create something similar to a <code>CachedThreadPool</code>, but with a maximum number of threads. With an unbounded queue:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+   <span class='label'>min_threads:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='comment'># create 3 threads at startup
+</span>   <span class='label'>max_threads:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='comment'># create at most 10 threads
+</span>   <span class='label'>max_queue:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='comment'># unbounded queue of work waiting for an available thread
+</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>Or, with a variable number of threads like a CachedThreadPool, but with a bounded queue and an overflow_policy:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+   <span class='label'>min_threads:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='comment'># create 3 threads at startup
+</span>   <span class='label'>max_threads:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='comment'># create at most 10 threads
+</span>   <span class='label'>max_queue:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='comment'># at most 100 jobs waiting in the queue,
+</span>   <span class='label'>overflow_policy:</span> <span class='symbol'>:abort</span>
+<span class='rparen'>)</span>
+</code></pre>
+
+<p>ThreadPoolExecutors with <code>min_threads</code> and <code>max_threads</code> set to different values will ordinarily reclaim idle threads.  You can supply an <code>idletime</code> argument, number of seconds that a thread may be idle before being reclaimed. The default is 60 seconds.</p>
+
+<p><code>concurrent-ruby</code> thread pools are based on designs from <code>java.util.concurrent</code> --  a well-designed, stable, scalable, and battle-tested concurrency library. The <code>ThreadPoolExecutor</code> is based on Java <a href="https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ThreadPoolExecutor.html">java.util.concurrent.ThreadPoolExecutor</a>, and is in fact implemented with a Java ThreadPoolExecutor when running under JRuby. For more information on the design and concepts, you may find the Java documentation helpful:</p>
+
+<ul>
+<li><a href="http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html">http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html</a></li>
+<li><a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html">http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html</a></li>
+<li><a href="http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html">http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html</a></li>
+</ul>
+
+<h2>Thread Pool Status and Shutdown</h2>
+
+<p>A running thread pool can be shutdown in an orderly or disruptive manner. Once a thread pool has been shutdown it cannot be started again.</p>
+
+<p>The <code>shutdown</code> method can be used to initiate an orderly shutdown of the thread pool. All new post calls will reject the given block and immediately return false. Threads in the pool will continue to process all in-progress work and will process all tasks still in the queue.</p>
+
+<p>The <code>kill</code> method can be used to immediately shutdown the pool. All new post calls will reject the given block and immediately return false. Ruby&#39;s Thread.kill will be called on all threads in the pool, aborting all in-progress work. Tasks in the queue will be discarded.</p>
+
+<p>The method <code>wait_for_termination</code> can be used to block and wait for pool shutdown to complete. This is useful when shutting down an application and ensuring the app doesn&#39;t exit before pool processing is complete. The method wait_for_termination will block for a maximum of the given number of seconds then return true if shutdown completed successfully or false. When the timeout value is nil the call will block indefinitely. Calling wait_for_termination on a stopped thread pool will immediately return true.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># tell the pool to shutdown in an orderly fashion, allowing in progress work to complete
+</span><span class='id identifier rubyid_pool'>pool</span><span class='period'>.</span><span class='id identifier rubyid_shutdown'>shutdown</span>
+<span class='comment'># now wait for all work to complete, wait as long as it takes
+</span><span class='id identifier rubyid_pool'>pool</span><span class='period'>.</span><span class='id identifier rubyid_wait_for_termination'>wait_for_termination</span>
+</code></pre>
+
+<p>You can check for current pool status:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span><span class='period'>.</span><span class='id identifier rubyid_running?'>running?</span>
+<span class='id identifier rubyid_pool'>pool</span><span class='period'>.</span><span class='id identifier rubyid_shuttingdown?'>shuttingdown?</span> <span class='comment'># in process of shutting down, can&#39;t take any more work
+</span><span class='id identifier rubyid_pool'>pool</span><span class='period'>.</span><span class='id identifier rubyid_shutdown?'>shutdown?</span> <span class='comment'># it&#39;s done
+</span></code></pre>
+
+<p>The <code>shutdown?</code> method will return true for a stopped pool, regardless of whether the pool was stopped with <code>shutdown</code> or <code>kill</code>.</p>
+
+<h2>Other Executors</h2>
+
+<p>There are several other thread pools and executors in the <code>concurrent-ruby</code> library. See the API documentation for more information:</p>
+
+<ul>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/CachedThreadPool.html">CachedThreadPool</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/FixedThreadPool.html">FixedThreadPool</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ImmediateExecutor.html">ImmediateExecutor</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/PerThreadExecutor.html">PerThreadExecutor</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/SafeTaskExecutor.html">SafeTaskExecutor</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/SerializedExecution.html">SerializedExecution</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/SerializedExecutionDelegator.html">SerializedExecutionDelegator</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/SingleThreadExecutor.html">SingleThreadExecutor</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ThreadPoolExecutor.html">ThreadPoolExecutor</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/TimerSet.html">TimerSet</a></li>
+</ul>
+
+<h2>Global Thread Pools</h2>
+
+<p>Concurrent Ruby provides several global thread pools. Higher-level abstractions use global thread pools, by default, for running asynchronous operations without creating new threads more often than necessary. These executors are lazy-loaded so they do not create overhead when not needed. The global executors may also be accessed directly if desired. For more information regarding the global thread pools and their configuration, refer to the <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Configuration.html">API documentation</a>.</p>
+
+<p>When using a higher-level abstraction, which ordinarily uses a global thread pool, you may wish to instead supply your own thread pool, for separation of work, or to control the thread pool behavior with configuration.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+  <span class='symbol'>:min_threads</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='int'>2</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='comma'>,</span>
+  <span class='symbol'>:max_threads</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='int'>2</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='comma'>,</span>
+  <span class='symbol'>:max_queue</span>   <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='int'>2</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span> <span class='op'>*</span> <span class='int'>5</span><span class='comma'>,</span>
+  <span class='symbol'>:overflow_policy</span> <span class='op'>=&gt;</span> <span class='symbol'>:caller_runs</span>
+<span class='rparen'>)</span>
+
+<span class='id identifier rubyid_future'>future</span> <span class='op'>=</span> <span class='const'>Future</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:executor</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_pool'>pool</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span> <span class='kw'>do</span>
+   <span class='comment'>#work
+</span><span class='kw'>end</span>
+</code></pre>
+</p>
+
 
   </div>
 </div>
@@ -1290,10 +1453,10 @@ in <code>OVERFLOW_POLICIES</code></p>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_thread_pool_executor.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='ivar'>@min_length</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:min_threads</span><span class='comma'>,</span> <span class='const'>DEFAULT_MIN_POOL_SIZE</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
-  <span class='ivar'>@max_length</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:max_threads</span><span class='comma'>,</span> <span class='const'>DEFAULT_MAX_POOL_SIZE</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
-  <span class='ivar'>@idletime</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:idletime</span><span class='comma'>,</span> <span class='const'>DEFAULT_THREAD_IDLETIMEOUT</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
-  <span class='ivar'>@max_queue</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:max_queue</span><span class='comma'>,</span> <span class='const'>DEFAULT_MAX_QUEUE_SIZE</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='ivar'>@min_length</span>      <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:min_threads</span><span class='comma'>,</span> <span class='const'>DEFAULT_MIN_POOL_SIZE</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='ivar'>@max_length</span>      <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:max_threads</span><span class='comma'>,</span> <span class='const'>DEFAULT_MAX_POOL_SIZE</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='ivar'>@idletime</span>        <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:idletime</span><span class='comma'>,</span> <span class='const'>DEFAULT_THREAD_IDLETIMEOUT</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='ivar'>@max_queue</span>       <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:max_queue</span><span class='comma'>,</span> <span class='const'>DEFAULT_MAX_QUEUE_SIZE</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
   <span class='ivar'>@overflow_policy</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:overflow_policy</span><span class='comma'>,</span> <span class='symbol'>:abort</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>max_threads must be greater than zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@max_length</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
@@ -1303,13 +1466,13 @@ in <code>OVERFLOW_POLICIES</code></p>
 
   <span class='id identifier rubyid_init_executor'>init_executor</span>
 
-  <span class='ivar'>@pool</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  <span class='ivar'>@queue</span> <span class='op'>=</span> <span class='const'>Queue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@pool</span>                 <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='ivar'>@queue</span>                <span class='op'>=</span> <span class='const'>Queue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@scheduled_task_count</span> <span class='op'>=</span> <span class='int'>0</span>
   <span class='ivar'>@completed_task_count</span> <span class='op'>=</span> <span class='int'>0</span>
-  <span class='ivar'>@largest_length</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='ivar'>@largest_length</span>       <span class='op'>=</span> <span class='int'>0</span>
 
-  <span class='ivar'>@gc_interval</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:gc_interval</span><span class='comma'>,</span> <span class='int'>1</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='comment'># undocumented
+  <span class='ivar'>@gc_interval</span>  <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:gc_interval</span><span class='comma'>,</span> <span class='int'>1</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='comment'># undocumented
 </span>  <span class='ivar'>@last_gc_time</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span> <span class='op'>-</span> <span class='lbracket'>[</span><span class='float'>1.0</span><span class='comma'>,</span> <span class='lparen'>(</span><span class='ivar'>@gc_interval</span> <span class='op'>*</span> <span class='float'>2.0</span><span class='rparen'>)</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1988,7 +2151,7 @@ not running.</p>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_thread_pool_executor.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_length'>length</span>
-  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span><span class='lbrace'>{</span> <span class='id identifier rubyid_running?'>running?</span> <span class='op'>?</span> <span class='ivar'>@pool</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>:</span> <span class='int'>0</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_running?'>running?</span> <span class='op'>?</span> <span class='ivar'>@pool</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>:</span> <span class='int'>0</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2230,15 +2393,15 @@ is not running</p>
       <pre class="lines">
 
 
-119
 120
-121</pre>
+121
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_thread_pool_executor.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_thread_pool_executor.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_queue_length'>queue_length</span>
-  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span><span class='lbrace'>{</span> <span class='id identifier rubyid_running?'>running?</span> <span class='op'>?</span> <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>:</span> <span class='int'>0</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_running?'>running?</span> <span class='op'>?</span> <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>:</span> <span class='int'>0</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2288,12 +2451,12 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-127
 128
-129</pre>
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_thread_pool_executor.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_thread_pool_executor.rb', line 128</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remaining_capacity'>remaining_capacity</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@max_queue</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>?</span> <span class='op'>-</span><span class='int'>1</span> <span class='op'>:</span> <span class='ivar'>@max_queue</span> <span class='op'>-</span> <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='rbrace'>}</span>
@@ -2544,13 +2707,13 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-134
 135
 136
-137</pre>
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_thread_pool_executor.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_thread_pool_executor.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_status'>status</span>
   <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] `status` is deprecated and will be removed soon.</span><span class='tstring_end'>&#39;</span></span>
@@ -2640,9 +2803,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:32 2014 by
+  Generated on Wed Nov 26 09:45:08 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

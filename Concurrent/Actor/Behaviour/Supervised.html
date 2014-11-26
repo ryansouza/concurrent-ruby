@@ -104,7 +104,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>Sets and holds the supervisor of the actor if any. There is at most one supervisor
-for each actor. Each supervisor is automatically linked.</p>
+for each actor. Each supervisor is automatically linked. Messages:
+<code>:pause!, :resume!, :reset!, :restart!</code> are accepted only from supervisor.</p>
 
 
   </div>
@@ -378,13 +379,13 @@ for each actor. Each supervisor is automatically linked.</p>
       <pre class="lines">
 
 
-10
 11
 12
-13</pre>
+13
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_core'>core</span><span class='comma'>,</span> <span class='id identifier rubyid_subsequent'>subsequent</span><span class='rparen'>)</span>
   <span class='kw'>super</span> <span class='id identifier rubyid_core'>core</span><span class='comma'>,</span> <span class='id identifier rubyid_subsequent'>subsequent</span>
@@ -485,12 +486,12 @@ for each actor. Each supervisor is automatically linked.</p>
       <pre class="lines">
 
 
-8
 9
-10</pre>
+10
+11</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_supervisor'>supervisor</span>
   <span class='ivar'>@supervisor</span>
@@ -522,7 +523,6 @@ for each actor. Each supervisor is automatically linked.</p>
       <pre class="lines">
 
 
-15
 16
 17
 18
@@ -540,10 +540,11 @@ for each actor. Each supervisor is automatically linked.</p>
 30
 31
 32
-33</pre>
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_envelope'>on_envelope</span><span class='lparen'>(</span><span class='id identifier rubyid_envelope'>envelope</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_envelope'>envelope</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span>
@@ -584,13 +585,13 @@ for each actor. Each supervisor is automatically linked.</p>
       <pre class="lines">
 
 
-51
 52
 53
-54</pre>
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 52</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_event'>on_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
   <span class='ivar'>@supervisor</span> <span class='op'>=</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_event'>event</span> <span class='op'>==</span> <span class='symbol'>:terminated</span>
@@ -616,14 +617,14 @@ for each actor. Each supervisor is automatically linked.</p>
       <pre class="lines">
 
 
-35
 36
 37
 38
-39</pre>
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_supervise'>supervise</span><span class='lparen'>(</span><span class='id identifier rubyid_ref'>ref</span><span class='rparen'>)</span>
   <span class='ivar'>@supervisor</span> <span class='op'>=</span> <span class='id identifier rubyid_ref'>ref</span>
@@ -650,7 +651,6 @@ for each actor. Each supervisor is automatically linked.</p>
       <pre class="lines">
 
 
-41
 42
 43
 44
@@ -658,10 +658,11 @@ for each actor. Each supervisor is automatically linked.</p>
 46
 47
 48
-49</pre>
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/supervised.rb', line 42</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_un_supervise'>un_supervise</span><span class='lparen'>(</span><span class='id identifier rubyid_ref'>ref</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='ivar'>@supervisor</span> <span class='op'>==</span> <span class='id identifier rubyid_ref'>ref</span>
@@ -682,9 +683,9 @@ for each actor. Each supervisor is automatically linked.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:30 2014 by
+  Generated on Wed Nov 26 09:45:07 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

@@ -99,10 +99,60 @@
 </dl>
 <div class="clear"></div>
 
-<div id="subclasses">
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>A <code>ThreadLocalVar</code> is a variable where the value is different for each thread.
+Each variable may have a default value, but when you modify the variable only
+the current thread will ever see that change.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='id identifier rubyid_v'>v</span> <span class='op'>=</span> <span class='const'>ThreadLocalVar</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>14</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 14
+</span><span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>2</span>
+<span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 2</span></code></pre>
+    
+      
+      <pre class="example code"><code><span class='id identifier rubyid_v'>v</span> <span class='op'>=</span> <span class='const'>ThreadLocalVar</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>14</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_t1'>t1</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 14
+</span>  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>1</span>
+  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 1
+</span><span class='kw'>end</span>
+
+<span class='id identifier rubyid_t2'>t2</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 14
+</span>  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>2</span>
+  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 2
+</span><span class='kw'>end</span>
+
+<span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 14</span></code></pre>
+    
+  </div>
+
+
+</div><div id="subclasses">
   <h2>Direct Known Subclasses</h2>
   <p class="children"><span class='object_link'><a href="ThreadLocalVar.html" title="Concurrent::ThreadLocalVar (class)">ThreadLocalVar</a></span></p>
 </div>
+<h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="AbstractThreadLocalVar/ThreadLocalJavaStorage.html" title="Concurrent::AbstractThreadLocalVar::ThreadLocalJavaStorage (module)">ThreadLocalJavaStorage</a></span>, <span class='object_link'><a href="AbstractThreadLocalVar/ThreadLocalRubyStorage.html" title="Concurrent::AbstractThreadLocalVar::ThreadLocalRubyStorage (module)">ThreadLocalRubyStorage</a></span>
+    
+  
+    
+  
+</p>
 
   <h2>Constant Summary</h2>
   
@@ -129,6 +179,28 @@
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#bind-instance_method" title="#bind (instance method)">- (Object) <strong>bind</strong>(value, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -230,13 +302,13 @@
       <pre class="lines">
 
 
-43
-44
-45
-46</pre>
+85
+86
+87
+88</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_default'>default</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@default</span> <span class='op'>=</span> <span class='id identifier rubyid_default'>default</span>
@@ -255,7 +327,53 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="value-instance_method">
+  <h3 class="signature first" id="bind-instance_method">
+  
+    - (<tt>Object</tt>) <strong>bind</strong>(value, &amp;block) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 106</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_bind'>bind</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+    <span class='id identifier rubyid_stored_value'>stored_value</span> <span class='op'>=</span> <span class='const'>NIL_SENTINEL</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_stored_value'>stored_value</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_set'>set</span> <span class='id identifier rubyid_stored_value'>stored_value</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
+
+  <span class='id identifier rubyid_value'>value</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="value-instance_method">
   
     - (<tt>Object</tt>) <strong>value</strong> 
   
@@ -269,20 +387,20 @@
       <pre class="lines">
 
 
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58</pre>
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value'>value</span>
   <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_get'>get</span>
@@ -315,31 +433,15 @@
       <pre class="lines">
 
 
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70</pre>
+102
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value='>value=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-    <span class='id identifier rubyid_stored_value'>stored_value</span> <span class='op'>=</span> <span class='const'>NIL_SENTINEL</span>
-  <span class='kw'>else</span>
-    <span class='id identifier rubyid_stored_value'>stored_value</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
-  <span class='kw'>end</span>
-
-  <span class='id identifier rubyid_set'>set</span> <span class='id identifier rubyid_stored_value'>stored_value</span>
-
-  <span class='id identifier rubyid_value'>value</span>
+  <span class='id identifier rubyid_bind'>bind</span> <span class='id identifier rubyid_value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -351,9 +453,9 @@
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:30 2014 by
+  Generated on Wed Nov 26 09:45:06 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

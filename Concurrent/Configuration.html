@@ -119,6 +119,32 @@
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#auto_terminate-instance_method" title="#auto_terminate (instance method)">- (Object) <strong>auto_terminate</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>defines if executors should be auto-terminated in at_exit callback.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#logger-instance_method" title="#logger (instance method)">- (Object) <strong>logger</strong> </a>
     
 
@@ -393,16 +419,17 @@
       <pre class="lines">
 
 
-21
-22
-23
 24
 25
 26
-27</pre>
+27
+28
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='id identifier rubyid_immediate_executor'>immediate_executor</span>     <span class='op'>=</span> <span class='const'>ImmediateExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -410,6 +437,7 @@
   <span class='ivar'>@global_operation_pool</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>executor:</span> <span class='id identifier rubyid_immediate_executor'>immediate_executor</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_new_operation_pool'>new_operation_pool</span> <span class='rbrace'>}</span>
   <span class='ivar'>@global_timer_set</span>      <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>executor:</span> <span class='id identifier rubyid_immediate_executor'>immediate_executor</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>TimerSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='rbrace'>}</span>
   <span class='ivar'>@logger</span>                <span class='op'>=</span> <span class='id identifier rubyid_no_logger'>no_logger</span>
+  <span class='ivar'>@auto_terminate</span>        <span class='op'>=</span> <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -422,9 +450,51 @@
     <h2>Instance Attribute Details</h2>
     
       
-      <span id="logger=-instance_method"></span>
+      <span id="auto_terminate=-instance_method"></span>
       <div class="method_details first">
-  <h3 class="signature first" id="logger-instance_method">
+  <h3 class="signature first" id="auto_terminate-instance_method">
+  
+    - (<tt>Object</tt>) <strong>auto_terminate</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>defines if executors should be auto-terminated in at_exit callback</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+21
+22
+23</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 21</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_auto_terminate'>auto_terminate</span>
+  <span class='ivar'>@auto_terminate</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="logger=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="logger-instance_method">
   
     - (<tt>Object</tt>) <strong>logger</strong> 
   
@@ -513,12 +583,12 @@
       <pre class="lines">
 
 
-44
-45
-46</pre>
+48
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_operation_pool'>global_operation_pool</span>
   <span class='ivar'>@global_operation_pool</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
@@ -613,13 +683,13 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-90
-91
-92
-93</pre>
+94
+95
+96
+97</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_operation_pool='>global_operation_pool=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
   <span class='ivar'>@global_operation_pool</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
@@ -672,12 +742,12 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-37
-38
-39</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_task_pool'>global_task_pool</span>
   <span class='ivar'>@global_task_pool</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
@@ -772,13 +842,13 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-71
-72
-73
-74</pre>
+75
+76
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_task_pool='>global_task_pool=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
   <span class='ivar'>@global_task_pool</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
@@ -838,12 +908,12 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-53
-54
-55</pre>
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_timer_set'>global_timer_set</span>
   <span class='ivar'>@global_timer_set</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
@@ -868,18 +938,18 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-105
-106
-107
-108
 109
 110
 111
 112
-113</pre>
+113
+114
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 109</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new_operation_pool'>new_operation_pool</span>
   <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
@@ -910,18 +980,18 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-95
-96
-97
-98
 99
 100
 101
 102
-103</pre>
+103
+104
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 95</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new_task_pool'>new_task_pool</span>
   <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
@@ -962,12 +1032,12 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-30
-31
-32</pre>
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_no_logger'>no_logger</span>
   <span class='id identifier rubyid_lambda'>lambda</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid_progname'>progname</span><span class='comma'>,</span> <span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='op'>|</span> <span class='rbrace'>}</span>
@@ -982,9 +1052,9 @@ tasks/operations are post else an exception will be raised.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:28 2014 by
+  Generated on Wed Nov 26 09:45:05 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

@@ -88,7 +88,52 @@
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>The <a href="http://en.wikipedia.org/wiki/Observer_pattern">observer pattern</a> is one of the most useful design pattern.</p>
 
+<p>The workflow is very simple:</p>
+
+<ul>
+<li>an <code>observer</code> can register itself to a <code>subject</code> via a callback</li>
+<li>many <code>observers</code> can be registered to the same <code>subject</code></li>
+<li>the <code>subject</code> notifies all registered observers when its status changes</li>
+<li>an <code>observer</code> can deregister itself when is no more interested to receive event notifications</li>
+</ul>
+
+<p>In a single threaded environment the whole pattern is very easy: the <code>subject</code> can use a simple data structure to manage all its subscribed <code>observer</code>s and every <code>observer</code> can react directly to every event without caring about synchronization.</p>
+
+<p>In a multi threaded environment things are more complex.
+The <code>subject</code> must synchronize the access to its data structure and to do so currently we&#39;re using two specialized ObserverSet: CopyOnWriteObserverSet and CopyOnNotifyObserverSet.</p>
+
+<p>When implementing and <code>observer</code> there&#39;s a very important rule to remember: <strong>there are no guarantees about the thread that will execute the callback</strong></p>
+
+<p>Let&#39;s take this example</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Observer</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
+    <span class='ivar'>@count</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
+    <span class='ivar'>@count</span> <span class='op'>+=</span> <span class='int'>1</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_obs'>obs</span> <span class='op'>=</span> <span class='const'>Observer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='lbracket'>[</span><span class='id identifier rubyid_obj1'>obj1</span><span class='comma'>,</span> <span class='id identifier rubyid_obj2'>obj2</span><span class='comma'>,</span> <span class='id identifier rubyid_obj3'>obj3</span><span class='comma'>,</span> <span class='id identifier rubyid_obj4'>obj4</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_o'>o</span><span class='op'>|</span> <span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='id identifier rubyid_obs'>obs</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='comment'># execute [obj1, obj2, obj3, obj4]
+</span></code></pre>
+
+<p><code>obs</code> is wrong because the variable <code>@count</code> can be accessed by different threads at the same time, so it should be synchronized (using either a Mutex or an AtomicFixum)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -283,12 +328,12 @@
       <pre class="lines">
 
 
-38
-39
-40</pre>
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_observers'>observers</span>
   <span class='ivar'>@observers</span>
@@ -347,12 +392,12 @@
       <pre class="lines">
 
 
-9
-10
-11</pre>
+42
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 42</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -404,12 +449,12 @@
       <pre class="lines">
 
 
-32
-33
-34</pre>
+65
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_count_observers'>count_observers</span>
   <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_count_observers'>count_observers</span>
@@ -461,12 +506,12 @@
       <pre class="lines">
 
 
-21
-22
-23</pre>
+54
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete_observer'>delete_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_delete_observer'>delete_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
@@ -518,13 +563,13 @@
       <pre class="lines">
 
 
-26
-27
-28
-29</pre>
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete_observers'>delete_observers</span>
   <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_delete_observers'>delete_observers</span>
@@ -577,13 +622,13 @@
       <pre class="lines">
 
 
-15
-16
-17
-18</pre>
+48
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/observable.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_with_observer'>with_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_add_observer'>add_observer</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -599,9 +644,9 @@
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:26 2014 by
+  Generated on Wed Nov 26 09:45:02 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

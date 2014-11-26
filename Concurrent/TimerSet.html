@@ -782,10 +782,10 @@ this executor rather than the global thread pool (overrides :operation)</p>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='ivar'>@queue</span> <span class='op'>=</span> <span class='const'>PriorityQueue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>order:</span> <span class='symbol'>:min</span><span class='rparen'>)</span>
-  <span class='ivar'>@task_executor</span> <span class='op'>=</span> <span class='const'>OptionsParser</span><span class='op'>::</span><span class='id identifier rubyid_get_executor_from'>get_executor_from</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span><span class='period'>.</span><span class='id identifier rubyid_global_task_pool'>global_task_pool</span>
+  <span class='ivar'>@queue</span>          <span class='op'>=</span> <span class='const'>PriorityQueue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>order:</span> <span class='symbol'>:min</span><span class='rparen'>)</span>
+  <span class='ivar'>@task_executor</span>  <span class='op'>=</span> <span class='const'>OptionsParser</span><span class='op'>::</span><span class='id identifier rubyid_get_executor_from'>get_executor_from</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span><span class='period'>.</span><span class='id identifier rubyid_global_task_pool'>global_task_pool</span>
   <span class='ivar'>@timer_executor</span> <span class='op'>=</span> <span class='const'>SingleThreadExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@condition</span> <span class='op'>=</span> <span class='const'>Condition</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@condition</span>      <span class='op'>=</span> <span class='const'>Condition</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_init_executor'>init_executor</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1241,7 +1241,7 @@ internal synchronization objects.</p>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kill'>kill</span>
-  <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span> <span class='rbrace'>}</span>
   <span class='id identifier rubyid_shutdown'>shutdown</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1821,9 +1821,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:29 2014 by
+  Generated on Wed Nov 26 09:45:05 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>

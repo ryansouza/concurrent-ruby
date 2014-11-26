@@ -93,7 +93,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><span class='object_link'><a href="ThreadLocalJavaStorage.html" title="Concurrent::ThreadLocalJavaStorage (module)">ThreadLocalJavaStorage</a></span>, <span class='object_link'><a href="ThreadLocalRubyStorage.html" title="Concurrent::ThreadLocalRubyStorage (module)">ThreadLocalRubyStorage</a></span></dd>
+      <dd class="r2">ThreadLocalJavaStorage, ThreadLocalRubyStorage</dd>
       
     
   
@@ -105,7 +105,47 @@
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>A <code>ThreadLocalVar</code> is a variable where the value is different for each thread.
+Each variable may have a default value, but when you modify the variable only
+the current thread will ever see that change.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='id identifier rubyid_v'>v</span> <span class='op'>=</span> <span class='const'>ThreadLocalVar</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>14</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 14
+</span><span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>2</span>
+<span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 2</span></code></pre>
+    
+      
+      <pre class="example code"><code><span class='id identifier rubyid_v'>v</span> <span class='op'>=</span> <span class='const'>ThreadLocalVar</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>14</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_t1'>t1</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 14
+</span>  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>1</span>
+  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 1
+</span><span class='kw'>end</span>
+
+<span class='id identifier rubyid_t2'>t2</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 14
+</span>  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>2</span>
+  <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 2
+</span><span class='kw'>end</span>
+
+<span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='comment'>#=&gt; 14</span></code></pre>
+    
+  </div>
+
+
+</div>
   <h2>Constant Summary</h2>
   
 
@@ -115,101 +155,7 @@
 
 
 
-  
-    <h2>
-      Instance Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
 
-    <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#allocate_storage-instance_method" title="#allocate_storage (instance method)">- (Object) <strong>allocate_storage</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="ThreadLocalRubyStorage.html#allocate_storage-instance_method" title="Concurrent::ThreadLocalRubyStorage#allocate_storage (method)">ThreadLocalRubyStorage</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#get-instance_method" title="#get (instance method)">- (Object) <strong>get</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="ThreadLocalRubyStorage.html#get-instance_method" title="Concurrent::ThreadLocalRubyStorage#get (method)">ThreadLocalRubyStorage</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#set-instance_method" title="#set (instance method)">- (Object) <strong>set</strong>(value) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="ThreadLocalRubyStorage.html#set-instance_method" title="Concurrent::ThreadLocalRubyStorage#set (method)">ThreadLocalRubyStorage</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-    </ul>
-  
-
-
-  
-  
   
   
   
@@ -221,69 +167,12 @@
 </div>
 
 
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
-
-    
-      <div class="method_details first">
-  <h3 class="signature first" id="allocate_storage-instance_method">
-  
-    - (<tt>Object</tt>) <strong>allocate_storage</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="ThreadLocalRubyStorage.html#allocate_storage-instance_method" title="Concurrent::ThreadLocalRubyStorage#allocate_storage (method)">ThreadLocalRubyStorage</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="get-instance_method">
-  
-    - (<tt>Object</tt>) <strong>get</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="ThreadLocalRubyStorage.html#get-instance_method" title="Concurrent::ThreadLocalRubyStorage#get (method)">ThreadLocalRubyStorage</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="set-instance_method">
-  
-    - (<tt>Object</tt>) <strong>set</strong>(value) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="ThreadLocalRubyStorage.html#set-instance_method" title="Concurrent::ThreadLocalRubyStorage#set (method)">ThreadLocalRubyStorage</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-  </div>
-
 </div>
 
     <div id="footer">
-  Generated on Thu Aug 14 08:32:30 2014 by
+  Generated on Wed Nov 26 09:45:06 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.5).
 </div>
 
 <script>
