@@ -153,6 +153,39 @@ from the pool and replaced.</p>
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Executor.html#fallback_policy-instance_method" title="Concurrent::Executor#fallback_policy (method)">Executor</a></span>
+    </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>The policy defining how rejected tasks (tasks received once the queue size reaches the configured <code>max_queue</code>, or after the executor has shut down) are handled.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#max_length-instance_method" title="#max_length (instance method)">- (Integer) <strong>max_length</strong> </a>
     
 
@@ -211,39 +244,6 @@ from the pool and replaced.</p>
 
   
     <span class="summary_desc"><div class='inline'><p>Returns the value of attribute max_queue.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#overflow_policy-instance_method" title="#overflow_policy (instance method)">- (Object) <strong>overflow_policy</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      inherited
-      from <span class='object_link'><a href="JavaThreadPoolExecutor.html#overflow_policy-instance_method" title="Concurrent::JavaThreadPoolExecutor#overflow_policy (method)">JavaThreadPoolExecutor</a></span>
-    </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute overflow_policy.</p>
 </div></span>
   
 </li>
@@ -347,7 +347,7 @@ from the pool and replaced.</p>
     <ul class="option">
       
         <li>
-          <span class="name">:overflow_policy</span>
+          <span class="name">:fallback_policy</span>
           <span class="type">(<tt>Symbol</tt>)</span>
           <span class="default">
             
@@ -356,7 +356,7 @@ from the pool and replaced.</p>
             
           </span>
           
-            &mdash; <div class='inline'><p>the overflow policy</p>
+            &mdash; <div class='inline'><p>the fallback policy</p>
 </div>
           
         </li>
@@ -388,7 +388,7 @@ from the pool and replaced.</p>
       
       
         &mdash;
-        <div class='inline'><p>if <code>overflow_policy</code> is not a known policy</p>
+        <div class='inline'><p>if <code>fallback_policy</code> is not a known policy</p>
 </div>
       
     </li>
@@ -417,17 +417,7 @@ from the pool and replaced.</p>
 25
 26
 27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38</pre>
+28</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/java_fixed_thread_pool.rb', line 19</span>
@@ -440,16 +430,6 @@ from the pool and replaced.</p>
   <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
 
-
-  <span class='comment'>#@overflow_policy = opts.fetch(:overflow_policy, :abort)
-</span>  <span class='comment'>#@max_queue = 0
-</span>  <span class='comment'>#
-</span>  <span class='comment'>#raise ArgumentError.new(&#39;number of threads must be greater than zero&#39;) if num_threads &lt; 1
-</span>  <span class='comment'>#raise ArgumentError.new(&quot;#{@overflow_policy} is not a valid overflow policy&quot;) unless OVERFLOW_POLICIES.keys.include?(@overflow_policy)
-</span>  <span class='comment'>#
-</span>  <span class='comment'>#@executor = java.util.concurrent.Executors.newFixedThreadPool(num_threads)
-</span>  <span class='comment'>#@executor.setRejectedExecutionHandler(OVERFLOW_POLICIES[@overflow_policy].new)
-</span>
   <span class='id identifier rubyid_set_shutdown_hook'>set_shutdown_hook</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -465,7 +445,39 @@ from the pool and replaced.</p>
       
       <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="max_length-instance_method">
+  <h3 class="signature first" id="fallback_policy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Executor.html#fallback_policy-instance_method" title="Concurrent::Executor#fallback_policy (method)">Executor</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>The policy defining how rejected tasks (tasks received once the
+queue size reaches the configured <code>max_queue</code>, or after the
+executor has shut down) are handled. Must be one of the values
+specified in <code>FALLBACK_POLICIES</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="max_length-instance_method">
   
     - (<tt>Integer</tt>) <strong>max_length</strong>  <span class="extras">(readonly)</span>
   
@@ -537,54 +549,26 @@ from the pool and replaced.</p>
 </div>
 </div>
     
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="overflow_policy-instance_method">
-  
-    - (<tt>Object</tt>) <strong>overflow_policy</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in class
-        <span class='object_link'><a href="JavaThreadPoolExecutor.html#overflow_policy-instance_method" title="Concurrent::JavaThreadPoolExecutor#overflow_policy (method)">JavaThreadPoolExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Returns the value of attribute overflow_policy</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
   </div>
 
 
 </div>
 
     <div id="footer">
-  Generated on Wed Nov 26 09:45:07 2014 by
+  Generated on Tue Dec 23 10:20:27 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.1.5).
+  0.8.7.6 (ruby-2.1.2).
 </div>
 
 <script>
-//  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-//    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-//      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-//  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-//
-//  ga('create', 'UA-4005004-8', 'pitr.ch');
-//  ga('send', 'pageview');
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57940973-1', 'auto');
+  ga('send', 'pageview');
+
 </script>
 
   </body>

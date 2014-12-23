@@ -92,6 +92,39 @@
 
 
 
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>The policy defining how rejected tasks (tasks received once the queue size reaches the configured <code>max_queue</code>, or after the executor has shut down) are handled.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
 
 
 
@@ -153,6 +186,56 @@
   
 
 
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="fallback_policy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>The policy defining how rejected tasks (tasks received once the
+queue size reaches the configured <code>max_queue</code>, or after the
+executor has shut down) are handled. Must be one of the values
+specified in <code>FALLBACK_POLICIES</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+12
+13
+14</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 12</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_fallback_policy'>fallback_policy</span>
+  <span class='ivar'>@fallback_policy</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
@@ -207,12 +290,12 @@
       <pre class="lines">
 
 
-16
-17
-18</pre>
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_can_overflow?'>can_overflow?</span>
   <span class='kw'>false</span>
@@ -273,12 +356,12 @@ occur simultaneously. Else false.</p>
       <pre class="lines">
 
 
-29
-30
-31</pre>
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/executor.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_serialized?'>serialized?</span>
   <span class='kw'>false</span>
@@ -293,19 +376,20 @@ occur simultaneously. Else false.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Nov 26 09:45:02 2014 by
+  Generated on Tue Dec 23 10:20:18 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.1.5).
+  0.8.7.6 (ruby-2.1.2).
 </div>
 
 <script>
-//  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-//    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-//      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-//  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-//
-//  ga('create', 'UA-4005004-8', 'pitr.ch');
-//  ga('send', 'pageview');
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57940973-1', 'auto');
+  ga('send', 'pageview');
+
 </script>
 
   </body>

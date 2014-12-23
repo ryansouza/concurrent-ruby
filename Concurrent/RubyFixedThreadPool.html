@@ -190,6 +190,39 @@ from the pool and replaced.</p>
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Executor.html#fallback_policy-instance_method" title="Concurrent::Executor#fallback_policy (method)">Executor</a></span>
+    </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>The policy defining how rejected tasks (tasks received once the queue size reaches the configured <code>max_queue</code>, or after the executor has shut down) are handled.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#idletime-instance_method" title="#idletime (instance method)">- (Object) <strong>idletime</strong> </a>
     
 
@@ -380,39 +413,6 @@ from the pool and replaced.</p>
 
   
     <span class="summary_desc"><div class='inline'><p>Returns the value of attribute mutex.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#overflow_policy-instance_method" title="#overflow_policy (instance method)">- (Object) <strong>overflow_policy</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      inherited
-      from <span class='object_link'><a href="RubyThreadPoolExecutor.html#overflow_policy-instance_method" title="Concurrent::RubyThreadPoolExecutor#overflow_policy (method)">RubyThreadPoolExecutor</a></span>
-    </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>The policy defining how rejected tasks (tasks received once the queue size reaches the configured <code>max_queue</code>) are handled.</p>
 </div></span>
   
 </li>
@@ -633,7 +633,7 @@ from the pool and replaced.</p>
     <ul class="option">
       
         <li>
-          <span class="name">:overflow_policy</span>
+          <span class="name">:fallback_policy</span>
           <span class="type">(<tt>Symbol</tt>)</span>
           <span class="default">
             
@@ -642,7 +642,7 @@ from the pool and replaced.</p>
             
           </span>
           
-            &mdash; <div class='inline'><p>the overflow policy</p>
+            &mdash; <div class='inline'><p>the fallback policy</p>
 </div>
           
         </li>
@@ -674,7 +674,7 @@ from the pool and replaced.</p>
       
       
         &mdash;
-        <div class='inline'><p>if <code>overflow_policy</code> is not a known policy</p>
+        <div class='inline'><p>if <code>fallback_policy</code> is not a known policy</p>
 </div>
       
     </li>
@@ -707,15 +707,15 @@ from the pool and replaced.</p>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/ruby_fixed_thread_pool.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_num_threads'>num_threads</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_overflow_policy'>overflow_policy</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:overflow_policy</span><span class='comma'>,</span> <span class='symbol'>:abort</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_fallback_policy'>fallback_policy</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:fallback_policy</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:overflow_policy</span><span class='comma'>,</span> <span class='symbol'>:abort</span><span class='rparen'>)</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>number of threads must be greater than zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_num_threads'>num_threads</span> <span class='op'>&lt;</span> <span class='int'>1</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_overflow_policy'>overflow_policy</span><span class='embexpr_end'>}</span><span class='tstring_content'> is not a valid overflow policy</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>OVERFLOW_POLICIES</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_overflow_policy'>overflow_policy</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_fallback_policy'>fallback_policy</span><span class='embexpr_end'>}</span><span class='tstring_content'> is not a valid fallback policy</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>FALLBACK_POLICIES</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_fallback_policy'>fallback_policy</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span>
     <span class='label'>min_threads:</span> <span class='id identifier rubyid_num_threads'>num_threads</span><span class='comma'>,</span>
     <span class='label'>max_threads:</span> <span class='id identifier rubyid_num_threads'>num_threads</span><span class='comma'>,</span>
-    <span class='label'>overflow_policy:</span> <span class='id identifier rubyid_overflow_policy'>overflow_policy</span><span class='comma'>,</span>
+    <span class='label'>fallback_policy:</span> <span class='id identifier rubyid_fallback_policy'>fallback_policy</span><span class='comma'>,</span>
     <span class='label'>max_queue:</span> <span class='const'>DEFAULT_MAX_QUEUE_SIZE</span><span class='comma'>,</span>
     <span class='label'>idletime:</span> <span class='const'>DEFAULT_THREAD_IDLETIMEOUT</span><span class='comma'>,</span>
   <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -750,6 +750,38 @@ from the pool and replaced.</p>
 </h3><div class="docstring">
   <div class="discussion">
     <p>The number of tasks that have been completed by the pool since construction.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="fallback_policy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Executor.html#fallback_policy-instance_method" title="Concurrent::Executor#fallback_policy (method)">Executor</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>The policy defining how rejected tasks (tasks received once the
+queue size reaches the configured <code>max_queue</code>, or after the
+executor has shut down) are handled. Must be one of the values
+specified in <code>FALLBACK_POLICIES</code>.</p>
 
 
   </div>
@@ -867,7 +899,7 @@ from the pool and replaced.</p>
   <div class="discussion">
     <p>The maximum number of tasks that may be waiting in the work queue at any one time.
 When the queue size reaches <code>max_queue</code> subsequent tasks will be rejected in
-accordance with the configured <code>overflow_policy</code>.</p>
+accordance with the configured <code>fallback_policy</code>.</p>
 
 
   </div>
@@ -926,37 +958,6 @@ accordance with the configured <code>overflow_policy</code>.</p>
 </h3><div class="docstring">
   <div class="discussion">
     <p>Returns the value of attribute mutex</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="overflow_policy-instance_method">
-  
-    - (<tt>Object</tt>) <strong>overflow_policy</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in class
-        <span class='object_link'><a href="RubyThreadPoolExecutor.html#overflow_policy-instance_method" title="Concurrent::RubyThreadPoolExecutor#overflow_policy (method)">RubyThreadPoolExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>The policy defining how rejected tasks (tasks received once the queue size reaches
-the configured <code>max_queue</code>) are handled. Must be one of the values specified in
-<code>OVERFLOW_POLICIES</code>.</p>
 
 
   </div>
@@ -1060,19 +1061,20 @@ the configured <code>max_queue</code>) are handled. Must be one of the values sp
 </div>
 
     <div id="footer">
-  Generated on Wed Nov 26 09:45:08 2014 by
+  Generated on Tue Dec 23 10:20:27 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.1.5).
+  0.8.7.6 (ruby-2.1.2).
 </div>
 
 <script>
-//  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-//    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-//      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-//  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-//
-//  ga('create', 'UA-4005004-8', 'pitr.ch');
-//  ga('send', 'pageview');
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57940973-1', 'auto');
+  ga('send', 'pageview');
+
 </script>
 
   </body>
