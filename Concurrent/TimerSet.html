@@ -1586,10 +1586,10 @@ immediately post to the executor.</p>
       <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='const'>Task</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_time'>time</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span><span class='rparen'>)</span>
       <span class='ivar'>@timer_executor</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_method'>method</span><span class='lparen'>(</span><span class='symbol'>:process_tasks</span><span class='rparen'>)</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
-
-    <span class='kw'>true</span>
   <span class='kw'>end</span>
 
+  <span class='ivar'>@condition</span><span class='period'>.</span><span class='id identifier rubyid_signal'>signal</span>
+  <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1889,9 +1889,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Dec 23 10:20:23 2014 by
+  Generated on Sun Jan 25 12:58:21 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.2.0).
 </div>
 
 <script>

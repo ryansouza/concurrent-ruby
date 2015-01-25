@@ -101,10 +101,8 @@
 
 <h3>Supported Ruby versions</h3>
 
-<p>MRI 1.9.3, 2.0, 2.1, JRuby (1.9 mode), and Rubinius 2.x are supported.
-Although native code is used for performance optimizations on some platforms, all functionality
-is available in pure Ruby. This gem should be fully compatible with any interpreter that is
-compliant with Ruby 1.9.3 or newer.</p>
+<p>MRI 1.9.3, 2.0, 2.1, 2.2, JRuby (1.9 mode), and Rubinius 2.x are supported.
+This gem should be fully compatible with any interpreter that is compliant with Ruby 1.9.3 or newer.</p>
 
 <h2>Features &amp; Documentation</h2>
 
@@ -130,12 +128,13 @@ compliant with Ruby 1.9.3 or newer.</p>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Promise.html">Promise</a>: Similar to Futures, with more features.</li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ScheduledTask.html">ScheduledTask</a>: Like a Future scheduled for a specific future time.</li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/TimerTask.html">TimerTask</a>: A Thread that periodically wakes up to perform work at regular intervals. </li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Channel.html">Channel</a>: Communicating Sequential Processes (CSP). </li>
 </ul>
 
 <h3>Java-inspired ThreadPools and other executors</h3>
 
 <ul>
-<li>See <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ThreadPoolExecutor.html">ThreadPool</a> overview, which also contains a list of other Executors available.</li>
+<li>See <a href="http://ruby-concurrency.github.io/concurrent-ruby/file.thread_pools.html">ThreadPool</a> overview, which also contains a list of other Executors available.</li>
 </ul>
 
 <h3>Thread-safe Observers</h3>
@@ -156,6 +155,7 @@ compliant with Ruby 1.9.3 or newer.</p>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/CyclicBarrier.html">cyclic barrier</a></li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Event.html">event</a></li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Exchanger.html">exchanger</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Semaphore.html">semaphore</a></li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent.html#timeout-class_method">timeout</a></li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent.html#timer-class_method">timer</a></li>
 </ul>
@@ -174,30 +174,43 @@ compliant with Ruby 1.9.3 or newer.</p>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/TVar.html">software transactional memory</a> (TVar)</li>
 </ul>
 
-<h2>Installing and Building</h2>
+<h2>Usage</h2>
 
-<p>This gem includes several platform-specific optimizations. To reduce the possibility of
-compilation errors, we provide pre-compiled gem packages for several platforms as well
-as a pure-Ruby build. Installing the gem should be no different than installing any other
-Rubygems-hosted gem. Rubygems will automatically detect your platform and install the
-appropriate pre-compiled build. You should never see Rubygems attempt to compile the gem
-on installation. Additionally, to ensure compatability with the largest possible number
-of Ruby interpreters, the C extensions will <em>never</em> load under any Ruby other than MRI,
-even when installed.</p>
+<p>All abstractions within this gem can be loaded simply by requiring it:</p>
 
-<p>The following gem builds will be built at every release:</p>
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
 
-<ul>
-<li>concurrent-ruby-x.y.z.gem (pure Ruby)</li>
-<li>concurrent-ruby-x.y.z-java.gem (JRuby)</li>
-<li>concurrent-ruby-x.y.z-x86-linux.gem (Linux 32-bit)</li>
-<li>concurrent-ruby-x.y.z-x86_64-linux.gem (Linux 64-bit)</li>
-<li>concurrent-ruby-x.y.z-x86-mingw32.gem (Windows 32-bit)</li>
-<li>concurrent-ruby-x.y.z-x64-mingw32.gem (Windows 64-bit)</li>
-<li>concurrent-ruby-x.y.z-x86-solaris-2.11.gem (Solaris)</li>
-</ul>
+<p>To reduce the amount of code loaded at runtime, subsets of this gem can be required:</p>
 
-<h3>Installing</h3>
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent</span><span class='tstring_end'>&#39;</span></span>                <span class='comment'># everything
+</span>
+<span class='comment'># groups
+</span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/actor</span><span class='tstring_end'>&#39;</span></span>          <span class='comment'># Concurrent::Actor and supporting code
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/atomics</span><span class='tstring_end'>&#39;</span></span>        <span class='comment'># atomic and thread synchronization classes
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/channels</span><span class='tstring_end'>&#39;</span></span>       <span class='comment'># Concurrent::Channel and supporting code
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/executors</span><span class='tstring_end'>&#39;</span></span>      <span class='comment'># Thread pools and other executors
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/utilities</span><span class='tstring_end'>&#39;</span></span>      <span class='comment'># utility methods such as processor count and timers
+</span>
+<span class='comment'># individual abstractions
+</span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/agent</span><span class='tstring_end'>&#39;</span></span>          <span class='comment'># Concurrent::Agent
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/async</span><span class='tstring_end'>&#39;</span></span>          <span class='comment'># Concurrent::Async
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/atomic</span><span class='tstring_end'>&#39;</span></span>         <span class='comment'># Concurrent::Atomic (formerly the `atomic` gem)
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/dataflow</span><span class='tstring_end'>&#39;</span></span>       <span class='comment'># Concurrent::dataflow
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/delay</span><span class='tstring_end'>&#39;</span></span>          <span class='comment'># Concurrent::Delay
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/exchanger</span><span class='tstring_end'>&#39;</span></span>      <span class='comment'># Concurrent::Exchanger
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/future</span><span class='tstring_end'>&#39;</span></span>         <span class='comment'># Concurrent::Future
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/ivar</span><span class='tstring_end'>&#39;</span></span>           <span class='comment'># Concurrent::IVar
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/mvar</span><span class='tstring_end'>&#39;</span></span>           <span class='comment'># Concurrent::MVar
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/promise</span><span class='tstring_end'>&#39;</span></span>        <span class='comment'># Concurrent::Promise
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/scheduled_task</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># Concurrent::ScheduledTask
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/timer_task</span><span class='tstring_end'>&#39;</span></span>     <span class='comment'># Concurrent::TimerTask
+</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/tvar</span><span class='tstring_end'>&#39;</span></span>           <span class='comment'># Concurrent::TVar
+</span></code></pre>
+
+<h2>Installation</h2>
 
 <pre class="code shell"><code class="shell">gem install concurrent-ruby
 </code></pre>
@@ -209,29 +222,60 @@ even when installed.</p>
 
 <p>and run <code>bundle install</code> from your shell.</p>
 
-<h3>Building</h3>
+<h3>C Extensions for MRI</h3>
 
-<p>Because we provide pre-compiled gem builds, users should never need to build the gem manually.
-The build process for this gem is completely automated using open source tools. All of
-the automation components are available in the <a href="https://github.com/ruby-concurrency/rake-compiler-dev-box">ruby-concurrency/rake-compiler-dev-box</a>
-GitHub repository.</p>
+<p>Potential performance improvements may be achieved under MRI by installing optional C extensions.
+To minimize installation errors the C extensions are available in the <code>concurrent-ruby-ext</code> extension
+gem. The extension gem lists <code>concurrent-ruby</code> as a dependency so it is not necessary to install both.
+Simply install the extension gen:</p>
 
-<p>This gem will compile native C code under MRI and native Java code under JRuby. It is
-also possible to build a pure-Ruby version. All builds have identical functionality.
-The only difference is performance. Additionally, pure-Ruby classes are always available,
-even when using the native optimizations. Please see the <a href="http://ruby-concurrency.github.io/concurrent-ruby/">documentation</a>
-for more details.</p>
-
-<p>To build and package the gem using MRI or JRuby, install the necessary build dependencies and run:</p>
-
-<pre class="code shell"><code class="shell">bundle exec rake compile
-bundle exec rake build
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='id identifier rubyid_install'>install</span> <span class='id identifier rubyid_concurrent'>concurrent</span><span class='op'>-</span><span class='id identifier rubyid_ruby'>ruby</span><span class='op'>-</span><span class='id identifier rubyid_ext'>ext</span>
 </code></pre>
 
-<p>To build and package a pure-Ruby gem, on <em>any</em> platform and interpreter
-(including MRI and JRuby), run:</p>
+<p>or add the following line to Gemfile:</p>
 
-<pre class="code shell"><code class="shell">BUILD_PURE_RUBY=&#39;true&#39; bundle exec rake build
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent-ruby-ext</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>and run <code>bundle install</code> from your shell.</p>
+
+<p>In code it is only necessary to</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>The <code>concurrent-ruby</code> gem will automatically detect the presence of the <code>concurrent-ruby-ext</code> gem
+and load the appropriate C extensions.</p>
+
+<h4>Note For gem developers</h4>
+
+<p>No gems should depend on <code>concurrent-ruby-ext</code>. Doing so will force C extensions on your users.
+The best practice is to depend on <code>concurrent-ruby</code> and let users to decide if they want C extensions.</p>
+
+<h3>Building</h3>
+
+<p>All published versions of this gem (core, extension, and several platform-specific packages) are compiled,
+packaged, tested, and published using an open, <a href="https://github.com/ruby-concurrency/rake-compiler-dev-box">automated process</a>.
+This process can also be used to create pre-compiled binaries of the extension gem for virtally
+any platform. <em>Documentation is forthcoming...</em></p>
+
+<pre class="code ruby"><code class="ruby">*MRI only*
+rake build:native       # Build concurrent-ruby-ext-&lt;version&gt;-&lt;platform&gt;.gem into the pkg directory
+rake compile:extension  # Compile extension
+
+*JRuby only*
+rake build              # Build JRuby-specific core gem (alias for `build:core`)
+rake build:core         # Build concurrent-ruby-&lt;version&gt;-java.gem into the pkg directory
+
+*All except JRuby*
+rake build              # Build core and extension gems
+rake build:core         # Build concurrent-ruby-&lt;version&gt;.gem into the pkg directory
+rake build:ext          # Build concurrent-ruby-ext-&lt;version&gt;.gem into the pkg directory
+
+*All*
+rake clean              # Remove any temporary products
+rake clobber            # Remove any generated file
+rake compile            # Compile all the extensions
 </code></pre>
 
 <h2>Maintainers</h2>
@@ -242,6 +286,7 @@ bundle exec rake build
 <li><a href="https://github.com/chrisseaton">Chris Seaton</a></li>
 <li><a href="https://github.com/lucasallan">Lucas Allan</a></li>
 <li><a href="https://github.com/pitr-ch">Petr Chalupa</a></li>
+<li><a href="https://github.com/obrok">Paweł Obrok</a></li>
 </ul>
 
 <h3>Contributing</h3>
@@ -264,9 +309,9 @@ It is Copyright &copy; 2014 <a href="https://twitter.com/jerrydantonio">Jerry D&
 </div></div>
 
     <div id="footer">
-  Generated on Tue Dec 23 10:20:17 2014 by
+  Generated on Sun Jan 25 12:58:12 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.2.0).
 </div>
 
 <script>

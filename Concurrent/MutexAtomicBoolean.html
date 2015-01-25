@@ -365,13 +365,13 @@ Testing with Concurrent::JavaAtomicBoolean...
       <pre class="lines">
 
 
+31
 32
 33
-34
-35</pre>
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial'>initial</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='ivar'>@value</span> <span class='op'>=</span> <span class='op'>!</span><span class='op'>!</span><span class='id identifier rubyid_initial'>initial</span>
@@ -431,15 +431,15 @@ Testing with Concurrent::JavaAtomicBoolean...
       <pre class="lines">
 
 
+80
 81
 82
 83
 84
-85
-86</pre>
+85</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_false?'>false?</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -494,17 +494,17 @@ Testing with Concurrent::JavaAtomicBoolean...
       <pre class="lines">
 
 
+106
 107
 108
 109
 110
 111
 112
-113
-114</pre>
+113</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 107</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 106</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_make_false'>make_false</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -561,17 +561,17 @@ Testing with Concurrent::JavaAtomicBoolean...
       <pre class="lines">
 
 
+92
 93
 94
 95
 96
 97
 98
-99
-100</pre>
+99</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_make_true'>make_true</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -628,15 +628,15 @@ Testing with Concurrent::JavaAtomicBoolean...
       <pre class="lines">
 
 
+68
 69
 70
 71
 72
-73
-74</pre>
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_true?'>true?</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -691,15 +691,15 @@ Testing with Concurrent::JavaAtomicBoolean...
       <pre class="lines">
 
 
+41
 42
 43
 44
 45
-46
-47</pre>
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value'>value</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -773,16 +773,16 @@ Testing with Concurrent::JavaAtomicBoolean...
       <pre class="lines">
 
 
+55
 56
 57
 58
 59
 60
-61
-62</pre>
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_boolean.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value='>value=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -801,9 +801,9 @@ Testing with Concurrent::JavaAtomicBoolean...
 </div>
 
     <div id="footer">
-  Generated on Tue Dec 23 10:20:24 2014 by
+  Generated on Sun Jan 25 12:58:21 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.2.0).
 </div>
 
 <script>
