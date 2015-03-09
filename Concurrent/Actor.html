@@ -80,7 +80,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">lib/concurrent/actor.rb<span class="defines">,<br />
-  lib/concurrent/actor/core.rb,<br /> lib/concurrent/actor/root.rb,<br /> lib/concurrent/actor/utils.rb,<br /> lib/concurrent/actor/errors.rb,<br /> lib/concurrent/actor/context.rb,<br /> lib/concurrent/actor/envelope.rb,<br /> lib/concurrent/actor/behaviour.rb,<br /> lib/concurrent/actor/reference.rb,<br /> lib/concurrent/actor/type_check.rb,<br /> lib/concurrent/actor/utils/pool.rb,<br /> lib/concurrent/actor/utils/ad_hoc.rb,<br /> lib/concurrent/actor/utils/balancer.rb,<br /> lib/concurrent/actor/utils/broadcast.rb,<br /> lib/concurrent/actor/behaviour/awaits.rb,<br /> lib/concurrent/actor/behaviour/buffer.rb,<br /> lib/concurrent/actor/behaviour/pausing.rb,<br /> lib/concurrent/actor/behaviour/linking.rb,<br /> lib/concurrent/actor/public_delegations.rb,<br /> lib/concurrent/actor/behaviour/abstract.rb,<br /> lib/concurrent/actor/behaviour/supervised.rb,<br /> lib/concurrent/actor/internal_delegations.rb,<br /> lib/concurrent/actor/behaviour/supervising.rb,<br /> lib/concurrent/actor/behaviour/termination.rb,<br /> lib/concurrent/actor/behaviour/sets_results.rb,<br /> lib/concurrent/actor/behaviour/removes_child.rb,<br /> lib/concurrent/actor/behaviour/executes_context.rb,<br /> lib/concurrent/actor/default_dead_letter_handler.rb,<br /> lib/concurrent/actor/behaviour/terminates_children.rb,<br /> lib/concurrent/actor/behaviour/errors_on_unknown_message.rb</span>
+  lib/concurrent/actor/core.rb,<br /> lib/concurrent/actor/root.rb,<br /> lib/concurrent/actor/utils.rb,<br /> lib/concurrent/actor/errors.rb,<br /> lib/concurrent/actor/context.rb,<br /> lib/concurrent/actor/envelope.rb,<br /> lib/concurrent/actor/reference.rb,<br /> lib/concurrent/actor/behaviour.rb,<br /> lib/concurrent/actor/utils/pool.rb,<br /> lib/concurrent/actor/type_check.rb,<br /> lib/concurrent/actor/utils/ad_hoc.rb,<br /> lib/concurrent/actor/utils/balancer.rb,<br /> lib/concurrent/actor/utils/broadcast.rb,<br /> lib/concurrent/actor/behaviour/buffer.rb,<br /> lib/concurrent/actor/behaviour/awaits.rb,<br /> lib/concurrent/actor/behaviour/pausing.rb,<br /> lib/concurrent/actor/behaviour/linking.rb,<br /> lib/concurrent/actor/public_delegations.rb,<br /> lib/concurrent/actor/behaviour/abstract.rb,<br /> lib/concurrent/actor/behaviour/supervised.rb,<br /> lib/concurrent/actor/internal_delegations.rb,<br /> lib/concurrent/actor/behaviour/termination.rb,<br /> lib/concurrent/actor/behaviour/supervising.rb,<br /> lib/concurrent/actor/behaviour/sets_results.rb,<br /> lib/concurrent/actor/behaviour/removes_child.rb,<br /> lib/concurrent/actor/behaviour/executes_context.rb,<br /> lib/concurrent/actor/default_dead_letter_handler.rb,<br /> lib/concurrent/actor/behaviour/terminates_children.rb,<br /> lib/concurrent/actor/behaviour/errors_on_unknown_message.rb</span>
 </dd>
   
 </dl>
@@ -252,11 +252,13 @@ Collection classes for Ruby</li>
 <p>see <span class='object_link'><a href="Actor/AbstractContext.html#dead_letter_routing-instance_method" title="Concurrent::Actor::AbstractContext#dead_letter_routing (method)">AbstractContext#dead_letter_routing</a></span> description:</p>
 
 <blockquote>
-<p><p>Defines an actor responsible for dead letters. Any rejected message send with
-<span class='object_link'><a href="Actor/Reference.html#tell-instance_method" title="Concurrent::Actor::Reference#tell (method)">Reference#tell</a></span> is sent there, a message with ivar is considered already monitored for
-failures. Default behaviour is to use <span class='object_link'><a href="Actor/AbstractContext.html#dead_letter_routing-instance_method" title="Concurrent::Actor::AbstractContext#dead_letter_routing (method)">AbstractContext#dead_letter_routing</a></span> of the parent,
-so if no <span class='object_link'><a href="Actor/AbstractContext.html#dead_letter_routing-instance_method" title="Concurrent::Actor::AbstractContext#dead_letter_routing (method)">AbstractContext#dead_letter_routing</a></span> method is overridden in parent-chain the message ends up in
-<code>Actor.root.dead_letter_routing</code> agent which will log warning.</p>
+<p><p>Defines an actor responsible for dead letters. Any rejected message send
+with <span class='object_link'><a href="Actor/Reference.html#tell-instance_method" title="Concurrent::Actor::Reference#tell (method)">Reference#tell</a></span> is sent there, a message with ivar is considered
+already monitored for failures. Default behaviour is to use
+<span class='object_link'><a href="Actor/AbstractContext.html#dead_letter_routing-instance_method" title="Concurrent::Actor::AbstractContext#dead_letter_routing (method)">AbstractContext#dead_letter_routing</a></span> of the parent, so if no
+<span class='object_link'><a href="Actor/AbstractContext.html#dead_letter_routing-instance_method" title="Concurrent::Actor::AbstractContext#dead_letter_routing (method)">AbstractContext#dead_letter_routing</a></span> method is overridden in
+parent-chain the message ends up in <code>Actor.root.dead_letter_routing</code>
+agent which will log warning.</p>
 </p>
 </blockquote>
 
@@ -655,12 +657,12 @@ native threads. Actor is using constant number of threads.</p>
       <pre class="lines">
 
 
-38
 39
-40</pre>
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 39</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='lbracket'>[</span><span class='symbol'>:__current_actor__</span><span class='rbracket'>]</span>
@@ -695,12 +697,12 @@ native threads. Actor is using constant number of threads.</p>
       <pre class="lines">
 
 
-99
-100
-101</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 101</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_i_know_it_is_experimental!'>i_know_it_is_experimental!</span>
   <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Method Actor.i_know_it_is_experimental! is deprecated. The Actors are no longer experimental.</span><span class='tstring_end'>&#39;</span></span>
@@ -735,12 +737,12 @@ native threads. Actor is using constant number of threads.</p>
       <pre class="lines">
 
 
-49
 50
-51</pre>
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_root'>root</span>
   <span class='ivar'>@root</span><span class='period'>.</span><span class='id identifier rubyid_value!'>value!</span>
@@ -784,7 +786,7 @@ native threads. Actor is using constant number of threads.</p>
       <pre class="example code"><code>Actor.spawn name:     :ping3,
               class:    AdHoc,
               args:     [1]
-              executor: Concurrent.configuration.global_task_pool do |add|
+              executor: Concurrent.global_io_executor do |add|
   lambda { |number| number + add }
 end</code></pre>
     
@@ -848,16 +850,16 @@ end</code></pre>
       <pre class="lines">
 
 
-69
 70
 71
 72
 73
 74
-75</pre>
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='const'>Actor</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span>
@@ -896,12 +898,12 @@ end</code></pre>
       <pre class="lines">
 
 
-78
 79
-80</pre>
+80
+81</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_spawn!'>spawn!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='id identifier rubyid_spawn_optionify'>spawn_optionify</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>initialized:</span> <span class='id identifier rubyid_ivar'>ivar</span> <span class='op'>=</span> <span class='const'>IVar</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_ivar'>ivar</span><span class='period'>.</span><span class='id identifier rubyid_no_error!'>no_error!</span> <span class='rbrace'>}</span>
@@ -973,7 +975,8 @@ end</code></pre>
       
       
         &mdash;
-        <div class='inline'><p>of the instance, it&#39;s used to generate the <span class='object_link'><a href="Actor/Core.html#path-instance_method" title="Concurrent::Actor::Core#path (method)">Concurrent::Actor::Core#path</a></span> of the actor</p>
+        <div class='inline'><p>of the instance, it&#39;s used to generate the
+<span class='object_link'><a href="Actor/Core.html#path-instance_method" title="Concurrent::Actor::Core#path (method)">Concurrent::Actor::Core#path</a></span> of the actor</p>
 </div>
       
     </li>
@@ -1024,18 +1027,18 @@ end</code></pre>
       <pre class="lines">
 
 
-88
-89
 90
 91
 92
 93
 94
 95
-96</pre>
+96
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_spawn_optionify'>spawn_optionify</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>==</span> <span class='int'>1</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Hash</span><span class='rparen'>)</span>
@@ -1056,7 +1059,7 @@ end</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:13 2015 by
+  Generated on Mon Mar  9 09:50:48 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

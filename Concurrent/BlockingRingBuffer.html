@@ -600,7 +600,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the first available value and without removing it from the buffer. If buffer is empty returns nil</p>
+    <p>Returns the first available value and without removing it from
+the buffer. If buffer is empty returns nil</p>
 
 
   </div>
@@ -618,7 +619,8 @@
       
       
         &mdash;
-        <div class='inline'><p>the first available value and without removing it from the buffer. If buffer is empty returns nil</p>
+        <div class='inline'><p>the first available value and without removing it from
+the buffer. If buffer is empty returns nil</p>
 </div>
       
     </li>
@@ -631,12 +633,12 @@
       <pre class="lines">
 
 
-56
-57
-58</pre>
+58
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/collection/blocking_ring_buffer.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/collection/blocking_ring_buffer.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_peek'>peek</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@buffer</span><span class='period'>.</span><span class='id identifier rubyid_peek'>peek</span> <span class='rbrace'>}</span>
@@ -743,7 +745,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the first available value and removes it from the buffer. If buffer is empty it blocks until an element is available</p>
+    <p>Returns the first available value and removes it from the buffer.
+If buffer is empty it blocks until an element is available</p>
 
 
   </div>
@@ -761,7 +764,8 @@
       
       
         &mdash;
-        <div class='inline'><p>the first available value and removes it from the buffer. If buffer is empty it blocks until an element is available</p>
+        <div class='inline'><p>the first available value and removes it from the buffer.
+If buffer is empty it blocks until an element is available</p>
 </div>
       
     </li>
@@ -774,17 +778,17 @@
       <pre class="lines">
 
 
-46
 47
 48
 49
 50
 51
 52
-53</pre>
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/collection/blocking_ring_buffer.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/collection/blocking_ring_buffer.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_take'>take</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -804,7 +808,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:25 2015 by
+  Generated on Mon Mar  9 09:50:53 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

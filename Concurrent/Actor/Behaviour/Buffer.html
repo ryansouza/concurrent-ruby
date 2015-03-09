@@ -103,11 +103,12 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>Any message reaching this behaviour is buffered. Only one message is is scheduled
-at any given time. Others are kept in buffer until another one can be scheduled.
-This effective means that messages handled by behaviours before buffer have higher priority
-and they can be processed before messages arriving into buffer. This allows to
-process internal actor messages like (<code>:link</code>, <code>:supervise</code>) processed first.</p>
+    <p>Any message reaching this behaviour is buffered. Only one message is is
+scheduled at any given time. Others are kept in buffer until another one
+can be scheduled. This effectively means that messages handled by
+behaviours before buffer have higher priority and they can be processed
+before messages arriving into buffer. This allows for the processing of
+internal actor messages like (<code>:link</code>, <code>:supervise</code>) first.</p>
 
 
   </div>
@@ -354,14 +355,14 @@ process internal actor messages like (<code>:link</code>, <code>:supervise</code
       <pre class="lines">
 
 
-11
 12
 13
 14
-15</pre>
+15
+16</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 12</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_core'>core</span><span class='comma'>,</span> <span class='id identifier rubyid_subsequent'>subsequent</span><span class='rparen'>)</span>
   <span class='kw'>super</span> <span class='id identifier rubyid_core'>core</span><span class='comma'>,</span> <span class='id identifier rubyid_subsequent'>subsequent</span>
@@ -458,14 +459,14 @@ process internal actor messages like (<code>:link</code>, <code>:supervise</code
       <pre class="lines">
 
 
-17
 18
 19
 20
-21</pre>
+21
+22</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_envelope'>on_envelope</span><span class='lparen'>(</span><span class='id identifier rubyid_envelope'>envelope</span><span class='rparen'>)</span>
   <span class='ivar'>@buffer</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span> <span class='id identifier rubyid_envelope'>envelope</span>
@@ -492,17 +493,17 @@ process internal actor messages like (<code>:link</code>, <code>:supervise</code
       <pre class="lines">
 
 
-43
 44
 45
 46
 47
 48
 49
-50</pre>
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_event'>on_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_event'>event</span>
@@ -532,17 +533,17 @@ process internal actor messages like (<code>:link</code>, <code>:supervise</code
       <pre class="lines">
 
 
-34
 35
 36
 37
 38
 39
 40
-41</pre>
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_process_envelope'>process_envelope</span>
   <span class='id identifier rubyid_envelope'>envelope</span> <span class='op'>=</span> <span class='ivar'>@buffer</span><span class='period'>.</span><span class='id identifier rubyid_shift'>shift</span>
@@ -598,15 +599,15 @@ even though the Actor is flooded with messages.</p>
       <pre class="lines">
 
 
-27
 28
 29
 30
 31
-32</pre>
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/behaviour/buffer.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_process_envelopes?'>process_envelopes?</span>
   <span class='kw'>unless</span> <span class='ivar'>@buffer</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>||</span> <span class='ivar'>@receive_envelope_scheduled</span>
@@ -624,7 +625,7 @@ even though the Actor is flooded with messages.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:22 2015 by
+  Generated on Mon Mar  9 09:50:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

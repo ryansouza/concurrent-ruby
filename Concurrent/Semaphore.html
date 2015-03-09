@@ -105,11 +105,12 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>A counting semaphore. Conceptually, a semaphore maintains a set of permits. Each <span class='object_link'><a href="MutexSemaphore.html#acquire-instance_method" title="Concurrent::MutexSemaphore#acquire (method)">MutexSemaphore#acquire</a></span> blocks if necessary
-until a permit is available, and then takes it. Each <span class='object_link'><a href="MutexSemaphore.html#release-instance_method" title="Concurrent::MutexSemaphore#release (method)">MutexSemaphore#release</a></span> adds a permit,
-potentially releasing a blocking acquirer.
-However, no actual permit objects are used; the Semaphore just keeps a count of the number available and
-acts accordingly.</p>
+    <p>A counting semaphore. Conceptually, a semaphore maintains a set of
+permits. Each <span class='object_link'><a href="MutexSemaphore.html#acquire-instance_method" title="Concurrent::MutexSemaphore#acquire (method)">MutexSemaphore#acquire</a></span> blocks if necessary until a permit is
+available, and then takes it. Each <span class='object_link'><a href="MutexSemaphore.html#release-instance_method" title="Concurrent::MutexSemaphore#release (method)">MutexSemaphore#release</a></span> adds a permit, potentially
+releasing a blocking acquirer.
+However, no actual permit objects are used; the Semaphore just keeps a
+count of the number available and acts accordingly.</p>
 
 
   </div>
@@ -137,7 +138,7 @@ acts accordingly.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:20 2015 by
+  Generated on Mon Mar  9 09:50:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

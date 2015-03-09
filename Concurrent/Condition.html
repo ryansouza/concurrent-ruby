@@ -101,14 +101,15 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>Condition is a better implementation of standard Ruby ConditionVariable.
-The biggest difference is the wait return value: Condition#wait returns
-Condition::Result which make possible to know if waiting thread has been woken up
-by an another thread (using #signal or #broadcast) or due to timeout.</p>
+    <p>Condition is a better implementation of standard Ruby ConditionVariable. The
+biggest difference is the wait return value: Condition#wait returns
+Condition::Result which make possible to know if waiting thread has been
+woken up by an another thread (using #signal or #broadcast) or due to
+timeout.</p>
 
-<p>Every #wait must be guarded by a locked Mutex or a ThreadError will be risen.
-Although it&#39;s not mandatory, it&#39;s recommended to call also #signal and #broadcast within
-the same mutex</p>
+<p>Every #wait must be guarded by a locked Mutex or a ThreadError will be
+risen. Although it&#39;s not mandatory, it&#39;s recommended to call also #signal
+and #broadcast within the same mutex</p>
 
 
   </div>
@@ -265,12 +266,12 @@ the same mutex</p>
       <pre class="lines">
 
 
-34
-35
-36</pre>
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 39</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@condition</span> <span class='op'>=</span> <span class='const'>ConditionVariable</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -325,13 +326,13 @@ the same mutex</p>
       <pre class="lines">
 
 
-61
-62
-63
-64</pre>
+68
+69
+70
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_broadcast'>broadcast</span>
   <span class='ivar'>@condition</span><span class='period'>.</span><span class='id identifier rubyid_broadcast'>broadcast</span>
@@ -380,13 +381,13 @@ the same mutex</p>
       <pre class="lines">
 
 
-54
-55
-56
-57</pre>
+61
+62
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_signal'>signal</span>
   <span class='ivar'>@condition</span><span class='period'>.</span><span class='id identifier rubyid_signal'>signal</span>
@@ -409,6 +410,25 @@ the same mutex</p>
 </h3><div class="docstring">
   <div class="discussion">
     
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Time calculations one all platforms and languages are sensitive to
+changes to the system clock. To alleviate the potential problems
+associated with changing the system clock while an application is running,
+most modern operating systems provide a monotonic clock that operates
+independently of the system clock. A monotonic clock cannot be used to
+determine human-friendly clock times. A monotonic clock is used exclusively
+for calculating time intervals. Not all Ruby platforms provide access to an
+operating system monotonic clock. On these platforms a pure-Ruby monotonic
+clock will be used as a fallback. An operating system monotonic clock is both
+faster and more reliable than the pure-Ruby implementation. The pure-Ruby
+implementation should be fast and reliable enough for most non-realtime
+operations. At this time the common Ruby platforms that provide access to an
+operating system monotonic clock are MRI 2.1 and above and JRuby (all versions).</p>
+</div>
+  </div>
+
+
 
   </div>
 </div>
@@ -464,34 +484,41 @@ the same mutex</p>
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="http://linux.die.net/man/3/clock_gettime" target="_parent" title="Linux clock_gettime(3)">Linux clock_gettime(3)</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-41
-42
-43
-44
-45
-46
-47
 48
 49
-50</pre>
+50
+51
+52
+53
+54
+55
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/condition.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_mutex'>mutex</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_start_time'>start_time</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span>
+  <span class='id identifier rubyid_start_time'>start_time</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_monotonic_time'>monotonic_time</span>
   <span class='ivar'>@condition</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_mutex'>mutex</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
     <span class='const'>Result</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
-    <span class='const'>Result</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_start_time'>start_time</span> <span class='op'>+</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>-</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rparen'>)</span>
+    <span class='const'>Result</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_start_time'>start_time</span> <span class='op'>+</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>-</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_monotonic_time'>monotonic_time</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -504,7 +531,7 @@ the same mutex</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:20 2015 by
+  Generated on Mon Mar  9 09:50:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

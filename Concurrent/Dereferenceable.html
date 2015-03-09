@@ -94,15 +94,21 @@
 the <code>#value</code> of a concurrent object is a mutable reference. Which is always the
 case unless the value is a <code>Fixnum</code>, <code>Symbol</code>, or similar &quot;primitive&quot; data type.
 Most classes in this library that expose a <code>#value</code> getter method do so using the
-<code>Dereferenceable</code> mixin module. </p>
+<code>Dereferenceable</code> mixin module.</p>
 
 <p>Objects with this mixin can be configured with a few options that can help protect
 the program from potentially dangerous operations.</p>
 
 <ul>
-<li><code>:dup_on_deref</code> when true  will call the <code>#dup</code> method on the <code>value</code> object every time the <code>#value</code> method is called (default: false)</li>
-<li><code>:freeze_on_deref</code> when true  will call the <code>#freeze</code> method on the <code>value</code> object every time the <code>#value</code> method is called (default: false)</li>
-<li><code>:copy_on_deref</code> when given a <code>Proc</code> object the <code>Proc</code> will be run every time the <code>#value</code> method is called. The <code>Proc</code> will be given the current <code>value</code> as its only parameter and the result returned by the block will be the return value of the <code>#value</code> call. When <code>nil</code> this option will be ignored (default: nil)</li>
+<li><code>:dup_on_deref</code> when true will call the <code>#dup</code> method on the <code>value</code>
+object every time the <code>#value</code> method is called (default: false)</li>
+<li><code>:freeze_on_deref</code> when true  will call the <code>#freeze</code> method on the <code>value</code> object
+every time the <code>#value</code> method is called (default: false)</li>
+<li><code>:copy_on_deref</code> when given a <code>Proc</code> object the <code>Proc</code> will be run every
+time the <code>#value</code> method is called. The <code>Proc</code> will be given the current
+<code>value</code> as its only parameter and the result returned by the block will
+be the return value of the <code>#value</code> call. When <code>nil</code> this option will be
+ignored (default: nil)</li>
 </ul>
 
 
@@ -291,12 +297,12 @@ the program from potentially dangerous operations.</p>
       <pre class="lines">
 
 
-71
-72
-73</pre>
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_init_mutex'>init_mutex</span>
   <span class='ivar'>@mutex</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -351,12 +357,12 @@ method. Operations performed by the including class that operate on the
       <pre class="lines">
 
 
-62
-63
-64</pre>
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mutex'>mutex</span>
   <span class='ivar'>@mutex</span>
@@ -462,8 +468,8 @@ object creation.</p>
             
           </span>
           
-            &mdash; <div class='inline'><p>call the given <code>Proc</code> passing the internal value and
-returning the value returned from the proc</p>
+            &mdash; <div class='inline'><p>call the given <code>Proc</code> passing
+the internal value and returning the value returned from the proc</p>
 </div>
           
         </li>
@@ -478,19 +484,19 @@ returning the value returned from the proc</p>
       <pre class="lines">
 
 
-87
-88
-89
-90
-91
-92
 93
 94
 95
-96</pre>
+96
+97
+98
+99
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 87</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 93</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_set_deref_options'>set_deref_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -571,15 +577,15 @@ or Haskell) as we are likely to get in Ruby.</p>
       <pre class="lines">
 
 
-35
-36
-37
-38
-39
-40</pre>
+41
+42
+43
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value'>value</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -636,15 +642,15 @@ or Haskell) as we are likely to get in Ruby.</p>
       <pre class="lines">
 
 
-49
-50
-51
-52
-53
-54</pre>
+55
+56
+57
+58
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/dereferenceable.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value='>value=</span><span class='lparen'>(</span><span class='id identifier rubyid_val'>val</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
@@ -662,7 +668,7 @@ or Haskell) as we are likely to get in Ruby.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:13 2015 by
+  Generated on Mon Mar  9 09:50:48 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

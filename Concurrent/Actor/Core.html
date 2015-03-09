@@ -108,14 +108,16 @@
     
   <div class="note notetag">
     <strong>Note:</strong>
-    <div class='inline'><p>Whole class should be considered private. An user should use <span class='object_link'><a href="Context.html" title="Concurrent::Actor::Context (class)">Context</a></span>s and <span class='object_link'><a href="Reference.html" title="Concurrent::Actor::Reference (class)">Reference</a></span>s only.</p>
+    <div class='inline'><p>Whole class should be considered private. An user should use
+<span class='object_link'><a href="Context.html" title="Concurrent::Actor::Context (class)">Context</a></span>s and <span class='object_link'><a href="Reference.html" title="Concurrent::Actor::Reference (class)">Reference</a></span>s only.</p>
 </div>
   </div>
 
   <div class="note notetag">
     <strong>Note:</strong>
-    <div class='inline'><p>devel: core should not block on anything, e.g. it cannot wait on children to terminate
-that would eat up all threads in task pool and deadlock</p>
+    <div class='inline'><p>devel: core should not block on anything, e.g. it cannot wait on
+children to terminate that would eat up all threads in task pool and
+deadlock</p>
 </div>
   </div>
 
@@ -1010,7 +1012,7 @@ that would eat up all threads in task pool and deadlock</p>
             
           </span>
           
-            &mdash; <div class='inline'><p>default is <code>Concurrent.configuration.global_task_pool</code></p>
+            &mdash; <div class='inline'><p>default is <code>Concurrent.global_io_executor</code></p>
 </div>
           
         </li>
@@ -1046,8 +1048,8 @@ that would eat up all threads in task pool and deadlock</p>
             
           </span>
           
-            &mdash; <div class='inline'><p>array of pairs
-where each pair is behaviour class and its args, see <span class='object_link'><a href="Behaviour.html#basic_behaviour_definition-class_method" title="Concurrent::Actor::Behaviour.basic_behaviour_definition (method)">Behaviour.basic_behaviour_definition</a></span></p>
+            &mdash; <div class='inline'><p>array of pairs where each pair is behaviour
+class and its args, see <span class='object_link'><a href="Behaviour.html#basic_behaviour_definition-class_method" title="Concurrent::Actor::Behaviour.basic_behaviour_definition (method)">Behaviour.basic_behaviour_definition</a></span></p>
 </div>
           
         </li>
@@ -1059,7 +1061,8 @@ where each pair is behaviour class and its args, see <span class='object_link'><
             
           </span>
           
-            &mdash; <div class='inline'><p>if present it&#39;ll be set or failed after <span class='object_link'><a href="Context.html" title="Concurrent::Actor::Context (class)">Concurrent::Actor::Context</a></span> initialization</p>
+            &mdash; <div class='inline'><p>if present it&#39;ll be set or failed
+after <span class='object_link'><a href="Context.html" title="Concurrent::Actor::Context (class)">Concurrent::Actor::Context</a></span> initialization</p>
 </div>
           
         </li>
@@ -1071,8 +1074,9 @@ where each pair is behaviour class and its args, see <span class='object_link'><
             
           </span>
           
-            &mdash; <div class='inline'><p>a proc accepting (level, progname, message = nil, &amp;block) params,
-can be used to hook actor instance to any logging system</p>
+            &mdash; <div class='inline'><p>a proc accepting (level, progname,
+message = nil, &amp;block) params, can be used to hook actor instance to
+any logging system</p>
 </div>
           
         </li>
@@ -1089,11 +1093,6 @@ can be used to hook actor instance to any logging system</p>
       <pre class="lines">
 
 
-45
-46
-47
-48
-49
 50
 51
 52
@@ -1141,10 +1140,15 @@ can be used to hook actor instance to any logging system</p>
 94
 95
 96
-97</pre>
+97
+98
+99
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -1155,7 +1159,7 @@ can be used to hook actor instance to any logging system</p>
     <span class='ivar'>@context_class</span> <span class='op'>=</span> <span class='id identifier rubyid_Child!'>Child!</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:class</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='const'>AbstractContext</span>
     <span class='id identifier rubyid_allocate_context'>allocate_context</span>
 
-    <span class='ivar'>@executor</span> <span class='op'>=</span> <span class='id identifier rubyid_Type!'>Type!</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:executor</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_configuration'>configuration</span><span class='period'>.</span><span class='id identifier rubyid_global_task_pool'>global_task_pool</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='const'>Executor</span>
+    <span class='ivar'>@executor</span> <span class='op'>=</span> <span class='id identifier rubyid_Type!'>Type!</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:executor</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='const'>Executor</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ImmediateExecutor is not supported</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>ImmediateExecutor</span>
 
     <span class='ivar'>@reference</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_Child!'>Child!</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:reference_class</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='ivar'>@context</span><span class='period'>.</span><span class='id identifier rubyid_default_reference_class'>default_reference_class</span><span class='comma'>,</span> <span class='const'>Reference</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>self</span>
@@ -1253,10 +1257,10 @@ can be used to hook actor instance to any logging system</p>
       <pre class="lines">
 
 
-29</pre>
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 31</span>
 
 <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:reference</span><span class='comma'>,</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='symbol'>:path</span><span class='comma'>,</span> <span class='symbol'>:executor</span><span class='comma'>,</span> <span class='symbol'>:context_class</span><span class='comma'>,</span> <span class='symbol'>:context</span><span class='comma'>,</span> <span class='symbol'>:behaviour_definition</span></pre>
     </td>
@@ -1291,12 +1295,12 @@ can be used to hook actor instance to any logging system</p>
       <pre class="lines">
 
 
-29
-30
-31</pre>
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_behaviour_definition'>behaviour_definition</span>
   <span class='ivar'>@behaviour_definition</span>
@@ -1333,12 +1337,12 @@ can be used to hook actor instance to any logging system</p>
       <pre class="lines">
 
 
-29
-30
-31</pre>
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_context'>context</span>
   <span class='ivar'>@context</span>
@@ -1375,12 +1379,12 @@ can be used to hook actor instance to any logging system</p>
       <pre class="lines">
 
 
-29
-30
-31</pre>
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_context_class'>context_class</span>
   <span class='ivar'>@context_class</span>
@@ -1434,10 +1438,10 @@ can be used to hook actor instance to any logging system</p>
       <pre class="lines">
 
 
-29</pre>
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 31</span>
 
 <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:reference</span><span class='comma'>,</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='symbol'>:path</span><span class='comma'>,</span> <span class='symbol'>:executor</span><span class='comma'>,</span> <span class='symbol'>:context_class</span><span class='comma'>,</span> <span class='symbol'>:context</span><span class='comma'>,</span> <span class='symbol'>:behaviour_definition</span></pre>
     </td>
@@ -1489,10 +1493,10 @@ can be used to hook actor instance to any logging system</p>
       <pre class="lines">
 
 
-29</pre>
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 31</span>
 
 <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:reference</span><span class='comma'>,</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='symbol'>:path</span><span class='comma'>,</span> <span class='symbol'>:executor</span><span class='comma'>,</span> <span class='symbol'>:context_class</span><span class='comma'>,</span> <span class='symbol'>:context</span><span class='comma'>,</span> <span class='symbol'>:behaviour_definition</span></pre>
     </td>
@@ -1552,10 +1556,10 @@ in future versions.)</p>
       <pre class="lines">
 
 
-29</pre>
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 31</span>
 
 <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:reference</span><span class='comma'>,</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='symbol'>:path</span><span class='comma'>,</span> <span class='symbol'>:executor</span><span class='comma'>,</span> <span class='symbol'>:context_class</span><span class='comma'>,</span> <span class='symbol'>:context</span><span class='comma'>,</span> <span class='symbol'>:behaviour_definition</span></pre>
     </td>
@@ -1607,12 +1611,12 @@ in future versions.)</p>
       <pre class="lines">
 
 
-29
-30
-31</pre>
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_reference'>reference</span>
   <span class='ivar'>@reference</span>
@@ -1657,15 +1661,15 @@ in future versions.)</p>
       <pre class="lines">
 
 
-116
-117
-118
-119
-120
-121</pre>
+121
+122
+123
+124
+125
+126</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_child'>add_child</span><span class='lparen'>(</span><span class='id identifier rubyid_child'>child</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_guard!'>guard!</span>
@@ -1706,12 +1710,12 @@ in future versions.)</p>
       <pre class="lines">
 
 
-187
-188
-189</pre>
+192
+193
+194</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 187</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 192</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_allocate_context'>allocate_context</span>
   <span class='ivar'>@context</span> <span class='op'>=</span> <span class='ivar'>@context_class</span><span class='period'>.</span><span class='id identifier rubyid_allocate'>allocate</span>
@@ -1778,12 +1782,12 @@ in future versions.)</p>
       <pre class="lines">
 
 
-175
-176
-177</pre>
+180
+181
+182</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 175</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 180</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_behaviour'>behaviour</span><span class='lparen'>(</span><span class='id identifier rubyid_behaviour_class'>behaviour_class</span><span class='rparen'>)</span>
   <span class='ivar'>@behaviours</span><span class='lbracket'>[</span><span class='id identifier rubyid_behaviour_class'>behaviour_class</span><span class='rbracket'>]</span>
@@ -1867,12 +1871,12 @@ in future versions.)</p>
       <pre class="lines">
 
 
-182
-183
-184</pre>
+187
+188
+189</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 182</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 187</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_behaviour!'>behaviour!</span><span class='lparen'>(</span><span class='id identifier rubyid_behaviour_class'>behaviour_class</span><span class='rparen'>)</span>
   <span class='ivar'>@behaviours</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span> <span class='id identifier rubyid_behaviour_class'>behaviour_class</span>
@@ -1897,12 +1901,12 @@ in future versions.)</p>
       <pre class="lines">
 
 
-169
-170
-171</pre>
+174
+175
+176</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 169</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 174</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_broadcast'>broadcast</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
   <span class='ivar'>@first_behaviour</span><span class='period'>.</span><span class='id identifier rubyid_on_event'>on_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
@@ -1940,13 +1944,13 @@ in future versions.)</p>
       <pre class="lines">
 
 
-192
-193
-194
-195</pre>
+197
+198
+199
+200</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 192</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 197</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_build_context'>build_context</span>
   <span class='ivar'>@context</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span> <span class='symbol'>:initialize_core</span><span class='comma'>,</span> <span class='kw'>self</span>
@@ -2055,13 +2059,13 @@ in future versions.)</p>
       <pre class="lines">
 
 
-110
-111
-112
-113</pre>
+115
+116
+117
+118</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_children'>children</span>
   <span class='id identifier rubyid_guard!'>guard!</span>
@@ -2103,12 +2107,12 @@ in future versions.)</p>
       <pre class="lines">
 
 
-105
-106
-107</pre>
+110
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dead_letter_routing'>dead_letter_routing</span>
   <span class='ivar'>@context</span><span class='period'>.</span><span class='id identifier rubyid_dead_letter_routing'>dead_letter_routing</span>
@@ -2143,14 +2147,14 @@ in future versions.)</p>
       <pre class="lines">
 
 
-140
-141
-142
-143
-144</pre>
+145
+146
+147
+148
+149</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 145</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_guard!'>guard!</span>
   <span class='kw'>unless</span> <span class='const'>Actor</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span> <span class='op'>==</span> <span class='id identifier rubyid_reference'>reference</span>
@@ -2177,12 +2181,12 @@ in future versions.)</p>
       <pre class="lines">
 
 
-146
-147
-148</pre>
+151
+152
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 146</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 151</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_log'>log</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>super</span> <span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='ivar'>@path</span><span class='comma'>,</span> <span class='id identifier rubyid_message'>message</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -2289,13 +2293,13 @@ can be called from other alternative Reference implementations</p>
       <pre class="lines">
 
 
-134
-135
-136
-137</pre>
+139
+140
+141
+142</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 139</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_envelope'>on_envelope</span><span class='lparen'>(</span><span class='id identifier rubyid_envelope'>envelope</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_schedule_execution'>schedule_execution</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_handle_envelope'>handle_envelope</span> <span class='id identifier rubyid_envelope'>envelope</span> <span class='rbrace'>}</span>
@@ -2348,12 +2352,12 @@ can be called from other alternative Reference implementations</p>
       <pre class="lines">
 
 
-100
-101
-102</pre>
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parent'>parent</span>
   <span class='ivar'>@parent_core</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@parent_core</span><span class='period'>.</span><span class='id identifier rubyid_reference'>reference</span>
@@ -2391,15 +2395,15 @@ can be called from other alternative Reference implementations</p>
       <pre class="lines">
 
 
-124
-125
-126
-127
-128
-129</pre>
+129
+130
+131
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 124</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_remove_child'>remove_child</span><span class='lparen'>(</span><span class='id identifier rubyid_child'>child</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_guard!'>guard!</span>
@@ -2438,11 +2442,6 @@ sets Actress.current</p>
       <pre class="lines">
 
 
-152
-153
-154
-155
-156
 157
 158
 159
@@ -2453,10 +2452,15 @@ sets Actress.current</p>
 164
 165
 166
-167</pre>
+167
+168
+169
+170
+171
+172</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 152</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/core.rb', line 157</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_schedule_execution'>schedule_execution</span>
   <span class='ivar'>@serialized_execution</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='ivar'>@executor</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -2540,7 +2544,7 @@ sets Actress.current</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:16 2015 by
+  Generated on Mon Mar  9 09:50:50 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

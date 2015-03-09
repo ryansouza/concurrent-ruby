@@ -101,7 +101,7 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>Allows to store lazy evaluated values under keys. Uses <code>Delay</code>s.</p>
+    <p>Hash-like collection that store lazys evaluated values.</p>
 
 
   </div>
@@ -156,7 +156,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Value stored under the key.</p>
+    <span class="summary_desc"><div class='inline'><p>Element reference.</p>
 </div></span>
   
 </li>
@@ -190,11 +190,11 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#register-instance_method" title="#register (instance method)">- (Object) <strong>register</strong>(key) { ... }</a>
+      <a href="#register-instance_method" title="#register (instance method)">- (LazyRegister) <strong>register</strong>(key) { ... }</a>
     
 
     
-      (also: #add)
+      (also: #add, #store)
     
   </span>
   
@@ -206,7 +206,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Self.</p>
+    <span class="summary_desc"><div class='inline'><p>Element assignment.</p>
 </div></span>
   
 </li>
@@ -219,7 +219,7 @@
     
 
     
-      (also: #key?)
+      (also: #key?, #has_key?)
     
   </span>
   
@@ -231,7 +231,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>If the key is registered.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns true if the given key is present.</p>
 </div></span>
   
 </li>
@@ -240,11 +240,11 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#unregister-instance_method" title="#unregister (instance method)">- (Object) <strong>unregister</strong>(key) </a>
+      <a href="#unregister-instance_method" title="#unregister (instance method)">- (LazyRegister) <strong>unregister</strong>(key) </a>
     
 
     
-      (also: #remove)
+      (also: #remove, #delete)
     
   </span>
   
@@ -293,12 +293,12 @@
       <pre class="lines">
 
 
-17
-18
-19</pre>
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@data</span> <span class='op'>=</span> <span class='const'>Atomic</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -326,7 +326,9 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns value stored under the key</p>
+    <p>Element reference. Retrieves the value object corresponding to the
+key object. Returns nil if the key is not found. Raises an exception
+if the stored item raised an exception when the block was evaluated.</p>
 
 
   </div>
@@ -354,12 +356,12 @@
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Object</tt>)</span>
       
       
       
-        
-        <div class='inline'><p>value stored under the key</p>
+        &mdash;
+        <div class='inline'><p>value stored for the key or nil if the key is not found</p>
 </div>
       
     </li>
@@ -389,17 +391,17 @@
       <pre class="lines">
 
 
-24
-25
-26
-27</pre>
+31
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='op'>[]</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_delay'>delay</span> <span class='op'>=</span> <span class='ivar'>@data</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_delay'>delay</span><span class='period'>.</span><span class='id identifier rubyid_value!'>value!</span> <span class='kw'>if</span> <span class='id identifier rubyid_delay'>delay</span>
+  <span class='id identifier rubyid_delay'>delay</span> <span class='op'>?</span> <span class='id identifier rubyid_delay'>delay</span><span class='period'>.</span><span class='id identifier rubyid_value!'>value!</span> <span class='op'>:</span> <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -409,19 +411,20 @@
       <div class="method_details ">
   <h3 class="signature " id="register-instance_method">
   
-    - (<tt>Object</tt>) <strong>register</strong>(key) { ... }
+    - (<tt><span class='object_link'><a href="" title="Concurrent::LazyRegister (class)">LazyRegister</a></span></tt>) <strong>register</strong>(key) { ... }
   
 
   
     <span class="aliases">Also known as:
-    <span class="names"><span id='add-instance_method'>add</span></span>
+    <span class="names"><span id='add-instance_method'>add</span>, <span id='store-instance_method'>store</span></span>
     </span>
   
 
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns self</p>
+    <p>Element assignment. Associates the value given by value with the
+key given by key.</p>
 
 
   </div>
@@ -466,11 +469,11 @@
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Concurrent::LazyRegister (class)">LazyRegister</a></span></tt>)</span>
       
       
       
-        
+        &mdash;
         <div class='inline'><p>self</p>
 </div>
       
@@ -484,18 +487,18 @@
       <pre class="lines">
 
 
-40
-41
-42
-43
-44</pre>
+54
+55
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_register'>register</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_delay'>delay</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='ivar'>@data</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_h'>h</span><span class='op'>|</span> <span class='id identifier rubyid_h'>h</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span> <span class='id identifier rubyid_key'>key</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_delay'>delay</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_delay'>delay</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>executor:</span> <span class='symbol'>:immediate</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='ivar'>@data</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_h'>h</span><span class='op'>|</span> <span class='id identifier rubyid_h'>h</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_delay'>delay</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -511,14 +514,14 @@
 
   
     <span class="aliases">Also known as:
-    <span class="names"><span id='key?-instance_method'>key?</span></span>
+    <span class="names"><span id='key?-instance_method'>key?</span>, <span id='has_key?-instance_method'>has_key?</span></span>
     </span>
   
 
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns if the key is registered</p>
+    <p>Returns true if the given key is present.</p>
 
 
   </div>
@@ -564,15 +567,15 @@
       <pre class="lines">
 
 
-31
-32
-33</pre>
+40
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_registered?'>registered?</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
-  <span class='ivar'>@data</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span> <span class='id identifier rubyid_key'>key</span>
+  <span class='ivar'>@data</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -582,19 +585,19 @@
       <div class="method_details ">
   <h3 class="signature " id="unregister-instance_method">
   
-    - (<tt>Object</tt>) <strong>unregister</strong>(key) 
+    - (<tt><span class='object_link'><a href="" title="Concurrent::LazyRegister (class)">LazyRegister</a></span></tt>) <strong>unregister</strong>(key) 
   
 
   
     <span class="aliases">Also known as:
-    <span class="names"><span id='remove-instance_method'>remove</span></span>
+    <span class="names"><span id='remove-instance_method'>remove</span>, <span id='delete-instance_method'>delete</span></span>
     </span>
   
 
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Un-registers the object under key, realized or not</p>
+    <p>Un-registers the object under key, realized or not.</p>
 
 
   </div>
@@ -622,11 +625,11 @@
     <li>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Concurrent::LazyRegister (class)">LazyRegister</a></span></tt>)</span>
       
       
       
-        
+        &mdash;
         <div class='inline'><p>self</p>
 </div>
       
@@ -640,13 +643,13 @@
       <pre class="lines">
 
 
-51
-52
-53
-54</pre>
+68
+69
+70
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/lazy_register.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unregister'>unregister</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
   <span class='ivar'>@data</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_h'>h</span><span class='op'>|</span> <span class='id identifier rubyid_h'>h</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_j'>j</span><span class='op'>|</span> <span class='id identifier rubyid_j'>j</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='rbrace'>}</span>
@@ -662,7 +665,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:18 2015 by
+  Generated on Mon Mar  9 09:50:50 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

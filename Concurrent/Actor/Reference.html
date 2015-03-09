@@ -682,8 +682,8 @@ see <span class='object_link'><a href="PublicDelegations.html" title="Concurrent
   </div>
 
 <p>testing and when it returns very shortly. It can lead to deadlock if all threads in
-global_task_pool will block on while asking. It&#39;s fine to use it form outside of actors and
-global_task_pool.</p>
+global_io_executor will block on while asking. It&#39;s fine to use it form outside of actors and
+global_io_executor.</p>
 
 <p>sends message to the actor and asks for the result of its processing, returns immediately</p>
 
@@ -782,8 +782,8 @@ global_task_pool.</p>
   </div>
 
 <p>testing and when it returns very shortly. It can lead to deadlock if all threads in
-global_task_pool will block on while asking. It&#39;s fine to use it form outside of actors and
-global_task_pool.</p>
+global_io_executor will block on while asking. It&#39;s fine to use it form outside of actors and
+global_io_executor.</p>
 
 <p>sends message to the actor and asks for the result of its processing, blocks</p>
 
@@ -1457,7 +1457,7 @@ global_task_pool.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:19 2015 by
+  Generated on Mon Mar  9 09:50:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>

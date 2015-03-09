@@ -113,63 +113,6 @@
 
 
 
-  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
-  <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#auto_terminate-instance_method" title="#auto_terminate (instance method)">- (Object) <strong>auto_terminate</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>defines if executors should be auto-terminated in at_exit callback.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#logger-instance_method" title="#logger (instance method)">- (Object) <strong>logger</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>a proc defining how to log messages, its interface has to be:   lambda { |level, progname, message = nil, &amp;block| _ }.</p>
-</div></span>
-  
-</li>
-
-    
-  </ul>
-
 
 
 
@@ -181,10 +124,10 @@
 
     <ul class="summary">
       
-        <li class="public ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
-      <a href="#global_operation_pool-instance_method" title="#global_operation_pool (instance method)">- (ThreadPoolExecutor) <strong>global_operation_pool</strong> </a>
+      <a href="#auto_terminate-instance_method" title="#auto_terminate (instance method)">- (Object) <strong>auto_terminate</strong> </a>
     
 
     
@@ -194,20 +137,20 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Global thread pool optimized for long <em>operations</em>.</p>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.auto_terminate_global_executors? instead</p>
 </div></span>
   
 </li>
 
       
-        <li class="public ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
-      <a href="#global_operation_pool%3D-instance_method" title="#global_operation_pool= (instance method)">- (ThreadPoolExecutor) <strong>global_operation_pool=</strong>(executor) </a>
+      <a href="#auto_terminate%3D-instance_method" title="#auto_terminate= (instance method)">- (Object) <strong>auto_terminate=</strong>(value) </a>
     
 
     
@@ -217,20 +160,20 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Global thread pool optimized for long <em>operations</em>.</p>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.disable_auto_termination_of_global_executors! instead</p>
 </div></span>
   
 </li>
 
       
-        <li class="public ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
-      <a href="#global_task_pool-instance_method" title="#global_task_pool (instance method)">- (ThreadPoolExecutor) <strong>global_task_pool</strong> </a>
+      <a href="#global_operation_pool-instance_method" title="#global_operation_pool (instance method)">- (Object) <strong>global_operation_pool</strong> </a>
     
 
     
@@ -240,20 +183,20 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Global thread pool optimized for short <em>tasks</em>.</p>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_fast_executor instead</p>
 </div></span>
   
 </li>
 
       
-        <li class="public ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
-      <a href="#global_task_pool%3D-instance_method" title="#global_task_pool= (instance method)">- (ThreadPoolExecutor) <strong>global_task_pool=</strong>(executor) </a>
+      <a href="#global_operation_pool%3D-instance_method" title="#global_operation_pool= (instance method)">- (Object) <strong>global_operation_pool=</strong>(executor) </a>
     
 
     
@@ -263,20 +206,21 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Global thread pool optimized for short <em>tasks</em>.</p>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Replacing global thread pools is deprecated.
+Use the :executor constructor option instead.</p>
 </div></span>
   
 </li>
 
       
-        <li class="public ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
-      <a href="#global_timer_set-instance_method" title="#global_timer_set (instance method)">- (ThreadPoolExecutor) <strong>global_timer_set</strong> </a>
+      <a href="#global_task_pool-instance_method" title="#global_task_pool (instance method)">- (Object) <strong>global_task_pool</strong> </a>
     
 
     
@@ -286,11 +230,58 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Global thread pool optimized for <em>timers</em>.</p>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_io_executor instead</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public deprecated">
+  <span class="summary_signature">
+    
+      <a href="#global_task_pool%3D-instance_method" title="#global_task_pool= (instance method)">- (Object) <strong>global_task_pool=</strong>(executor) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  <span class="deprecated note title">deprecated</span>
+  
+
+  
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Replacing global thread pools is deprecated.
+Use the :executor constructor option instead.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public deprecated">
+  <span class="summary_signature">
+    
+      <a href="#global_timer_set-instance_method" title="#global_timer_set (instance method)">- (Object) <strong>global_timer_set</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  <span class="deprecated note title">deprecated</span>
+  
+
+  
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_timer_set instead</p>
 </div></span>
   
 </li>
@@ -321,7 +312,53 @@
 </li>
 
       
-        <li class="public ">
+        <li class="public deprecated">
+  <span class="summary_signature">
+    
+      <a href="#logger-instance_method" title="#logger (instance method)">- (Object) <strong>logger</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  <span class="deprecated note title">deprecated</span>
+  
+
+  
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_logger instead</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public deprecated">
+  <span class="summary_signature">
+    
+      <a href="#logger%3D-instance_method" title="#logger= (instance method)">- (Object) <strong>logger=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  <span class="deprecated note title">deprecated</span>
+  
+
+  
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_logger instead</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public deprecated">
   <span class="summary_signature">
     
       <a href="#new_operation_pool-instance_method" title="#new_operation_pool (instance method)">- (Object) <strong>new_operation_pool</strong> </a>
@@ -334,16 +371,17 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.new_fast_executor instead</p>
+</div></span>
   
 </li>
 
       
-        <li class="public ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
       <a href="#new_task_pool-instance_method" title="#new_task_pool (instance method)">- (Object) <strong>new_task_pool</strong> </a>
@@ -356,16 +394,17 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.new_io_executor instead</p>
+</div></span>
   
 </li>
 
       
-        <li class="public ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
       <a href="#no_logger-instance_method" title="#no_logger (instance method)">- (Object) <strong>no_logger</strong> </a>
@@ -378,11 +417,11 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>if assigned to <span class='object_link'><a href="#logger-instance_method" title="Concurrent::Configuration#logger (method)">#logger</a></span>, it will log nothing.</p>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent::NULL_LOGGER instead</p>
 </div></span>
   
 </li>
@@ -419,25 +458,13 @@
       <pre class="lines">
 
 
-24
-25
-26
-27
-28
-29
-30
-31</pre>
+203
+204</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 203</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
-  <span class='id identifier rubyid_immediate_executor'>immediate_executor</span>     <span class='op'>=</span> <span class='const'>ImmediateExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@global_task_pool</span>      <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>executor:</span> <span class='id identifier rubyid_immediate_executor'>immediate_executor</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_new_task_pool'>new_task_pool</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@global_operation_pool</span> <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>executor:</span> <span class='id identifier rubyid_immediate_executor'>immediate_executor</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_new_operation_pool'>new_operation_pool</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@global_timer_set</span>      <span class='op'>=</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>executor:</span> <span class='id identifier rubyid_immediate_executor'>immediate_executor</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>TimerSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@logger</span>                <span class='op'>=</span> <span class='id identifier rubyid_no_logger'>no_logger</span>
-  <span class='ivar'>@auto_terminate</span>        <span class='op'>=</span> <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -446,11 +473,11 @@
   
 </div>
 
-  <div id="instance_attr_details" class="attr_details">
-    <h2>Instance Attribute Details</h2>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
     
-      
-      <span id="auto_terminate=-instance_method"></span>
       <div class="method_details first">
   <h3 class="signature first" id="auto_terminate-instance_method">
   
@@ -462,7 +489,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>defines if executors should be auto-terminated in at_exit callback</p>
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.auto_terminate_global_executors? instead</p>
+</div></div>
 
 
   </div>
@@ -476,23 +504,291 @@
       <pre class="lines">
 
 
-21
-22
-23</pre>
+286
+287
+288
+289</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 286</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_auto_terminate'>auto_terminate</span>
-  <span class='ivar'>@auto_terminate</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.auto_terminate_global_executors? instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_auto_terminate_global_executors?'>auto_terminate_global_executors?</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
 </div>
     
-      
-      <span id="logger=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="auto_terminate=-instance_method">
+  
+    - (<tt>Object</tt>) <strong>auto_terminate=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.disable_auto_termination_of_global_executors! instead</p>
+</div></div>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+280
+281
+282
+283</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 280</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_auto_terminate='>auto_terminate=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.disable_auto_termination_of_global_executors! instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_disable_auto_termination_of_global_executors!'>disable_auto_termination_of_global_executors!</span> <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_value'>value</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="global_operation_pool-instance_method">
+  
+    - (<tt>Object</tt>) <strong>global_operation_pool</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_fast_executor instead</p>
+</div></div>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+238
+239
+240
+241</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 238</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_global_operation_pool'>global_operation_pool</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_fast_executor instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_fast_executor'>global_fast_executor</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="global_operation_pool=-instance_method">
+  
+    - (<tt>Object</tt>) <strong>global_operation_pool=</strong>(executor) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Replacing global thread pools is deprecated.
+Use the :executor constructor option instead.</p>
+</div></div>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+260
+261
+262
+263
+264
+265</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 260</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_global_operation_pool='>global_operation_pool=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Replacing global thread pools is deprecated. Use the :executor constructor option instead.</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_var'>var</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_class_variable_get'>class_variable_get</span><span class='lparen'>(</span><span class='symbol'>:@@global_fast_executor</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_var'>var</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ConfigurationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>global operation pool was already set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="global_task_pool-instance_method">
+  
+    - (<tt>Object</tt>) <strong>global_task_pool</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_io_executor instead</p>
+</div></div>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+232
+233
+234
+235</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 232</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_global_task_pool'>global_task_pool</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_io_executor instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="global_task_pool=-instance_method">
+  
+    - (<tt>Object</tt>) <strong>global_task_pool=</strong>(executor) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Replacing global thread pools is deprecated.
+Use the :executor constructor option instead.</p>
+</div></div>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+251
+252
+253
+254
+255
+256</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 251</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_global_task_pool='>global_task_pool=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Replacing global thread pools is deprecated. Use the :executor constructor option instead.</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_var'>var</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_class_variable_get'>class_variable_get</span><span class='lparen'>(</span><span class='symbol'>:@@global_io_executor</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_var'>var</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ConfigurationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>global task pool was already set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="global_timer_set-instance_method">
+  
+    - (<tt>Object</tt>) <strong>global_timer_set</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_timer_set instead</p>
+</div></div>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+244
+245
+246
+247</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 244</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_global_timer_set'>global_timer_set</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_timer_set instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_timer_set'>global_timer_set</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
       <div class="method_details ">
   <h3 class="signature " id="logger-instance_method">
   
@@ -504,7 +800,9 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>a proc defining how to log messages, its interface has to be:
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_logger instead</p>
+</div></div>
+<p>a proc defining how to log messages, its interface has to be:
   lambda { |level, progname, message = nil, &amp;block| _ }</p>
 
 
@@ -519,79 +817,17 @@
       <pre class="lines">
 
 
-18
-19
-20</pre>
+217
+218
+219
+220</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 217</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_logger'>logger</span>
-  <span class='ivar'>@logger</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-  </div>
-
-
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
-
-    
-      <div class="method_details first">
-  <h3 class="signature first" id="global_operation_pool-instance_method">
-  
-    - (<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>) <strong>global_operation_pool</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Global thread pool optimized for long <em>operations</em>.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the thread pool</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-48
-49
-50</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 48</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_global_operation_pool'>global_operation_pool</span>
-  <span class='ivar'>@global_operation_pool</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_logger instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_logger'>global_logger</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -599,111 +835,9 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="global_operation_pool=-instance_method">
+  <h3 class="signature " id="logger=-instance_method">
   
-    - (<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>) <strong>global_operation_pool=</strong>(executor) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Global thread pool optimized for long <em>operations</em>.</p>
-
-<p>A global thread pool must be set as soon as the gem is loaded. Setting a new
-thread pool once tasks and operations have been post can lead to unpredictable
-results. The first time a task/operation is post a new thread pool will be
-created using the default configuration. Once set the thread pool cannot be
-changed. Thus, explicitly setting the thread pool must occur <em>before</em> any
-tasks/operations are post else an exception will be raised.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>executor</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="Executor.html" title="Concurrent::Executor (module)">Executor</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the executor to be used for this thread pool</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the new thread pool</p>
-</div>
-      
-    </li>
-  
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Concurrent.html#ConfigurationError-constant" title="Concurrent::ConfigurationError (constant)">Concurrent::ConfigurationError</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>if this thread pool has already been set</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-94
-95
-96
-97</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 94</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_global_operation_pool='>global_operation_pool=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
-  <span class='ivar'>@global_operation_pool</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
-      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ConfigurationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>global operation pool was already set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="global_task_pool-instance_method">
-  
-    - (<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>) <strong>global_task_pool</strong> 
+    - (<tt>Object</tt>) <strong>logger=</strong>(value) 
   
 
   
@@ -711,30 +845,16 @@ tasks/operations are post else an exception will be raised.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Global thread pool optimized for short <em>tasks</em>.</p>
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.global_logger instead</p>
+</div></div>
+<p>a proc defining how to log messages, its interface has to be:
+  lambda { |level, progname, message = nil, &amp;block| _ }</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the thread pool</p>
-</div>
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -742,181 +862,17 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-41
-42
-43</pre>
+226
+227
+228
+229</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 226</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_global_task_pool'>global_task_pool</span>
-  <span class='ivar'>@global_task_pool</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="global_task_pool=-instance_method">
-  
-    - (<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>) <strong>global_task_pool=</strong>(executor) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Global thread pool optimized for short <em>tasks</em>.</p>
-
-<p>A global thread pool must be set as soon as the gem is loaded. Setting a new
-thread pool once tasks and operations have been post can lead to unpredictable
-results. The first time a task/operation is post a new thread pool will be
-created using the default configuration. Once set the thread pool cannot be
-changed. Thus, explicitly setting the thread pool must occur <em>before</em> any
-tasks/operations are post else an exception will be raised.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>executor</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="Executor.html" title="Concurrent::Executor (module)">Executor</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the executor to be used for this thread pool</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the new thread pool</p>
-</div>
-      
-    </li>
-  
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Concurrent.html#ConfigurationError-constant" title="Concurrent::ConfigurationError (constant)">Concurrent::ConfigurationError</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>if this thread pool has already been set</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-75
-76
-77
-78</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 75</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_global_task_pool='>global_task_pool=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
-  <span class='ivar'>@global_task_pool</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
-      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ConfigurationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>global task pool was already set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="global_timer_set-instance_method">
-  
-    - (<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>) <strong>global_timer_set</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Global thread pool optimized for <em>timers</em></p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="ThreadPoolExecutor.html" title="Concurrent::ThreadPoolExecutor (class)">ThreadPoolExecutor</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the thread pool</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li>timer</li>
-    
-  </ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-57
-58
-59</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 57</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_global_timer_set'>global_timer_set</span>
-  <span class='ivar'>@global_timer_set</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_logger='>logger=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_logger instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_logger'>global_logger</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -932,33 +888,34 @@ tasks/operations are post else an exception will be raised.</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.new_fast_executor instead</p>
+</div></div>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-109
-110
-111
-112
-113
-114
-115
-116
-117</pre>
+274
+275
+276
+277</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 274</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new_operation_pool'>new_operation_pool</span>
-  <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
-      <span class='label'>min_threads:</span>     <span class='lbracket'>[</span><span class='int'>2</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='comma'>,</span>
-      <span class='label'>max_threads:</span>     <span class='lbracket'>[</span><span class='int'>2</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='comma'>,</span>
-      <span class='label'>idletime:</span>        <span class='int'>10</span> <span class='op'>*</span> <span class='int'>60</span><span class='comma'>,</span> <span class='comment'># 10 minutes
-</span>      <span class='label'>max_queue:</span>       <span class='lbracket'>[</span><span class='int'>20</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span> <span class='op'>*</span> <span class='int'>15</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='comma'>,</span>
-      <span class='label'>fallback_policy:</span> <span class='symbol'>:abort</span> <span class='comment'># raise an exception
-</span>  <span class='rparen'>)</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.new_fast_executor instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_new_fast_executor'>new_fast_executor</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -974,33 +931,34 @@ tasks/operations are post else an exception will be raised.</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.new_io_executor instead</p>
+</div></div>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-99
-100
-101
-102
-103
-104
-105
-106
-107</pre>
+268
+269
+270
+271</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 268</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new_task_pool'>new_task_pool</span>
-  <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
-      <span class='label'>min_threads:</span>     <span class='lbracket'>[</span><span class='int'>2</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='comma'>,</span>
-      <span class='label'>max_threads:</span>     <span class='lbracket'>[</span><span class='int'>20</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_processor_count'>processor_count</span> <span class='op'>*</span> <span class='int'>15</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='comma'>,</span>
-      <span class='label'>idletime:</span>        <span class='int'>2</span> <span class='op'>*</span> <span class='int'>60</span><span class='comma'>,</span> <span class='comment'># 2 minutes
-</span>      <span class='label'>max_queue:</span>       <span class='int'>0</span><span class='comma'>,</span> <span class='comment'># unlimited
-</span>      <span class='label'>fallback_policy:</span> <span class='symbol'>:abort</span> <span class='comment'># raise an exception
-</span>  <span class='rparen'>)</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.new_io_executor instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_new_io_executor'>new_io_executor</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1018,7 +976,9 @@ tasks/operations are post else an exception will be raised.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>if assigned to <span class='object_link'><a href="#logger-instance_method" title="Concurrent::Configuration#logger (method)">#logger</a></span>, it will log nothing.</p>
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent::NULL_LOGGER instead</p>
+</div></div>
+<p>if assigned to <span class='object_link'><a href="#logger-instance_method" title="Concurrent::Configuration#logger (method)">#logger</a></span>, it will log nothing.</p>
 
 
   </div>
@@ -1032,15 +992,17 @@ tasks/operations are post else an exception will be raised.</p>
       <pre class="lines">
 
 
-34
-35
-36</pre>
+208
+209
+210
+211</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 208</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_no_logger'>no_logger</span>
-  <span class='id identifier rubyid_lambda'>lambda</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='id identifier rubyid_progname'>progname</span><span class='comma'>,</span> <span class='id identifier rubyid_message'>message</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='op'>|</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent::NULL_LOGGER instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>NULL_LOGGER</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1052,7 +1014,7 @@ tasks/operations are post else an exception will be raised.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Jan 25 12:58:18 2015 by
+  Generated on Mon Mar  9 09:50:50 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.0).
 </div>
