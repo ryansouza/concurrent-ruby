@@ -32,7 +32,7 @@
       <div id="menu">
   
     <a href="../_index.html">Index (S)</a> &raquo;
-    <span class='title'><span class='object_link'><a href="../Concurrent.html" title="Concurrent (module)">Concurrent</a></span></span>
+    <span class='title'><span class='object_link'><a href="../root/Concurrent.html" title="Concurrent (module)">Concurrent</a></span></span>
      &raquo; 
     <span class="title">ScheduledTask</span>
   
@@ -78,6 +78,8 @@
         <ul class="fullTree">
           <li>Object</li>
           
+            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Concurrent::Synchronization::Object</a></span></li>
+          
             <li class="next"><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">IVar</a></span></li>
           
             <li class="next">Concurrent::ScheduledTask</li>
@@ -92,11 +94,15 @@
     
   
     
+      <dt class="r2">Includes:</dt>
+      <dd class="r2">Comparable</dd>
+      
+    
   
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/concurrent/scheduled_task.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/concurrent/scheduled_task.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -126,7 +132,8 @@ operating system monotonic clock are MRI 2.1 and above and JRuby (all versions).
 important difference: A <code>Future</code> is set to execute as soon as possible
 whereas a <code>ScheduledTask</code> is set to execute after a specified delay. This
 implementation is loosely based on Java&#39;s
-<a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ScheduledExecutorService.html">ScheduledExecutorService</a>. </p>
+<a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ScheduledExecutorService.html">ScheduledExecutorService</a>.
+It is a more feature-rich variant of <span class='object_link'><a href="../root/Concurrent.html#timer-class_method" title="Concurrent.timer (method)">timer</a></span>.</p>
 
 <p>The <em>intended</em> schedule time of task execution is set on object construction
 with the <code>delay</code> argument. The delay is a numeric (floating point or integer)
@@ -136,7 +143,7 @@ time of task execution is set when the <code>execute</code> method is called.</p
 
 <p>The constructor can also be given zero or more processing options. Currently
 the only supported options are those recognized by the
-<a href="Dereferenceable">Dereferenceable</a> module. </p>
+<a href="Dereferenceable">Dereferenceable</a> module.</p>
 
 <p>The final constructor argument is a block representing the task to be performed.
 If no block is given an <code>ArgumentError</code> will be raised.</p>
@@ -146,15 +153,15 @@ If no block is given an <code>ArgumentError</code> will be raised.</p>
 <p><code>ScheduledTask</code> mixes in the  <a href="Obligation">Obligation</a> module thus giving it
 &quot;future&quot; behavior. This includes the expected lifecycle states. <code>ScheduledTask</code>
 has one additional state, however. While the task (block) is being executed the
-state of the object will be <code>:in_progress</code>. This additional state is necessary
-because it has implications for task cancellation. </p>
+state of the object will be <code>:processing</code>. This additional state is necessary
+because it has implications for task cancellation.</p>
 
 <p><strong>Cancellation</strong></p>
 
 <p>A <code>:pending</code> task can be cancelled using the <code>#cancel</code> method. A task in any
-other state, including <code>:in_progress</code>, cannot be cancelled. The <code>#cancel</code>
+other state, including <code>:processing</code>, cannot be cancelled. The <code>#cancel</code>
 method returns a boolean indicating the success of the cancellation attempt.
-A cancelled <code>ScheduledTask</code> cannot be restarted. It is immutable. </p>
+A cancelled <code>ScheduledTask</code> cannot be restarted. It is immutable.</p>
 
 <p><strong>Obligation and Observation</strong></p>
 
@@ -164,6 +171,45 @@ module and the
 <a href="http://ruby-doc.org/stdlib-2.0/libdoc/observer/rdoc/Observable.html">Observable</a>
 module from the Ruby standard library. With one exception <code>ScheduledTask</code>
 behaves identically to <a href="Observable">Future</a> with regard to these modules.</p>
+
+<h2>Copy Options</h2>
+
+<p>Object references in Ruby are mutable. This can lead to serious
+problems when the <span class='object_link'><a href="Concern/Obligation.html#value-instance_method" title="Concurrent::Concern::Obligation#value (method)">Concern::Obligation#value</a></span> of an object is a mutable reference. Which
+is always the case unless the value is a <code>Fixnum</code>, <code>Symbol</code>, or similar
+&quot;primative&quot; data type. Each instance can be configured with a few
+options that can help protect the program from potentially dangerous
+operations. Each of these options can be optionally set when the oject
+instance is created:</p>
+
+<ul>
+<li><code>:dup_on_deref</code> When true the object will call the <code>#dup</code> method on
+the <code>value</code> object every time the <code>#value</code> methid is called
+(default: false)</li>
+<li><code>:freeze_on_deref</code> When true the object will call the <code>#freeze</code>
+method on the <code>value</code> object every time the <code>#value</code> method is called
+(default: false)</li>
+<li><code>:copy_on_deref</code> When given a <code>Proc</code> object the <code>Proc</code> will be run
+every time   the <code>#value</code> method is called. The <code>Proc</code> will be given
+the current <code>value</code> as its only argument and the result returned by
+the block will be the return   value of the <code>#value</code> call. When <code>nil</code>
+this option will be ignored (default: nil)</li>
+</ul>
+
+<p>When multiple deref options are set the order of operations is strictly defined.
+The order of deref operations is:</p>
+
+<ul>
+<li><code>:copy_on_deref</code></li>
+<li><code>:dup_on_deref</code></li>
+<li><code>:freeze_on_deref</code></li>
+</ul>
+
+<p>Because of this ordering there is no need to <code>#freeze</code> an object created by a
+provided <code>:copy_on_deref</code> block. Simply set <code>:freeze_on_deref</code> to <code>true</code>.
+Setting both <code>:dup_on_deref</code> to <code>true</code> and <code>:freeze_on_deref</code> to <code>true</code> is
+as close to the behavior of a &quot;pure&quot; functional language (like Erlang, Clojure,
+or Haskell) as we are likely to get in Ruby.</p>
 
 
   </div>
@@ -249,7 +295,7 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
 </span><span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_fulfilled?'>fulfilled?</span>   <span class='comment'>#=&gt; false
 </span><span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_rejected?'>rejected?</span>    <span class='comment'>#=&gt; true
 </span><span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>        <span class='comment'>#=&gt; nil
-</span><span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_reason'>reason</span>       <span class='comment'>#=&gt; #&lt;StandardError: Call me maybe?&gt; </span></code></pre>
+</span><span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_reason'>reason</span>       <span class='comment'>#=&gt; #&lt;StandardError: Call me maybe?&gt;</span></code></pre>
     
       
         <p class="example_title"><div class='inline'><p>Task execution with observation</p>
@@ -280,6 +326,8 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
     
       <li><a href="http://linux.die.net/man/3/clock_gettime" target="_parent" title="Linux clock_gettime(3)">Linux clock_gettime(3)</a></li>
     
+      <li><span class='object_link'><a href="../root/Concurrent.html#timer-class_method" title="Concurrent.timer (method)">timer</a></span></li>
+    
   </ul>
 
 </div>
@@ -288,70 +336,6 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
 
 
 
-
-  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
-  <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#delay-instance_method" title="#delay (instance method)">- (Object) <strong>delay</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute delay.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#observers-instance_method" title="#observers (instance method)">- (Object) <strong>observers</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Observable.html#observers-instance_method" title="Concurrent::Observable#observers (method)">Observable</a></span>
-    </span>
-  
-  
-  
-    
-    
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute observers.</p>
-</div></span>
-  
-</li>
-
-    
-  </ul>
 
 
 
@@ -367,7 +351,7 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#execute-class_method" title="execute (class method)">+ (ScheduledTask) <strong>execute</strong>(delay, opts = {}, &amp;block) </a>
+      <a href="#execute-class_method" title="execute (class method)">+ (ScheduledTask) <strong>execute</strong>(delay, opts = {}, &amp;task) </a>
     
 
     
@@ -402,8 +386,6 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
       <a href="#cancel-instance_method" title="#cancel (instance method)">- (Boolean) <strong>cancel</strong> </a>
     
 
-    
-      (also: #stop)
     
   </span>
   
@@ -444,10 +426,10 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
 </li>
 
       
-        <li class="protected ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
-      <a href="#complete-instance_method" title="#complete (instance method)">- (Object) <strong>complete</strong> </a>
+      <a href="#delay-instance_method" title="#delay (instance method)">- (Float) <strong>delay</strong> </a>
     
 
     
@@ -455,13 +437,14 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
   
   
   
-  <span class="note title protected">protected</span>
   
   
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>use <span class='object_link'><a href="#initial_delay-instance_method" title="Concurrent::ScheduledTask#initial_delay (method)">#initial_delay</a></span> instead</p>
+</div></span>
   
 </li>
 
@@ -489,29 +472,7 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
 </li>
 
       
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#fail-instance_method" title="#fail (instance method)">- (Object) <strong>fail</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
+        <li class="public deprecated">
   <span class="summary_signature">
     
       <a href="#in_progress%3F-instance_method" title="#in_progress? (instance method)">- (Boolean) <strong>in_progress?</strong> </a>
@@ -524,11 +485,34 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
   
   
   
+  <span class="deprecated note title">deprecated</span>
+  
+
+  
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use <span class='object_link'><a href="#processing%3F-instance_method" title="Concurrent::ScheduledTask#processing? (method)">#processing?</a></span> instead.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initial_delay-instance_method" title="#initial_delay (instance method)">- (Float) <strong>initial_delay</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
   
   
 
   
-    <span class="summary_desc"><div class='inline'><p>In the task execution in progress?.</p>
+    <span class="summary_desc"><div class='inline'><p>The <code>delay</code> value given at instanciation.</p>
 </div></span>
   
 </li>
@@ -559,10 +543,102 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#processing%3F-instance_method" title="#processing? (instance method)">- (Boolean) <strong>processing?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>In the task execution in progress?.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#reschedule-instance_method" title="#reschedule (instance method)">- (Boolean) <strong>reschedule</strong>(delay) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Reschedule the task using the given delay and the current time.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#reset-instance_method" title="#reset (instance method)">- (Boolean) <strong>reset</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Reschedule the task using the original delay and the current time.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#schedule_time-instance_method" title="#schedule_time (instance method)">- (Float) <strong>schedule_time</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>The monotonic time at which the the task is scheduled to be executed.</p>
+</div></span>
+  
+</li>
+
+      
         <li class="public deprecated">
   <span class="summary_signature">
     
-      <a href="#schedule_time-instance_method" title="#schedule_time (instance method)">- (Object) <strong>schedule_time</strong> </a>
+      <a href="#stop-instance_method" title="#stop (instance method)">- (Boolean) <strong>stop</strong> </a>
     
 
     
@@ -576,29 +652,8 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
   
 
   
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#set-instance_method" title="#set (instance method)">- (Object) <strong>set</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use <span class='object_link'><a href="#cancel-instance_method" title="Concurrent::ScheduledTask#cancel (method)">#cancel</a></span> instead.</p>
+</div></span>
   
 </li>
 
@@ -607,6 +662,12 @@ behaves identically to <a href="Observable">Future</a> with regard to these modu
   
 
 
+  
+  
+  
+  
+  
+  
   
   
   
@@ -676,7 +737,8 @@ but will not be supported in the 1.0 release.</p>
       
       
         &mdash;
-        <div class='inline'><p>the options controlling how the future will be processed</p>
+        <div class='inline'><p>the options used to define the behavior at update and deref
+and to specify the executor on which to perform actions</p>
 </div>
       
     </li>
@@ -692,7 +754,22 @@ but will not be supported in the 1.0 release.</p>
     <ul class="option">
       
         <li>
-          <span class="name">:operation</span>
+          <span class="name">:executor</span>
+          <span class="type">(<tt><span class='object_link'>Executor</span></tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>when set use the given <code>Executor</code> instance.
+Three special values are also supported: <code>:task</code> returns the global task pool,
+<code>:operation</code> returns the global operation pool, and <code>:immediate</code> returns a new
+<code>ImmediateExecutor</code> object.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:dup_on_deref</span>
           <span class="type">(<tt>Boolean</tt>)</span>
           <span class="default">
             
@@ -701,22 +778,54 @@ but will not be supported in the 1.0 release.</p>
             
           </span>
           
-            &mdash; <div class='inline'><p>when <code>true</code> will execute the future on the global
-operation pool (for long-running operations), when <code>false</code> will execute the future on the
-global task pool (for short-running tasks)</p>
+            &mdash; <div class='inline'><p>Call <code>#dup</code> before
+returning the data from <span class='object_link'><a href="Concern/Obligation.html#value-instance_method" title="Concurrent::Concern::Obligation#value (method)">Concern::Obligation#value</a></span></p>
 </div>
           
         </li>
       
         <li>
-          <span class="name">:executor</span>
-          <span class="type">(<tt>object</tt>)</span>
+          <span class="name">:freeze_on_deref</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>false</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Call <code>#freeze</code> before
+returning the data from <span class='object_link'><a href="Concern/Obligation.html#value-instance_method" title="Concurrent::Concern::Obligation#value (method)">Concern::Obligation#value</a></span></p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:copy_on_deref</span>
+          <span class="type">(<tt>Proc</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>nil</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>When calling the <span class='object_link'><a href="Concern/Obligation.html#value-instance_method" title="Concurrent::Concern::Obligation#value (method)">Concern::Obligation#value</a></span>
+method, call the given proc passing the internal value as the sole
+argument then return the new value returned from the proc.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:args</span>
+          <span class="type">(<tt>object</tt>, <tt>Array</tt>)</span>
           <span class="default">
             
           </span>
           
-            &mdash; <div class='inline'><p>when provided will run all operations on
-this executor rather than the global thread pool (overrides :operation)</p>
+            &mdash; <div class='inline'><p>zero or more arguments to be passed the task
+block on execution</p>
 </div>
           
         </li>
@@ -751,6 +860,23 @@ this executor rather than the global thread pool (overrides :operation)</p>
       
       
       
+        &mdash;
+        <div class='inline'><p>When no block is given</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>When given a time that is in the past</p>
+</div>
+      
     </li>
   
 </ul>
@@ -761,31 +887,37 @@ this executor rather than the global thread pool (overrides :operation)</p>
       <pre class="lines">
 
 
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170</pre>
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 160</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 173</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
-  <span class='ivar'>@delay</span> <span class='op'>=</span> <span class='const'>TimerSet</span><span class='period'>.</span><span class='id identifier rubyid_calculate_delay!'>calculate_delay!</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='rparen'>)</span>
-
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='const'>NO_VALUE</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_observers'>observers</span> <span class='op'>=</span> <span class='const'>CopyOnNotifyObserverSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@state</span>         <span class='op'>=</span> <span class='symbol'>:unscheduled</span>
-  <span class='ivar'>@task</span>          <span class='op'>=</span> <span class='id identifier rubyid_block'>block</span>
-  <span class='ivar'>@executor</span>      <span class='op'>=</span> <span class='id identifier rubyid_get_executor_from'>get_executor_from</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='const'>IVar</span><span class='op'>::</span><span class='const'>NO_VALUE</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+    <span class='ivar'>@delay</span> <span class='op'>=</span> <span class='id identifier rubyid_calculate_delay!'>calculate_delay!</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='rparen'>)</span> <span class='comment'># may raise exception
+</span>    <span class='id identifier rubyid_ns_set_state'>ns_set_state</span><span class='lparen'>(</span><span class='symbol'>:unscheduled</span><span class='rparen'>)</span>
+    <span class='ivar'>@parent</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:timer_set</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_timer_set'>global_timer_set</span><span class='rparen'>)</span>
+    <span class='ivar'>@args</span> <span class='op'>=</span> <span class='id identifier rubyid_get_arguments_from'>get_arguments_from</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
+    <span class='ivar'>@task</span> <span class='op'>=</span> <span class='id identifier rubyid_task'>task</span>
+    <span class='ivar'>@time</span> <span class='op'>=</span> <span class='kw'>nil</span>
+    <span class='ivar'>@executor</span> <span class='op'>=</span> <span class='const'>Executor</span><span class='period'>.</span><span class='id identifier rubyid_executor_from_options'>executor_from_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_observers'>observers</span> <span class='op'>=</span> <span class='const'>Collection</span><span class='op'>::</span><span class='const'>CopyOnNotifyObserverSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -793,82 +925,6 @@ this executor rather than the global thread pool (overrides :operation)</p>
 </div>
   
 </div>
-
-  <div id="instance_attr_details" class="attr_details">
-    <h2>Instance Attribute Details</h2>
-    
-      
-      <span id=""></span>
-      <div class="method_details first">
-  <h3 class="signature first" id="delay-instance_method">
-  
-    - (<tt>Object</tt>) <strong>delay</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Returns the value of attribute delay</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-139
-140
-141</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 139</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_delay'>delay</span>
-  <span class='ivar'>@delay</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id="observers=-instance_method"></span>
-      <div class="method_details ">
-  <h3 class="signature " id="observers-instance_method">
-  
-    - (<tt>Object</tt>) <strong>observers</strong>  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Observable.html#observers-instance_method" title="Concurrent::Observable#observers (method)">Observable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Returns the value of attribute observers</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-  </div>
 
 
   <div id="class_method_details" class="method_details_list">
@@ -878,7 +934,7 @@ this executor rather than the global thread pool (overrides :operation)</p>
       <div class="method_details first">
   <h3 class="signature first" id="execute-class_method">
   
-    + (<tt><span class='object_link'><a href="" title="Concurrent::ScheduledTask (class)">ScheduledTask</a></span></tt>) <strong>execute</strong>(delay, opts = {}, &amp;block) 
+    + (<tt><span class='object_link'><a href="" title="Concurrent::ScheduledTask (class)">ScheduledTask</a></span></tt>) <strong>execute</strong>(delay, opts = {}, &amp;task) 
   
 
   
@@ -933,7 +989,8 @@ but will not be supported in the 1.0 release.</p>
       
       
         &mdash;
-        <div class='inline'><p>the options controlling how the future will be processed</p>
+        <div class='inline'><p>the options used to define the behavior at update and deref
+and to specify the executor on which to perform actions</p>
 </div>
       
     </li>
@@ -949,7 +1006,22 @@ but will not be supported in the 1.0 release.</p>
     <ul class="option">
       
         <li>
-          <span class="name">:operation</span>
+          <span class="name">:executor</span>
+          <span class="type">(<tt><span class='object_link'>Executor</span></tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>when set use the given <code>Executor</code> instance.
+Three special values are also supported: <code>:task</code> returns the global task pool,
+<code>:operation</code> returns the global operation pool, and <code>:immediate</code> returns a new
+<code>ImmediateExecutor</code> object.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:dup_on_deref</span>
           <span class="type">(<tt>Boolean</tt>)</span>
           <span class="default">
             
@@ -958,22 +1030,41 @@ but will not be supported in the 1.0 release.</p>
             
           </span>
           
-            &mdash; <div class='inline'><p>when <code>true</code> will execute the future on the global
-operation pool (for long-running operations), when <code>false</code> will execute the future on the
-global task pool (for short-running tasks)</p>
+            &mdash; <div class='inline'><p>Call <code>#dup</code> before
+returning the data from <span class='object_link'><a href="Concern/Obligation.html#value-instance_method" title="Concurrent::Concern::Obligation#value (method)">Concern::Obligation#value</a></span></p>
 </div>
           
         </li>
       
         <li>
-          <span class="name">:executor</span>
-          <span class="type">(<tt>object</tt>)</span>
+          <span class="name">:freeze_on_deref</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
           <span class="default">
+            
+              &mdash; default:
+              <tt>false</tt>
             
           </span>
           
-            &mdash; <div class='inline'><p>when provided will run all operations on
-this executor rather than the global thread pool (overrides :operation)</p>
+            &mdash; <div class='inline'><p>Call <code>#freeze</code> before
+returning the data from <span class='object_link'><a href="Concern/Obligation.html#value-instance_method" title="Concurrent::Concern::Obligation#value (method)">Concern::Obligation#value</a></span></p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:copy_on_deref</span>
+          <span class="type">(<tt>Proc</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>nil</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>When calling the <span class='object_link'><a href="Concern/Obligation.html#value-instance_method" title="Concurrent::Concern::Obligation#value (method)">Concern::Obligation#value</a></span>
+method, call the given proc passing the internal value as the sole
+argument then return the new value returned from the proc.</p>
 </div>
           
         </li>
@@ -1024,15 +1115,15 @@ this executor rather than the global thread pool (overrides :operation)</p>
       <pre class="lines">
 
 
-202
-203
-204</pre>
+313
+314
+315</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 202</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 313</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='const'>ScheduledTask</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1051,10 +1142,6 @@ this executor rather than the global thread pool (overrides :operation)</p>
     - (<tt>Boolean</tt>) <strong>cancel</strong> 
   
 
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='stop-instance_method'>stop</span></span>
-    </span>
   
 
   
@@ -1079,8 +1166,7 @@ cancelled if it is pending or unscheduled.</p>
       
       
         &mdash;
-        <div class='inline'><p>true if task execution is successfully cancelled
-else false</p>
+        <div class='inline'><p>true if successfully cancelled else false</p>
 </div>
       
     </li>
@@ -1093,22 +1179,28 @@ else false</p>
       <pre class="lines">
 
 
-231
-232
-233
-234
-235
-236
-237</pre>
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 231</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 247</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_cancel'>cancel</span>
-  <span class='id identifier rubyid_if_state'>if_state</span><span class='lparen'>(</span><span class='symbol'>:unscheduled</span><span class='comma'>,</span> <span class='symbol'>:pending</span><span class='rparen'>)</span> <span class='kw'>do</span>
-    <span class='ivar'>@state</span> <span class='op'>=</span> <span class='symbol'>:cancelled</span>
-    <span class='id identifier rubyid_event'>event</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span>
-    <span class='kw'>true</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_compare_and_set_state'>compare_and_set_state</span><span class='lparen'>(</span><span class='symbol'>:cancelled</span><span class='comma'>,</span> <span class='symbol'>:pending</span><span class='comma'>,</span> <span class='symbol'>:unscheduled</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_complete'>complete</span><span class='lparen'>(</span><span class='kw'>false</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='const'>CancelledOperationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span>
+    <span class='comment'># To avoid deadlocks this call must occur outside of #synchronize
+</span>    <span class='comment'># Changing the state above should prevent redundant calls
+</span>    <span class='ivar'>@parent</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='symbol'>:remove_task</span><span class='comma'>,</span> <span class='kw'>self</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='kw'>false</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1158,15 +1250,15 @@ else false</p>
       <pre class="lines">
 
 
-215
-216
-217</pre>
+222
+223
+224</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 215</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 222</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_cancelled?'>cancelled?</span>
-  <span class='id identifier rubyid_state'>state</span> <span class='op'>==</span> <span class='symbol'>:cancelled</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_ns_check_state?'>ns_check_state?</span><span class='lparen'>(</span><span class='symbol'>:cancelled</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1174,15 +1266,64 @@ else false</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="complete-instance_method">
+  <h3 class="signature " id="delay-instance_method">
   
-    - (<tt>Object</tt>) <strong>complete</strong>  <span class="extras">(protected)</span>
-  
-
+    - (<tt>Float</tt>) <strong>delay</strong> 
   
 
   
-</h3>
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>use <span class='object_link'><a href="#initial_delay-instance_method" title="Concurrent::ScheduledTask#initial_delay (method)">#initial_delay</a></span> instead</p>
+</div></div>
+<p>The <code>delay</code> value given at instanciation.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the initial delay.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+200
+201
+202
+203</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 200</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_delay'>delay</span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>delay</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>initial_delay</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_initial_delay'>initial_delay</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
 </div>
     
       <div class="method_details ">
@@ -1229,23 +1370,21 @@ in any state other than <code>:unscheduled</code>.</p>
       <pre class="lines">
 
 
-177
-178
-179
-180
-181
-182
-183</pre>
+294
+295
+296
+297
+298
+299</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 177</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 294</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_compare_and_set_state'>compare_and_set_state</span><span class='lparen'>(</span><span class='symbol'>:pending</span><span class='comma'>,</span> <span class='symbol'>:unscheduled</span><span class='rparen'>)</span>
-    <span class='ivar'>@schedule_time</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>+</span> <span class='ivar'>@delay</span>
-    <span class='const'>Concurrent</span><span class='op'>::</span><span class='id identifier rubyid_timer'>timer</span><span class='lparen'>(</span><span class='ivar'>@delay</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='ivar'>@executor</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_method'>method</span><span class='lparen'>(</span><span class='symbol'>:process_task</span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
-    <span class='kw'>self</span>
+    <span class='id identifier rubyid_synchronize'>synchronize</span><span class='lbrace'>{</span> <span class='id identifier rubyid_ns_schedule'>ns_schedule</span><span class='lparen'>(</span><span class='ivar'>@delay</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='kw'>end</span>
+  <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1253,21 +1392,127 @@ in any state other than <code>:unscheduled</code>.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="fail-instance_method">
-  
-    - (<tt>Object</tt>) <strong>fail</strong>  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="in_progress?-instance_method">
   
     - (<tt>Boolean</tt>) <strong>in_progress?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use <span class='object_link'><a href="#processing%3F-instance_method" title="Concurrent::ScheduledTask#processing? (method)">#processing?</a></span> instead.</p>
+</div></div>
+<p>In the task execution in progress?</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>true if the task is in the given state else false</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+238
+239
+240
+241</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 238</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_in_progress?'>in_progress?</span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>in_progress?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>processing?</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_processing?'>processing?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="initial_delay-instance_method">
+  
+    - (<tt>Float</tt>) <strong>initial_delay</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>The <code>delay</code> value given at instanciation.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the initial delay.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+191
+192
+193</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 191</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initial_delay'>initial_delay</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@delay</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="processing?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>processing?</strong> 
   
 
   
@@ -1306,15 +1551,167 @@ in any state other than <code>:unscheduled</code>.</p>
       <pre class="lines">
 
 
-222
-223
-224</pre>
+229
+230
+231</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 222</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 229</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_in_progress?'>in_progress?</span>
-  <span class='id identifier rubyid_state'>state</span> <span class='op'>==</span> <span class='symbol'>:in_progress</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_processing?'>processing?</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_ns_check_state?'>ns_check_state?</span><span class='lparen'>(</span><span class='symbol'>:processing</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="reschedule-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>reschedule</strong>(delay) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Reschedule the task using the given delay and the current time.
+A task can only be reset while it is <code>:pending</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>delay</span>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the number of seconds to wait for before executing the task</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>true if successfully rescheduled else false</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>When given a time that is in the past</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+285
+286
+287</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 285</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_reschedule'>reschedule</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span><span class='lbrace'>{</span> <span class='id identifier rubyid_ns_reschedule'>ns_reschedule</span><span class='lparen'>(</span><span class='id identifier rubyid_calculate_delay!'>calculate_delay!</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="reset-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>reset</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Reschedule the task using the original delay and the current time.
+A task can only be reset while it is <code>:pending</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>true if successfully rescheduled else false</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+273
+274
+275</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 273</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_reset'>reset</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span><span class='lbrace'>{</span> <span class='id identifier rubyid_ns_reschedule'>ns_reschedule</span><span class='lparen'>(</span><span class='ivar'>@delay</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1324,7 +1721,7 @@ in any state other than <code>:unscheduled</code>.</p>
       <div class="method_details ">
   <h3 class="signature " id="schedule_time-instance_method">
   
-    - (<tt>Object</tt>) <strong>schedule_time</strong> 
+    - (<tt>Float</tt>) <strong>schedule_time</strong> 
   
 
   
@@ -1332,13 +1729,30 @@ in any state other than <code>:unscheduled</code>.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'></div></div>
+    <p>The monotonic time at which the the task is scheduled to be executed.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the schedule time or nil if <code>unscheduled</code></p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1346,17 +1760,15 @@ in any state other than <code>:unscheduled</code>.</p>
       <pre class="lines">
 
 
-207
 208
 209
 210</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 207</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 208</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_schedule_time'>schedule_time</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] time is now based on a monotonic clock</span><span class='tstring_end'>&#39;</span></span>
-  <span class='ivar'>@schedule_time</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@time</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1364,15 +1776,65 @@ in any state other than <code>:unscheduled</code>.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="set-instance_method">
+  <h3 class="signature " id="stop-instance_method">
   
-    - (<tt>Object</tt>) <strong>set</strong>  <span class="extras">(protected)</span>
-  
-
+    - (<tt>Boolean</tt>) <strong>stop</strong> 
   
 
   
-</h3>
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use <span class='object_link'><a href="#cancel-instance_method" title="Concurrent::ScheduledTask#cancel (method)">#cancel</a></span> instead.</p>
+</div></div>
+<p>Cancel this task and prevent it from executing. A task can only be
+cancelled if it is <code>:pending</code> or <code>:unscheduled</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>true if successfully cancelled else false</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+264
+265
+266
+267</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/scheduled_task.rb', line 264</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stop'>stop</span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>stop</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cancel</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_cancel'>cancel</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
 </div>
     
   </div>
@@ -1380,9 +1842,9 @@ in any state other than <code>:unscheduled</code>.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Mar  9 09:50:51 2015 by
+  Generated on Fri Jul 10 12:11:04 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.0).
+  0.8.7.6 (ruby-2.2.1).
 </div>
 
 <script>

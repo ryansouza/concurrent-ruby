@@ -32,7 +32,7 @@
       <div id="menu">
   
     <a href="../_index.html">Index (S)</a> &raquo;
-    <span class='title'><span class='object_link'><a href="../Concurrent.html" title="Concurrent (module)">Concurrent</a></span></span>
+    <span class='title'><span class='object_link'><a href="../root/Concurrent.html" title="Concurrent (module)">Concurrent</a></span></span>
      &raquo; 
     <span class="title">Synchronization</span>
   
@@ -77,60 +77,241 @@
     
   
   
-    <dt class="r1">Included in:</dt>
-    <dd class="r1"><span class='object_link'><a href="Actor/Core.html" title="Concurrent::Actor::Core (class)">Actor::Core</a></span>, <span class='object_link'><a href="SerializedExecution.html" title="Concurrent::SerializedExecution (class)">SerializedExecution</a></span></dd>
-    
   
-  
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/concurrent/atomic/synchronization.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/concurrent/synchronization.rb<span class="defines">,<br />
+  lib/concurrent/synchronization/lock.rb,<br /> lib/concurrent/synchronization/object.rb,<br /> lib/concurrent/synchronization/condition.rb,<br /> lib/concurrent/synchronization/rbx_object.rb,<br /> lib/concurrent/synchronization/java_object.rb,<br /> lib/concurrent/synchronization/mutex_object.rb,<br /> lib/concurrent/synchronization/monitor_object.rb,<br /> lib/concurrent/synchronization/abstract_object.rb,<br /> lib/concurrent/synchronization/abstract_struct.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>synchronized needs to be called in #initialize for this module to work properly</p>
-</div>
-  </div>
+    <p><p><code>Synchronization</code> module provides common layer for synchronization. It provides same guaranties independent of any particular Ruby implementation.</p>
 
-<p>Safe synchronization under JRuby, prevents reading uninitialized @mutex variable.</p>
+<p><em>This is a new module, it is expected to fully stabilize for 1.0 release.</em></p>
+
+<h2>Synchronization::Object</h2>
+
+<p>Provides common parent for all objects which need to be synchronized or be using other synchronization tools. It provides:</p>
+
+<ul>
+<li>  Synchronized block</li>
+<li>  Methods for waiting and signaling </li>
+<li>  Volatile fields</li>
+<li>  Ensure visibility of final fields</li>
+<li>  Fields with CAS operations</li>
+</ul>
+
+<h2>Synchronized block</h2>
+
+<p><code>Synchronization::Object</code> provides private method <code>#synchronize(&amp;block)</code>. For a given object only one Thread can enter one of the blocks synchronized against this object. Object is locked when a thread enters one of the synchronized blocks.</p>
+
+<p>Example of a simple counter which can be used by multiple threads:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>SafeCounter</span> <span class='op'>&lt;</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Synchronization</span><span class='op'>::</span><span class='const'>Object</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
+    <span class='kw'>super</span>
+    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@count</span> <span class='op'>=</span> <span class='int'>0</span> <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_increment'>increment</span>
+    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@count</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_count'>count</span>
+    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@count</span> <span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h3>Naming conventions</h3>
+
+<p>Methods starting with <code>ns_</code> are marking methods that are not using synchronization by themselves, they have to be used inside synchronize block. They are usually used in pairs to separate the synchronization from behavior:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>def</span> <span class='id identifier rubyid_compute'>compute</span>
+  <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_report'>report</span> <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_ns_compute'>ns_compute</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_private'>private</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_ns_compute'>ns_compute</span>
+  <span class='id identifier rubyid_ns_compute_reduce'>ns_compute_reduce</span> <span class='id identifier rubyid_ns_compute_map'>ns_compute_map</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>where <code>compute</code> defines how is it synchronized and <code>ns_compute</code> handles the behavior (in this case the computation). <code>ns_</code> methods should only call other <code>ns_</code> methods or <code>pr_</code> methods. They can call normal methods on other objects, but that should be done with care (better to avoid) because the thread escapes this object while the lock is still held, which can lead to deadlock. That&#39;s why the <code>report</code> method is called in <code>compute</code> and not in <code>ns_compute</code>.</p>
+
+<p><code>pr_</code> methods are pure functions they can be used in and outside of synchronized blocks.</p>
+
+<h2>Methods for waiting and signaling</h2>
+
+<p>Sometimes while already inside the synchronized block some condition is not met. Then the thread needs to wait (releasing the lock) until the condition is met. The waiting thread is then signaled that it can continue.</p>
+
+<p>To fulfill these needs there are private methods:</p>
+
+<ul>
+<li>  <code>ns_wait</code> <p>Wait until another thread calls #signal or #broadcast,
+spurious wake-ups can happen.</p>
+</li>
+<li>  <code>ns_wait_until</code> <p>Wait until condition is met or timeout passes,
+protects against spurious wake-ups.</p>
+</li>
+<li>  <code>ns_signal</code> <p>Signal one waiting thread.</p>
+</li>
+<li>  <code>ns_broadcast</code> <p>Broadcast to all waiting threads.</p>
+</li>
+</ul>
+
+<p>All methods have to be called inside synchronized block.</p>
+
+<h2>Volatile fields</h2>
+
+<p><code>Synchronization::Object</code> can have volatile fields (Java semantic). They are defined by <code>attr_volatile :field_name</code>. <code>attr_volatile</code> defines reader and writer with the <code>field_name</code>. Any write is always immediately visible for any subsequent reads of the same field. </p>
+
+<h2>Ensure visibility of final fields</h2>
+
+<p>Instance variables assigned only once in <code>initialize</code> method are not guaranteed to be visible to all threads. For that user can call <code>ensure_ivar_visibility!</code> method, like in following example taken from <code>Edge::AbstractPromise</code> implementation:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>AbstractPromise</span> <span class='op'>&lt;</span> <span class='const'>Synchronization</span><span class='op'>::</span><span class='const'>Object</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_future'>future</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>super</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='ivar'>@Future</span> <span class='op'>=</span> <span class='id identifier rubyid_future'>future</span>
+    <span class='id identifier rubyid_ensure_ivar_visibility!'>ensure_ivar_visibility!</span>
+  <span class='kw'>end</span>
+  <span class='comment'># ...
+</span><span class='kw'>end</span>  
+</code></pre>
+
+<h3>Naming conventions</h3>
+
+<p>Instance variables with camel case names are final and never reassigned, e.g. <code>@FinalVariable</code>.</p>
+
+<h2>Fields with CAS operations</h2>
+
+<p>They are not supported directly, but AtomicReference can be stored in final field and then CAS operations can be done on it, like in following example taken from <code>Edge::Event</code> implementation:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Event</span> <span class='op'>&lt;</span> <span class='const'>Synchronization</span><span class='op'>::</span><span class='const'>Object</span>
+  <span class='id identifier rubyid_extend'>extend</span> <span class='const'>FutureShortcuts</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_promise'>promise</span><span class='comma'>,</span> <span class='id identifier rubyid_default_executor'>default_executor</span> <span class='op'>=</span> <span class='symbol'>:io</span><span class='rparen'>)</span>
+    <span class='ivar'>@Promise</span>         <span class='op'>=</span> <span class='id identifier rubyid_promise'>promise</span>
+    <span class='ivar'>@DefaultExecutor</span> <span class='op'>=</span> <span class='id identifier rubyid_default_executor'>default_executor</span>
+    <span class='ivar'>@Touched</span>         <span class='op'>=</span> <span class='const'>AtomicBoolean</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_ensure_ivar_visibility!'>ensure_ivar_visibility!</span>
+  <span class='kw'>end</span>
+  <span class='comment'># ...
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_touch'>touch</span>
+    <span class='comment'># distribute touch to promise only once
+</span>    <span class='ivar'>@Promise</span><span class='period'>.</span><span class='id identifier rubyid_touch'>touch</span> <span class='kw'>if</span> <span class='ivar'>@Touched</span><span class='period'>.</span><span class='id identifier rubyid_make_true'>make_true</span>
+    <span class='kw'>self</span>
+  <span class='kw'>end</span>
+  <span class='comment'># ...
+</span><span class='kw'>end</span>  
+</code></pre>
+
+<p>Operations on <code>@Touched</code> field have volatile semantic. </p>
+
+<h2>Memory model</h2>
+
+<p><em>Intended for further revision, and extension.</em></p>
+
+<p>When writing libraries in <code>concurrent-ruby</code> we are reasoning based on following memory model which is further extended by features provided in <code>Synchronization::Object</code> (described above).</p>
+
+<p>The memory model is constructed based on our best effort and knowledge of the 3 main Ruby implementations (CRuby, JRuby, Rubinius). When considering certain aspect we always choose the weakest guarantee (e.g. local variable updates are always visible in CRuby but not in JRuby, so in this case JRuby behavior is picked). If some Ruby behavior is omitted here it is considered unsafe for use in parallel environment (Reasons may be lack of information, or difficulty of verification).</p>
+
+<p>This takes in account following implementations: </p>
+
+<ul>
+<li>  CRuby 1.9 - 2.2 (no differences found)</li>
+<li>  JRuby 1.7</li>
+<li>  JRuby 9 <em>not examined yet, same behavior as in 1.7 assumed</em></li>
+<li>  Rubinius 2.5</li>
+</ul>
+
+<p>We are interested in following behaviors:</p>
+
+<ul>
+<li>  <strong>volatility</strong> - in Java&#39;s sense. Any written value is immediately visible to any subsequent reads including all writes leading to this value.</li>
+<li>  <strong>atomicity</strong> - operation is either done or not as a whole.</li>
+</ul>
+
+<h3>Variables</h3>
+
+<ul>
+<li>  <strong>Local variables</strong> - atomic assignment (only Integer and Object), non-volatile. 
+
+<ul>
+<li>  Consequence: a lambda defined on <code>thread1</code> executing on <code>thread2</code> may not see updated values in local variables captured in its closure.</li>
+<li>  Reason: local variables are non-volatile on Jruby and Rubinius.</li>
+</ul></li>
+<li>  <strong>Instance variables</strong> - atomic assignment (only Integer and Object), non-volatile. 
+
+<ul>
+<li>  Consequence: Different thread may see old values; different thread may see not fully-initialized object.</li>
+<li>  Reason: local variables are non-volatile on Jruby and Rubinius.</li>
+</ul></li>
+<li>  <strong>Constants</strong> - atomic assignment, volatile.</li>
+<li>  <strong>Assignments of Float</strong> may not be atomic (some implementations (e.g. Truffle) may use native double).</li>
+</ul>
+
+<p>Other:</p>
+
+<ul>
+<li>  <strong>Global variables</strong> - we don&#39;t use them, omitted (atomic and volatile on JRuby and CRuby, Rubinius unknown)</li>
+<li>  <strong>Class variables</strong> - we don&#39;t use them, omitted (atomic and volatile on JRuby and CRuby, Rubinius unknown)</li>
+</ul>
+
+<h3>Assumptions</h3>
+
+<p>Following operations are <strong>assumed</strong> thread-safe, volatile and atomic on all implementations:</p>
+
+<ul>
+<li>  Class definition</li>
+<li>  Method definition</li>
+<li>  Library requirement</li>
+</ul>
+
+<p>It&#39;s best practice though to eager load before going into parallel part of an application.</p>
+
+<h3>Issues to be aware of</h3>
+
+<ul>
+<li>  <strong>Initialization</strong> - Since instance variables are not volatile and a particular implementation may preinitialize values with nils, based on shapes it already saw, a second thread obtaining reference to newly constructed may still see old preinitialized values instead of values set in <code>initialize</code> method. To fix this <code>ensure_ivar_visibility!</code> can be used or the object can be safely published in a volatile field.</li>
+<li>  <strong><code>||=</code>, <code>+=</code> and similar</strong> - are not atomic.</li>
+</ul>
+
+<h3>Notes/Sources on implementations</h3>
+
+<ul>
+<li>  <a href="https://github.com/jruby/jruby/wiki/Concurrency-in-jruby">JRuby wiki page on concurrency</a></li>
+<li>  <a href="http://rubini.us/doc/en/systems/concurrency/">Rubinius page on concurrency</a></li>
+<li>  CRuby has GVL. Any GVL release and acquire uses lock which means that all writes done by a releasing thread will be visible to the second acquiring thread. See: <a href="https://github.com/ruby/ruby/blob/ruby_2_2/thread_pthread.c#L101-L107">https://github.com/ruby/ruby/blob/ruby_2_2/thread_pthread.c#L101-L107</a></li>
+</ul>
+</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
     
-      
-        <p class="example_title"><div class='inline'><p>usage</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='kw'>class</span> <span class='const'>AClass</span>
-  <span class='id identifier rubyid_include'>include</span> <span class='const'>Synchronized</span>
-
-  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
-    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
-      <span class='comment'># body of the constructor ...
-</span>    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-
-  <span class='kw'>def</span> <span class='id identifier rubyid_a_method'>a_method</span>
-    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
-      <span class='comment'># body of a_method ...
-</span>    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></code></pre>
+  
     
-  </div>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Synchronization/Condition.html" title="Concurrent::Synchronization::Condition (class)">Condition</a></span>, <span class='object_link'><a href="Synchronization/Lock.html" title="Concurrent::Synchronization::Lock (class)">Lock</a></span>, <span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Object</a></span>
+    
+  
+</p>
 
+  <h2>Constant Summary</h2>
+  
 
-</div>
 
 
 
@@ -142,9 +323,9 @@
 </div>
 
     <div id="footer">
-  Generated on Mon Mar  9 09:50:49 2015 by
+  Generated on Fri Jul 10 12:10:56 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.0).
+  0.8.7.6 (ruby-2.2.1).
 </div>
 
 <script>

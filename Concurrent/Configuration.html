@@ -32,7 +32,7 @@
       <div id="menu">
   
     <a href="../_index.html">Index (C)</a> &raquo;
-    <span class='title'><span class='object_link'><a href="../Concurrent.html" title="Concurrent (module)">Concurrent</a></span></span>
+    <span class='title'><span class='object_link'><a href="../root/Concurrent.html" title="Concurrent (module)">Concurrent</a></span></span>
      &raquo; 
     <span class="title">Configuration</span>
   
@@ -164,8 +164,62 @@
   
 
   
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.disable_auto_termination_of_global_executors! instead</p>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.disable_executor_auto_termination! instead</p>
 </div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#deprecated-instance_method" title="#deprecated (instance method)">- (Object) <strong>deprecated</strong>(message, strip = 2) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated-instance_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concurrent::Concern::Deprecation</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#deprecated_method-instance_method" title="#deprecated_method (instance method)">- (Object) <strong>deprecated_method</strong>(old_name, new_name) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-instance_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concurrent::Concern::Deprecation</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -312,6 +366,34 @@ Use the :executor constructor option instead.</p>
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#log-instance_method" title="#log (instance method)">- (Object) <strong>log</strong>(level, progname, message = nil, &amp;block) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Concern/Logging.html#log-instance_method" title="Concurrent::Concern::Logging#log (method)">Concurrent::Concern::Logging</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="#logger-instance_method" title="Concurrent::Configuration#logger (method)">#logger</a></span>, it can be overridden by setting @logger.</p>
+</div></span>
+  
+</li>
+
+      
         <li class="public deprecated">
   <span class="summary_signature">
     
@@ -430,7 +512,12 @@ Use the :executor constructor option instead.</p>
     </ul>
   
 
-<div id="constructor_details" class="method_details_list">
+
+  
+  
+  
+  
+  <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
@@ -458,11 +545,11 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-203
-204</pre>
+175
+176</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 203</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 175</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
 <span class='kw'>end</span></pre>
@@ -504,16 +591,16 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-286
-287
-288
-289</pre>
+256
+257
+258
+259</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 286</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 256</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_auto_terminate'>auto_terminate</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.auto_terminate_global_executors? instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.auto_terminate</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.auto_terminate_global_executors?</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_auto_terminate_global_executors?'>auto_terminate_global_executors?</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -532,7 +619,7 @@ Use the :executor constructor option instead.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.disable_auto_termination_of_global_executors! instead</p>
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>Use Concurrent.disable_executor_auto_termination! instead</p>
 </div></div>
 
 
@@ -547,21 +634,55 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-280
-281
-282
-283</pre>
+250
+251
+252
+253</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 280</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 250</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_auto_terminate='>auto_terminate=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.disable_auto_termination_of_global_executors! instead</span><span class='tstring_end'>&#39;</span></span>
-  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_disable_auto_termination_of_global_executors!'>disable_auto_termination_of_global_executors!</span> <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_value'>value</span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.auto_terminate=</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.disable_executor_auto_termination!</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_disable_executor_auto_termination!'>disable_executor_auto_termination!</span> <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="deprecated-instance_method">
+  
+    - (<tt>Object</tt>) <strong>deprecated</strong>(message, strip = 2) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Concern/Deprecation.html#deprecated-instance_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concurrent::Concern::Deprecation</a></span>
+    </span>
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="deprecated_method-instance_method">
+  
+    - (<tt>Object</tt>) <strong>deprecated_method</strong>(old_name, new_name) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-instance_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concurrent::Concern::Deprecation</a></span>
+    </span>
+  
+</h3>
 </div>
     
       <div class="method_details ">
@@ -590,16 +711,16 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-238
-239
-240
-241</pre>
+210
+211
+212
+213</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 238</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 210</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_operation_pool'>global_operation_pool</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_fast_executor instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.global_operation_pool</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.global_fast_executor</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_fast_executor'>global_fast_executor</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -634,21 +755,19 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-260
-261
-262
-263
-264
-265</pre>
+231
+232
+233
+234
+235</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 260</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 231</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_operation_pool='>global_operation_pool=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Replacing global thread pools is deprecated. Use the :executor constructor option instead.</span><span class='tstring_end'>&#39;</span></span>
-  <span class='id identifier rubyid_var'>var</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_class_variable_get'>class_variable_get</span><span class='lparen'>(</span><span class='symbol'>:@@global_fast_executor</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_var'>var</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ConfigurationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>global operation pool was already set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_deprecated'>deprecated</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Replacing global thread pools is deprecated. Use the :executor constructor option instead.</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>GLOBAL_FAST_EXECUTOR</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ConfigurationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>global operation pool was already set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -681,16 +800,16 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-232
-233
-234
-235</pre>
+204
+205
+206
+207</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 232</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 204</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_task_pool'>global_task_pool</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_io_executor instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.global_task_pool</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.global_io_executor</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -725,21 +844,19 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-251
-252
-253
-254
-255
-256</pre>
+223
+224
+225
+226
+227</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 251</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 223</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_task_pool='>global_task_pool=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Replacing global thread pools is deprecated. Use the :executor constructor option instead.</span><span class='tstring_end'>&#39;</span></span>
-  <span class='id identifier rubyid_var'>var</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_class_variable_get'>class_variable_get</span><span class='lparen'>(</span><span class='symbol'>:@@global_io_executor</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_var'>var</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ConfigurationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>global task pool was already set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_deprecated'>deprecated</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Replacing global thread pools is deprecated. Use the :executor constructor option instead.</span><span class='tstring_end'>&#39;</span></span>
+  <span class='const'>GLOBAL_IO_EXECUTOR</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ConfigurationError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>global task pool was already set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -772,21 +889,116 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-244
-245
-246
-247</pre>
+216
+217
+218
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 244</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 216</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_global_timer_set'>global_timer_set</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_timer_set instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.global_timer_set</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.global_timer_set</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_timer_set'>global_timer_set</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="log-instance_method">
+  
+    - (<tt>Object</tt>) <strong>log</strong>(level, progname, message = nil, &amp;block) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Concern/Logging.html#log-instance_method" title="Concurrent::Concern::Logging#log (method)">Concurrent::Concern::Logging</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Logs through <span class='object_link'><a href="#logger-instance_method" title="Concurrent::Configuration#logger (method)">Concurrent::Configuration#logger</a></span>, it can be overridden by setting @logger</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>level</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>one of Logger::Severity constants</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>progname</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>e.g. a path of an Actor</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>message</span>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>when nil block is used to generate the message</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Yield Returns:</p>
+<ul class="yieldreturn">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>a message</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       <div class="method_details ">
@@ -817,16 +1029,16 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-217
-218
-219
-220</pre>
+189
+190
+191
+192</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 217</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 189</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_logger'>logger</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_logger instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.logger</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.global_logger</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_logger'>global_logger</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -862,16 +1074,16 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-226
-227
-228
-229</pre>
+198
+199
+200
+201</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 226</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 198</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_logger='>logger=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.global_logger instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.logger=</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.global_logger=</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_logger'>global_logger</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -905,16 +1117,16 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-274
-275
-276
-277</pre>
+244
+245
+246
+247</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 274</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 244</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new_operation_pool'>new_operation_pool</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.new_fast_executor instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.new_operation_pool</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.new_fast_executor</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_new_fast_executor'>new_fast_executor</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -948,16 +1160,16 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-268
-269
-270
-271</pre>
+238
+239
+240
+241</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 268</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 238</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new_task_pool'>new_task_pool</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent.new_io_executor instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.new_task_pool</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.new_io_executor</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_new_io_executor'>new_io_executor</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -992,16 +1204,16 @@ Use the :executor constructor option instead.</p>
       <pre class="lines">
 
 
-208
-209
-210
-211</pre>
+180
+181
+182
+183</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 208</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/configuration.rb', line 180</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_no_logger'>no_logger</span>
-  <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>[DEPRECATED] Use Concurrent::NULL_LOGGER instead</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent.configuration.no_logger</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Concurrent::NULL_LOGGER</span><span class='tstring_end'>&#39;</span></span>
   <span class='const'>NULL_LOGGER</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1014,9 +1226,9 @@ Use the :executor constructor option instead.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Mar  9 09:50:50 2015 by
+  Generated on Fri Jul 10 12:11:03 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.0).
+  0.8.7.6 (ruby-2.2.1).
 </div>
 
 <script>

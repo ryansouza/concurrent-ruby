@@ -32,7 +32,7 @@
       <div id="menu">
   
     <a href="../_index.html">Index (T)</a> &raquo;
-    <span class='title'><span class='object_link'><a href="../Concurrent.html" title="Concurrent (module)">Concurrent</a></span></span>
+    <span class='title'><span class='object_link'><a href="../root/Concurrent.html" title="Concurrent (module)">Concurrent</a></span></span>
      &raquo; 
     <span class="title">TimerTask</span>
   
@@ -73,10 +73,16 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'>RubyExecutorService</span></span>
       
         <ul class="fullTree">
           <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
+          
+            <li class="next"><span class='object_link'>AbstractExecutorService</span></li>
+          
+            <li class="next"><span class='object_link'>RubyExecutorService</span></li>
           
             <li class="next">Concurrent::TimerTask</li>
           
@@ -91,7 +97,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><span class='object_link'><a href="Dereferenceable.html" title="Concurrent::Dereferenceable (module)">Dereferenceable</a></span>, <span class='object_link'><a href="Observable.html" title="Concurrent::Observable (module)">Observable</a></span>, <span class='object_link'><a href="RubyExecutor.html" title="Concurrent::RubyExecutor (module)">RubyExecutor</a></span></dd>
+      <dd class="r2"><span class='object_link'><a href="Concern/Dereferenceable.html" title="Concurrent::Concern::Dereferenceable (module)">Concern::Dereferenceable</a></span>, <span class='object_link'><a href="Concern/Observable.html" title="Concurrent::Concern::Observable (module)">Concern::Observable</a></span></dd>
       
     
   
@@ -146,6 +152,45 @@ with three arguments: time of execution, the result of the block (or nil on
 failure), and any raised exceptions (or nil on success). If the timeout
 interval is exceeded the observer will receive a <code>Concurrent::TimeoutError</code>
 object as the third argument.</p>
+
+<h2>Copy Options</h2>
+
+<p>Object references in Ruby are mutable. This can lead to serious
+problems when the <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable#value</a></span> of an object is a mutable reference. Which
+is always the case unless the value is a <code>Fixnum</code>, <code>Symbol</code>, or similar
+&quot;primative&quot; data type. Each instance can be configured with a few
+options that can help protect the program from potentially dangerous
+operations. Each of these options can be optionally set when the oject
+instance is created:</p>
+
+<ul>
+<li><code>:dup_on_deref</code> When true the object will call the <code>#dup</code> method on
+the <code>value</code> object every time the <code>#value</code> methid is called
+(default: false)</li>
+<li><code>:freeze_on_deref</code> When true the object will call the <code>#freeze</code>
+method on the <code>value</code> object every time the <code>#value</code> method is called
+(default: false)</li>
+<li><code>:copy_on_deref</code> When given a <code>Proc</code> object the <code>Proc</code> will be run
+every time   the <code>#value</code> method is called. The <code>Proc</code> will be given
+the current <code>value</code> as its only argument and the result returned by
+the block will be the return   value of the <code>#value</code> call. When <code>nil</code>
+this option will be ignored (default: nil)</li>
+</ul>
+
+<p>When multiple deref options are set the order of operations is strictly defined.
+The order of deref operations is:</p>
+
+<ul>
+<li><code>:copy_on_deref</code></li>
+<li><code>:dup_on_deref</code></li>
+<li><code>:freeze_on_deref</code></li>
+</ul>
+
+<p>Because of this ordering there is no need to <code>#freeze</code> an object created by a
+provided <code>:copy_on_deref</code> block. Simply set <code>:freeze_on_deref</code> to <code>true</code>.
+Setting both <code>:dup_on_deref</code> to <code>true</code> and <code>:freeze_on_deref</code> to <code>true</code> is
+as close to the behavior of a &quot;pure&quot; functional language (like Erlang, Clojure,
+or Haskell) as we are likely to get in Ruby.</p>
 
 
   </div>
@@ -361,8 +406,8 @@ object as the third argument.</p>
   </span>
   
     <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Executor.html#fallback_policy-instance_method" title="Concurrent::Executor#fallback_policy (method)">Executor</a></span>
+      inherited
+      from <span class='object_link'><a href="RubyExecutorService.html#fallback_policy-instance_method" title="Concurrent::RubyExecutorService#fallback_policy (method)">RubyExecutorService</a></span>
     </span>
   
   
@@ -378,24 +423,23 @@ object as the third argument.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>The policy defining how rejected tasks (tasks received once the queue size reaches the configured <code>max_queue</code>, or after the executor has shut down) are handled.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
     
-      <li class="protected ">
+      <li class="public ">
   <span class="summary_signature">
     
-      <a href="#mutex-instance_method" title="#mutex (instance method)">- (Object) <strong>mutex</strong> </a>
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
     
 
     
   </span>
   
     <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#mutex-instance_method" title="Concurrent::RubyExecutor#mutex (method)">RubyExecutor</a></span>
+      inherited
+      from <span class='object_link'><a href="AbstractExecutorService.html#fallback_policy-instance_method" title="Concurrent::AbstractExecutorService#fallback_policy (method)">AbstractExecutorService</a></span>
     </span>
   
   
@@ -405,110 +449,13 @@ object as the third argument.</p>
     
     
   
-  <span class="note title protected">protected</span>
   
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute mutex.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#observers-instance_method" title="#observers (instance method)">- (Object) <strong>observers</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Observable.html#observers-instance_method" title="Concurrent::Observable#observers (method)">Observable</a></span>
-    </span>
-  
-  
-  
-    
-    
-  
-  <span class="note title protected">protected</span>
   
   
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute observers.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#stop_event-instance_method" title="#stop_event (instance method)">- (Object) <strong>stop_event</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#stop_event-instance_method" title="Concurrent::RubyExecutor#stop_event (method)">RubyExecutor</a></span>
-    </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute stop_event.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#stopped_event-instance_method" title="#stopped_event (instance method)">- (Object) <strong>stopped_event</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#stopped_event-instance_method" title="Concurrent::RubyExecutor#stopped_event (method)">RubyExecutor</a></span>
-    </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute stopped_event.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute fallback_policy.</p>
 </div></span>
   
 </li>
@@ -596,7 +543,7 @@ object as the third argument.</p>
   
     <span class="note title not_defined_here">
       included
-      from <span class='object_link'><a href="Observable.html#add_observer-instance_method" title="Concurrent::Observable#add_observer (method)">Observable</a></span>
+      from <span class='object_link'><a href="Concern/Observable.html#add_observer-instance_method" title="Concurrent::Concern::Observable#add_observer (method)">Concern::Observable</a></span>
     </span>
   
   
@@ -616,61 +563,6 @@ object as the third argument.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#auto_terminate%3F-instance_method" title="#auto_terminate? (instance method)">- (Boolean) <strong>auto_terminate?</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Executor.html#auto_terminate%3F-instance_method" title="Concurrent::Executor#auto_terminate? (method)">Executor</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#can_overflow%3F-instance_method" title="#can_overflow? (instance method)">- (Boolean) <strong>can_overflow?</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Executor.html#can_overflow%3F-instance_method" title="Concurrent::Executor#can_overflow? (method)">Executor</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Does the task queue have a maximum size?.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#count_observers-instance_method" title="#count_observers (instance method)">- (Integer) <strong>count_observers</strong> </a>
     
 
@@ -679,7 +571,7 @@ object as the third argument.</p>
   
     <span class="note title not_defined_here">
       included
-      from <span class='object_link'><a href="Observable.html#count_observers-instance_method" title="Concurrent::Observable#count_observers (method)">Observable</a></span>
+      from <span class='object_link'><a href="Concern/Observable.html#count_observers-instance_method" title="Concurrent::Concern::Observable#count_observers (method)">Concern::Observable</a></span>
     </span>
   
   
@@ -696,60 +588,6 @@ object as the third argument.</p>
 </li>
 
       
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#create_at_exit_handler%21-instance_method" title="#create_at_exit_handler! (instance method)">- (Object) <strong>create_at_exit_handler!</strong>(this) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Executor.html#create_at_exit_handler%21-instance_method" title="Concurrent::Executor#create_at_exit_handler! (method)">Executor</a></span>
-    </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#create_mri_at_exit_handler%21-instance_method" title="#create_mri_at_exit_handler! (instance method)">- (Object) <strong>create_mri_at_exit_handler!</strong>(id) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Executor.html#create_mri_at_exit_handler%21-instance_method" title="Concurrent::Executor#create_mri_at_exit_handler! (method)">Executor</a></span>
-    </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
         <li class="public ">
   <span class="summary_signature">
     
@@ -761,7 +599,7 @@ object as the third argument.</p>
   
     <span class="note title not_defined_here">
       included
-      from <span class='object_link'><a href="Observable.html#delete_observer-instance_method" title="Concurrent::Observable#delete_observer (method)">Observable</a></span>
+      from <span class='object_link'><a href="Concern/Observable.html#delete_observer-instance_method" title="Concurrent::Concern::Observable#delete_observer (method)">Concern::Observable</a></span>
     </span>
   
   
@@ -789,7 +627,7 @@ object as the third argument.</p>
   
     <span class="note title not_defined_here">
       included
-      from <span class='object_link'><a href="Observable.html#delete_observers-instance_method" title="Concurrent::Observable#delete_observers (method)">Observable</a></span>
+      from <span class='object_link'><a href="Concern/Observable.html#delete_observers-instance_method" title="Concurrent::Concern::Observable#delete_observers (method)">Concern::Observable</a></span>
     </span>
   
   
@@ -802,33 +640,6 @@ object as the third argument.</p>
   
     <span class="summary_desc"><div class='inline'><p>Self.</p>
 </div></span>
-  
-</li>
-
-      
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#enable_at_exit_handler%21-instance_method" title="#enable_at_exit_handler! (instance method)">- (Object) <strong>enable_at_exit_handler!</strong>(opts = {}) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Executor.html#enable_at_exit_handler%21-instance_method" title="Concurrent::Executor#enable_at_exit_handler! (method)">Executor</a></span>
-    </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -851,62 +662,6 @@ object as the third argument.</p>
 
   
     <span class="summary_desc"><div class='inline'><p>Execute a previously created <code>TimerTask</code>.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#init_executor-instance_method" title="#init_executor (instance method)">- (Object) <strong>init_executor</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#init_executor-instance_method" title="Concurrent::RubyExecutor#init_executor (method)">RubyExecutor</a></span>
-    </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Initialize the executor by creating and initializing all the internal synchronization objects.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#init_mutex-instance_method" title="#init_mutex (instance method)">- (Object) <strong>init_mutex</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Dereferenceable.html#init_mutex-instance_method" title="Concurrent::Dereferenceable#init_mutex (method)">Dereferenceable</a></span>
-    </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Initializes the internal <code>Mutex</code>.</p>
 </div></span>
   
 </li>
@@ -940,62 +695,6 @@ object as the third argument.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#kill-instance_method" title="#kill (instance method)">- (Object) <strong>kill</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#kill-instance_method" title="Concurrent::RubyExecutor#kill (method)">RubyExecutor</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Begin an immediate shutdown.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#log-instance_method" title="#log (instance method)">- (Object) <strong>log</strong>(level, progname, message = nil, &amp;block) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Logging.html#log-instance_method" title="Concurrent::Logging#log (method)">Logging</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Configuration#logger</a></span>, it can be overridden by setting @logger.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#running%3F-instance_method" title="#running? (instance method)">- (Boolean) <strong>running?</strong> </a>
     
 
@@ -1019,146 +718,6 @@ object as the third argument.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#serialized%3F-instance_method" title="#serialized? (instance method)">- (Boolean) <strong>serialized?</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Executor.html#serialized%3F-instance_method" title="Concurrent::Executor#serialized? (method)">Executor</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Does this executor guarantee serialization of its operations?.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#set_deref_options-instance_method" title="#set_deref_options (instance method)">- (Object) <strong>set_deref_options</strong>(opts = {}) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Dereferenceable.html#set_deref_options-instance_method" title="Concurrent::Dereferenceable#set_deref_options (method)">Dereferenceable</a></span>
-    </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Set the options which define the operations #value performs before returning data to the caller (dereferencing).</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#shutdown-instance_method" title="#shutdown (instance method)">- (Object) <strong>shutdown</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#shutdown-instance_method" title="Concurrent::RubyExecutor#shutdown (method)">RubyExecutor</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Begin an orderly shutdown.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#shutdown%3F-instance_method" title="#shutdown? (instance method)">- (Boolean) <strong>shutdown?</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#shutdown%3F-instance_method" title="Concurrent::RubyExecutor#shutdown? (method)">RubyExecutor</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Is the executor shutdown?.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#shuttingdown%3F-instance_method" title="#shuttingdown? (instance method)">- (Boolean) <strong>shuttingdown?</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#shuttingdown%3F-instance_method" title="Concurrent::RubyExecutor#shuttingdown? (method)">RubyExecutor</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Is the executor shuttingdown?.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#value-instance_method" title="#value (instance method)">- (Object) <strong>value</strong> </a>
     
 
@@ -1169,7 +728,7 @@ object as the third argument.</p>
   
     <span class="note title not_defined_here">
       included
-      from <span class='object_link'><a href="Dereferenceable.html#value-instance_method" title="Concurrent::Dereferenceable#value (method)">Dereferenceable</a></span>
+      from <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable</a></span>
     </span>
   
   
@@ -1186,62 +745,6 @@ object as the third argument.</p>
 </li>
 
       
-        <li class="protected ">
-  <span class="summary_signature">
-    
-      <a href="#value%3D-instance_method" title="#value= (instance method)">- (Object) <strong>value=</strong>(val) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Dereferenceable.html#value%3D-instance_method" title="Concurrent::Dereferenceable#value= (method)">Dereferenceable</a></span>
-    </span>
-  
-  
-  
-  <span class="note title protected">protected</span>
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Set the internal value of this object.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Boolean) <strong>wait_for_termination</strong>(timeout = nil) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="RubyExecutor.html#wait_for_termination-instance_method" title="Concurrent::RubyExecutor#wait_for_termination (method)">RubyExecutor</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Block until executor shutdown is complete or until <code>timeout</code> seconds have passed.</p>
-</div></span>
-  
-</li>
-
-      
         <li class="public ">
   <span class="summary_signature">
     
@@ -1253,7 +756,7 @@ object as the third argument.</p>
   
     <span class="note title not_defined_here">
       included
-      from <span class='object_link'><a href="Observable.html#with_observer-instance_method" title="Concurrent::Observable#with_observer (method)">Observable</a></span>
+      from <span class='object_link'><a href="Concern/Observable.html#with_observer-instance_method" title="Concurrent::Concern::Observable#with_observer (method)">Concern::Observable</a></span>
     </span>
   
   
@@ -1284,6 +787,12 @@ object as the third argument.</p>
   
   
   
+  
+  
+  
+  
+  
+  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -1298,16 +807,7 @@ object as the third argument.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Calls Concurrent::Dereferenceable#  set_deref_options passing <code>opts</code>.
-All options supported by Concurrent::Dereferenceable can be set
-during object initialization.</p>
-</div>
-  </div>
-
-<p>Create a new TimerTask with the given task and configuration.</p>
+    <p>Create a new TimerTask with the given task and configuration.</p>
 
 
   </div>
@@ -1381,6 +881,55 @@ has passed (default: false)</p>
           
         </li>
       
+        <li>
+          <span class="name">:dup_on_deref</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>false</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Call <code>#dup</code> before
+returning the data from <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable#value</a></span></p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:freeze_on_deref</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>false</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Call <code>#freeze</code> before
+returning the data from <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable#value</a></span></p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:copy_on_deref</span>
+          <span class="type">(<tt>Proc</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>nil</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>When calling the <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable#value</a></span>
+method, call the given proc passing the internal value as the sole
+argument then return the new value returned from the proc.</p>
+</div>
+          
+        </li>
+      
     </ul>
   
 
@@ -1442,50 +991,23 @@ refer to the execution context of the block rather than the running
   
 </ul>
 
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li>set_deref_options</li>
-    
-  </ul>
-
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
+187
+188
 189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202</pre>
+190</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 189</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 187</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
-
-  <span class='id identifier rubyid_init_executor'>init_executor</span>
-  <span class='id identifier rubyid_set_deref_options'>set_deref_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_execution_interval'>execution_interval</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:execution</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:execution_interval</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>EXECUTION_INTERVAL</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_timeout_interval'>timeout_interval</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:timeout</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:timeout_interval</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>TIMEOUT_INTERVAL</span>
-  <span class='ivar'>@run_now</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:now</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:run_now</span><span class='rbracket'>]</span>
-  <span class='ivar'>@executor</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>SafeTaskExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
-  <span class='ivar'>@running</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>AtomicBoolean</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>false</span><span class='rparen'>)</span>
-
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_observers'>observers</span> <span class='op'>=</span> <span class='const'>CopyOnNotifyObserverSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='kw'>super</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1543,21 +1065,15 @@ task is performed again.</p>
       <pre class="lines">
 
 
-248
-249
-250
-251
-252
-253</pre>
+236
+237
+238</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 248</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 236</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execution_interval'>execution_interval</span>
-  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
-  <span class='ivar'>@execution_interval</span>
-<span class='kw'>ensure</span>
-  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@execution_interval</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1576,132 +1092,32 @@ task is performed again.</p>
 
   
     <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Executor.html#fallback_policy-instance_method" title="Concurrent::Executor#fallback_policy (method)">Executor</a></span>
+      Originally defined in class
+        <span class='object_link'><a href="RubyExecutorService.html#fallback_policy-instance_method" title="Concurrent::RubyExecutorService#fallback_policy (method)">RubyExecutorService</a></span>
     </span>
   
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>The policy defining how rejected tasks (tasks received once the
-queue size reaches the configured <code>max_queue</code>, or after the
-executor has shut down) are handled. Must be one of the values
-specified in <code>FALLBACK_POLICIES</code>.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
+</h3>
 </div>
     
       
       <span id=""></span>
       <div class="method_details ">
-  <h3 class="signature " id="mutex-instance_method">
+  <h3 class="signature " id="fallback_policy-instance_method">
   
-    - (<tt>Object</tt>) <strong>mutex</strong>  <span class="extras">(readonly, protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#mutex-instance_method" title="Concurrent::RubyExecutor#mutex (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Returns the value of attribute mutex</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      
-      <span id="observers=-instance_method"></span>
-      <div class="method_details ">
-  <h3 class="signature " id="observers-instance_method">
-  
-    - (<tt>Object</tt>) <strong>observers</strong>  <span class="extras">(protected)</span>
+    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
   
 
   
 
   
     <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Observable.html#observers-instance_method" title="Concurrent::Observable#observers (method)">Observable</a></span>
+      Originally defined in class
+        <span class='object_link'><a href="AbstractExecutorService.html#fallback_policy-instance_method" title="Concurrent::AbstractExecutorService#fallback_policy (method)">AbstractExecutorService</a></span>
     </span>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute observers</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="stop_event-instance_method">
-  
-    - (<tt>Object</tt>) <strong>stop_event</strong>  <span class="extras">(readonly, protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#stop_event-instance_method" title="Concurrent::RubyExecutor#stop_event (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Returns the value of attribute stop_event</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="stopped_event-instance_method">
-  
-    - (<tt>Object</tt>) <strong>stopped_event</strong>  <span class="extras">(readonly, protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#stopped_event-instance_method" title="Concurrent::RubyExecutor#stopped_event (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Returns the value of attribute stopped_event</p>
+    <p>Returns the value of attribute fallback_policy</p>
 
 
   </div>
@@ -1758,21 +1174,15 @@ considered to have failed.</p>
       <pre class="lines">
 
 
-274
-275
-276
-277
-278
-279</pre>
+254
+255
+256</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 274</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 254</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_timeout_interval'>timeout_interval</span>
-  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
-  <span class='ivar'>@timeout_interval</span>
-<span class='kw'>ensure</span>
-  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@timeout_interval</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1797,16 +1207,7 @@ considered to have failed.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Calls Concurrent::Dereferenceable#  set_deref_options passing <code>opts</code>.
-All options supported by Concurrent::Dereferenceable can be set
-during object initialization.</p>
-</div>
-  </div>
-
-<p>Create and execute a new <code>TimerTask</code>.</p>
+    <p>Create and execute a new <code>TimerTask</code>.</p>
 
 
   </div>
@@ -1889,6 +1290,55 @@ has passed (default: false)</p>
           
         </li>
       
+        <li>
+          <span class="name">:dup_on_deref</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>false</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Call <code>#dup</code> before
+returning the data from <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable#value</a></span></p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:freeze_on_deref</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>false</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>Call <code>#freeze</code> before
+returning the data from <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable#value</a></span></p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:copy_on_deref</span>
+          <span class="type">(<tt>Proc</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>nil</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'><p>When calling the <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable#value</a></span>
+method, call the given proc passing the internal value as the sole
+argument then return the new value returned from the proc.</p>
+</div>
+          
+        </li>
+      
     </ul>
   
 
@@ -1967,25 +1417,18 @@ refer to the execution context of the block rather than the running
   
 </ul>
 
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li>set_deref_options</li>
-    
-  </ul>
-
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-241
-242
-243</pre>
+229
+230
+231</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 241</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 229</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='const'>TimerTask</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
@@ -2012,7 +1455,7 @@ refer to the execution context of the block rather than the running
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="Observable.html#add_observer-instance_method" title="Concurrent::Observable#add_observer (method)">Observable</a></span>
+        <span class='object_link'><a href="Concern/Observable.html#add_observer-instance_method" title="Concurrent::Concern::Observable#add_observer (method)">Concern::Observable</a></span>
     </span>
   
 </h3><div class="docstring">
@@ -2046,96 +1489,6 @@ refer to the execution context of the block rather than the running
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="auto_terminate?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>auto_terminate?</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Executor.html#auto_terminate%3F-instance_method" title="Concurrent::Executor#auto_terminate? (method)">Executor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="can_overflow?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>can_overflow?</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Executor.html#can_overflow%3F-instance_method" title="Concurrent::Executor#can_overflow? (method)">Executor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Always returns <code>false</code></p>
-</div>
-  </div>
-
-<p>Does the task queue have a maximum size?</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>True if the task queue has a maximum size else false.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="count_observers-instance_method">
   
     - (<tt>Integer</tt>) <strong>count_observers</strong> 
@@ -2146,7 +1499,7 @@ refer to the execution context of the block rather than the running
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="Observable.html#count_observers-instance_method" title="Concurrent::Observable#count_observers (method)">Observable</a></span>
+        <span class='object_link'><a href="Concern/Observable.html#count_observers-instance_method" title="Concurrent::Concern::Observable#count_observers (method)">Concern::Observable</a></span>
     </span>
   
 </h3><div class="docstring">
@@ -2180,40 +1533,6 @@ refer to the execution context of the block rather than the running
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="create_at_exit_handler!-instance_method">
-  
-    - (<tt>Object</tt>) <strong>create_at_exit_handler!</strong>(this)  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Executor.html#create_at_exit_handler%21-instance_method" title="Concurrent::Executor#create_at_exit_handler! (method)">Executor</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="create_mri_at_exit_handler!-instance_method">
-  
-    - (<tt>Object</tt>) <strong>create_mri_at_exit_handler!</strong>(id)  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Executor.html#create_mri_at_exit_handler%21-instance_method" title="Concurrent::Executor#create_mri_at_exit_handler! (method)">Executor</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="delete_observer-instance_method">
   
     - (<tt>Object</tt>) <strong>delete_observer</strong>(*args) 
@@ -2224,7 +1543,7 @@ refer to the execution context of the block rather than the running
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="Observable.html#delete_observer-instance_method" title="Concurrent::Observable#delete_observer (method)">Observable</a></span>
+        <span class='object_link'><a href="Concern/Observable.html#delete_observer-instance_method" title="Concurrent::Concern::Observable#delete_observer (method)">Concern::Observable</a></span>
     </span>
   
 </h3><div class="docstring">
@@ -2260,7 +1579,7 @@ refer to the execution context of the block rather than the running
       <div class="method_details ">
   <h3 class="signature " id="delete_observers-instance_method">
   
-    - (<tt><span class='object_link'><a href="Observable.html" title="Concurrent::Observable (module)">Observable</a></span></tt>) <strong>delete_observers</strong> 
+    - (<tt><span class='object_link'><a href="Concern/Observable.html" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>) <strong>delete_observers</strong> 
   
 
   
@@ -2268,7 +1587,7 @@ refer to the execution context of the block rather than the running
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="Observable.html#delete_observers-instance_method" title="Concurrent::Observable#delete_observers (method)">Observable</a></span>
+        <span class='object_link'><a href="Concern/Observable.html#delete_observers-instance_method" title="Concurrent::Concern::Observable#delete_observers (method)">Concern::Observable</a></span>
     </span>
   
 </h3><div class="docstring">
@@ -2286,7 +1605,7 @@ refer to the execution context of the block rather than the running
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="Observable.html" title="Concurrent::Observable (module)">Observable</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Concern/Observable.html" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>)</span>
       
       
       
@@ -2299,23 +1618,6 @@ refer to the execution context of the block rather than the running
 </ul>
 
 </div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="enable_at_exit_handler!-instance_method">
-  
-    - (<tt>Object</tt>) <strong>enable_at_exit_handler!</strong>(opts = {})  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Executor.html#enable_at_exit_handler%21-instance_method" title="Concurrent::Executor#enable_at_exit_handler! (method)">Executor</a></span>
-    </span>
-  
-</h3>
 </div>
     
       <div class="method_details ">
@@ -2381,21 +1683,21 @@ refer to the execution context of the block rather than the running
       <pre class="lines">
 
 
-224
-225
-226
-227
-228
-229
-230
-231
-232</pre>
+212
+213
+214
+215
+216
+217
+218
+219
+220</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 224</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 212</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span>
-  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
     <span class='kw'>if</span> <span class='ivar'>@running</span><span class='period'>.</span><span class='id identifier rubyid_false?'>false?</span>
       <span class='ivar'>@running</span><span class='period'>.</span><span class='id identifier rubyid_make_true'>make_true</span>
       <span class='id identifier rubyid_schedule_next_task'>schedule_next_task</span><span class='lparen'>(</span><span class='ivar'>@run_now</span> <span class='op'>?</span> <span class='int'>0</span> <span class='op'>:</span> <span class='ivar'>@execution_interval</span><span class='rparen'>)</span>
@@ -2406,200 +1708,6 @@ refer to the execution context of the block rather than the running
     </td>
   </tr>
 </table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="init_executor-instance_method">
-  
-    - (<tt>Object</tt>) <strong>init_executor</strong>  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#init_executor-instance_method" title="Concurrent::RubyExecutor#init_executor (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Initialize the executor by creating and initializing all the
-internal synchronization objects.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="init_mutex-instance_method">
-  
-    - (<tt>Object</tt>) <strong>init_mutex</strong>  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Dereferenceable.html#init_mutex-instance_method" title="Concurrent::Dereferenceable#init_mutex (method)">Dereferenceable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>This method <em>must</em> be called from within the constructor of the including class.</p>
-</div>
-  </div>
-
-<p>Initializes the internal <code>Mutex</code>.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><span class='object_link'><a href="Dereferenceable.html#mutex-instance_method" title="Concurrent::Dereferenceable#mutex (method)">#mutex</a></span></li>
-    
-  </ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="kill-instance_method">
-  
-    - (<tt>Object</tt>) <strong>kill</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#kill-instance_method" title="Concurrent::RubyExecutor#kill (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Begin an immediate shutdown. In-progress tasks will be allowed to
-complete but enqueued tasks will be dismissed and no new tasks
-will be accepted. Has no additional effect if the thread pool is
-not running.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="log-instance_method">
-  
-    - (<tt>Object</tt>) <strong>log</strong>(level, progname, message = nil, &amp;block) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Logging.html#log-instance_method" title="Concurrent::Logging#log (method)">Logging</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Configuration#logger</a></span>, it can be overridden by setting @logger</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>level</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>one of Logger::Severity constants</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>progname</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>e.g. a path of an Actor</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>message</span>
-      
-      
-        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>when nil block is used to generate the message</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Yield Returns:</p>
-<ul class="yieldreturn">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>a message</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
 </div>
     
       <div class="method_details ">
@@ -2644,12 +1752,12 @@ not running.</p>
       <pre class="lines">
 
 
-207
-208
-209</pre>
+195
+196
+197</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 207</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 195</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_running?'>running?</span>
   <span class='ivar'>@running</span><span class='period'>.</span><span class='id identifier rubyid_true?'>true?</span>
@@ -2657,290 +1765,6 @@ not running.</p>
     </td>
   </tr>
 </table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="serialized?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>serialized?</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Executor.html#serialized%3F-instance_method" title="Concurrent::Executor#serialized? (method)">Executor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Always returns <code>false</code></p>
-</div>
-  </div>
-
-<p>Does this executor guarantee serialization of its operations?</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>True if the executor guarantees that all operations
-will be post in the order they are received and no two operations may
-occur simultaneously. Else false.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="set_deref_options-instance_method">
-  
-    - (<tt>Object</tt>) <strong>set_deref_options</strong>(opts = {})  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Dereferenceable.html#set_deref_options-instance_method" title="Concurrent::Dereferenceable#set_deref_options (method)">Dereferenceable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Most classes that include this module will call <code>#set_deref_options</code></p>
-</div>
-  </div>
-
-<p>Set the options which define the operations #value performs before
-returning data to the caller (dereferencing).</p>
-
-<p>from within the constructor, thus allowing these options to be set at
-object creation.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>opts</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>the options defining dereference behavior.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-  
-    
-    
-    <p class="tag_title">Options Hash (<tt>opts</tt>):</p>
-    <ul class="option">
-      
-        <li>
-          <span class="name">:dup_on_deref</span>
-          <span class="type">(<tt>String</tt>)</span>
-          <span class="default">
-            
-              &mdash; default:
-              <tt>false</tt>
-            
-          </span>
-          
-            &mdash; <div class='inline'><p>call <code>#dup</code> before returning the data</p>
-</div>
-          
-        </li>
-      
-        <li>
-          <span class="name">:freeze_on_deref</span>
-          <span class="type">(<tt>String</tt>)</span>
-          <span class="default">
-            
-              &mdash; default:
-              <tt>false</tt>
-            
-          </span>
-          
-            &mdash; <div class='inline'><p>call <code>#freeze</code> before returning the data</p>
-</div>
-          
-        </li>
-      
-        <li>
-          <span class="name">:copy_on_deref</span>
-          <span class="type">(<tt>String</tt>)</span>
-          <span class="default">
-            
-              &mdash; default:
-              <tt>nil</tt>
-            
-          </span>
-          
-            &mdash; <div class='inline'><p>call the given <code>Proc</code> passing
-the internal value and returning the value returned from the proc</p>
-</div>
-          
-        </li>
-      
-    </ul>
-  
-
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="shutdown-instance_method">
-  
-    - (<tt>Object</tt>) <strong>shutdown</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#shutdown-instance_method" title="Concurrent::RubyExecutor#shutdown (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Begin an orderly shutdown. Tasks already in the queue will be executed,
-but no new tasks will be accepted. Has no additional effect if the
-thread pool is not running.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="shutdown?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>shutdown?</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#shutdown%3F-instance_method" title="Concurrent::RubyExecutor#shutdown? (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Is the executor shutdown?</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p><code>true</code> when shutdown, <code>false</code> when shutting down or running</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="shuttingdown?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>shuttingdown?</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#shuttingdown%3F-instance_method" title="Concurrent::RubyExecutor#shuttingdown? (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Is the executor shuttingdown?</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p><code>true</code> when not running and not shutdown, else <code>false</code></p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
 </div>
     
       <div class="method_details ">
@@ -2958,30 +1782,13 @@ thread pool is not running.</p>
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="Dereferenceable.html#value-instance_method" title="Concurrent::Dereferenceable#value (method)">Dereferenceable</a></span>
+        <span class='object_link'><a href="Concern/Dereferenceable.html#value-instance_method" title="Concurrent::Concern::Dereferenceable#value (method)">Concern::Dereferenceable</a></span>
     </span>
   
 </h3><div class="docstring">
   <div class="discussion">
     <p>Return the value this object represents after applying the options specified
 by the <code>#set_deref_options</code> method.</p>
-
-<p>When multiple deref options are set the order of operations is strictly defined.
-The order of deref operations is:</p>
-
-<ul>
-<li><code>:copy_on_deref</code></li>
-<li><code>:dup_on_deref</code></li>
-<li><code>:freeze_on_deref</code></li>
-</ul>
-
-<p>Because of this ordering there is no need to <code>#freeze</code> an object created by a
-provided <code>:copy_on_deref</code> block. Simply set <code>:freeze_on_deref</code> to <code>true</code>.
-Setting both <code>:dup_on_deref</code> to <code>true</code> and <code>:freeze_on_deref</code> to <code>true</code> is
-as close to the behavior of a &quot;pure&quot; functional language (like Erlang, Clojure,
-or Haskell) as we are likely to get in Ruby.</p>
-
-<p>This method is thread-safe and synchronized with the internal <code>#mutex</code>.</p>
 
 
   </div>
@@ -3010,129 +1817,9 @@ or Haskell) as we are likely to get in Ruby.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="value=-instance_method">
-  
-    - (<tt>Object</tt>) <strong>value=</strong>(val)  <span class="extras">(protected)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Dereferenceable.html#value%3D-instance_method" title="Concurrent::Dereferenceable#value= (method)">Dereferenceable</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Set the internal value of this object</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>val</span>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the new value</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="wait_for_termination-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>wait_for_termination</strong>(timeout = nil) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="RubyExecutor.html#wait_for_termination-instance_method" title="Concurrent::RubyExecutor#wait_for_termination (method)">RubyExecutor</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Does not initiate shutdown or termination. Either <code>shutdown</code> or <code>kill</code>
-must be called before this method (or on another thread).</p>
-</div>
-  </div>
-
-<p>Block until executor shutdown is complete or until <code>timeout</code> seconds have
-passed.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>timeout</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>the maximum number of seconds to wait for shutdown to complete</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p><code>true</code> if shutdown complete or false on <code>timeout</code></p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="with_observer-instance_method">
   
-    - (<tt><span class='object_link'><a href="Observable.html" title="Concurrent::Observable (module)">Observable</a></span></tt>) <strong>with_observer</strong>(*args, &amp;block) 
+    - (<tt><span class='object_link'><a href="Concern/Observable.html" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>) <strong>with_observer</strong>(*args, &amp;block) 
   
 
   
@@ -3140,7 +1827,7 @@ passed.</p>
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="Observable.html#with_observer-instance_method" title="Concurrent::Observable#with_observer (method)">Observable</a></span>
+        <span class='object_link'><a href="Concern/Observable.html#with_observer-instance_method" title="Concurrent::Concern::Observable#with_observer (method)">Concern::Observable</a></span>
     </span>
   
 </h3><div class="docstring">
@@ -3158,7 +1845,7 @@ passed.</p>
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="Observable.html" title="Concurrent::Observable (module)">Observable</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Concern/Observable.html" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>)</span>
       
       
       
@@ -3178,9 +1865,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Mar  9 09:50:50 2015 by
+  Generated on Fri Jul 10 12:11:01 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.0).
+  0.8.7.6 (ruby-2.2.1).
 </div>
 
 <script>
