@@ -226,7 +226,7 @@ nodes they encounter while traversing the list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#each-instance_method" title="#each (instance method)">- (Object) <strong>each</strong> </a>
+      <a href="#each-instance_method" title="#each (instance method)">- (Object) <strong>each</strong> {|Object| ... }</a>
     
 
     
@@ -660,7 +660,7 @@ hashed contents of an object is what determines equality instead of
       <div class="method_details ">
   <h3 class="signature " id="each-instance_method">
   
-    - (<tt>Object</tt>) <strong>each</strong> 
+    - (<tt>Object</tt>) <strong>each</strong> {|Object| ... }
   
 
   
@@ -674,8 +674,26 @@ hashed contents of an object is what determines equality instead of
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>each item in the set</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
   
     <li>
       
@@ -693,7 +711,6 @@ hashed contents of an object is what determines equality instead of
     </li>
   
 </ul>
-
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -864,9 +881,9 @@ hashed contents of an object is what determines equality instead of
 </div>
 
     <div id="footer">
-  Generated on Fri Jul 10 12:11:06 2015 by
+  Generated on Sun Aug  9 12:17:16 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.1).
+  0.8.7.6 (ruby-2.2.2).
 </div>
 
 <script>

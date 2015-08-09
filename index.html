@@ -63,7 +63,14 @@
 
     <div id="content"><div id='filecontents'><h1>Concurrent Ruby</h1>
 
-<p><a href="http://badge.fury.io/rb/concurrent-ruby"><img src="https://badge.fury.io/rb/concurrent-ruby.svg" alt="Gem Version"></a> <a href="https://travis-ci.org/ruby-concurrency/concurrent-ruby"><img src="https://travis-ci.org/ruby-concurrency/concurrent-ruby.svg?branch=master" alt="Build Status"></a> <a href="https://ci.appveyor.com/project/rubyconcurrency/concurrent-ruby"><img src="https://ci.appveyor.com/api/projects/status/iq8aboyuu3etad4w?svg=true" alt="Build status"></a> <a href="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby"><img src="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby.svg" alt="Code Climate"></a> <a href="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby"><img src="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby.svg" alt="Inline docs"></a> <a href="https://gemnasium.com/ruby-concurrency/concurrent-ruby"><img src="https://gemnasium.com/ruby-concurrency/concurrent-ruby.svg" alt="Dependency Status"></a> <a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License"></a> <a href="https://gitter.im/ruby-concurrency/concurrent-ruby"><img src="http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg" alt="Gitter chat"></a></p>
+<p><a href="http://badge.fury.io/rb/concurrent-ruby"><img src="https://badge.fury.io/rb/concurrent-ruby.svg" alt="Gem Version"></a>
+<a href="https://travis-ci.org/ruby-concurrency/concurrent-ruby"><img src="https://travis-ci.org/ruby-concurrency/concurrent-ruby.svg?branch=master" alt="Build Status"></a>
+<a href="https://ci.appveyor.com/project/rubyconcurrency/concurrent-ruby"><img src="https://ci.appveyor.com/api/projects/status/iq8aboyuu3etad4w?svg=true" alt="Build status"></a>
+<a href="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby"><img src="https://codeclimate.com/github/ruby-concurrency/concurrent-ruby.svg" alt="Code Climate"></a>
+<a href="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby"><img src="http://inch-ci.org/github/ruby-concurrency/concurrent-ruby.svg" alt="Inline docs"></a>
+<a href="https://gemnasium.com/ruby-concurrency/concurrent-ruby"><img src="https://gemnasium.com/ruby-concurrency/concurrent-ruby.svg" alt="Dependency Status"></a>
+<a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License"></a>
+<a href="https://gitter.im/ruby-concurrency/concurrent-ruby"><img src="https://img.shields.io/badge/IRC%20(gitter)-devs%20%26%20users-brightgreen.svg" alt="Gitter chat"></a></p>
 
 <table>
   <tr>
@@ -107,13 +114,13 @@ Java 8 is required for JRuby (Java 7 support is deprecated in version 0.9 and wi
 
 <h2>Features &amp; Documentation</h2>
 
-<p>We have a roadmap guiding our work toward the <a href="https://github.com/ruby-concurrency/concurrent-ruby/wiki/v1.0-Roadmap">v1.0.0 release</a>.</p>
+<p>We have a roadmap guiding our work toward the <a href="https://github.com/ruby-concurrency/concurrent-ruby/issues/257">v1.0.0 release</a>.</p>
 
 <p>The primary site for documentation is the automatically generated <a href="http://ruby-concurrency.github.io/concurrent-ruby/frames.html">API documentation</a></p>
 
-<p>We also have a <a href="http://groups.google.com/group/concurrent-ruby">mailing list</a>.</p>
+<p>We also have a <a href="http://groups.google.com/group/concurrent-ruby">mailing list</a> and <a href="https://gitter.im/ruby-concurrency/concurrent-ruby">IRC (gitter)</a>.</p>
 
-<p>This library contains a variety of concurrency abstractions at high and low levels. One of the high-level abstractions is likely to meet most common needs. </p>
+<p>This library contains a variety of concurrency abstractions at high and low levels. One of the high-level abstractions is likely to meet most common needs.</p>
 
 <h4>General-purpose Concurrency Abstractions</h4>
 
@@ -127,7 +134,7 @@ Java 8 is required for JRuby (Java 7 support is deprecated in version 0.9 and wi
 </ul></li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Promise.html">Promise</a>: Similar to Futures, with more features.</li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ScheduledTask.html">ScheduledTask</a>: Like a Future scheduled for a specific future time.</li>
-<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/TimerTask.html">TimerTask</a>: A Thread that periodically wakes up to perform work at regular intervals. </li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/TimerTask.html">TimerTask</a>: A Thread that periodically wakes up to perform work at regular intervals.</li>
 </ul>
 
 <h4>Thread-safe Value Objects</h4>
@@ -175,6 +182,7 @@ Java 8 is required for JRuby (Java 7 support is deprecated in version 0.9 and wi
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ThreadLocalVar.html">Thread-local variables</a></li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/TVar.html">Software transactional memory</a> (TVar)</li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ReadWriteLock.html">ReadWriteLock</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ReentrantReadWriteLock.html">ReentrantReadWriteLock</a></li>
 </ul>
 
 <h3>Edge Features</h3>
@@ -188,22 +196,19 @@ be obeyed though. Features developed in <code>concurrent-ruby-edge</code> are ex
 <ul>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Actor.html">Actor</a>:
 Implements the Actor Model, where concurrent actors exchange messages.</li>
-<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Edge.html">new Future Framework</a> - new 
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Edge/FutureShortcuts.html">new Future Framework</a> - new
 unified implementation of Futures and Promises which combines Features of previous <code>Future</code>,
 <code>Promise</code>, <code>IVar</code>, <code>Event</code>, <code>Probe</code>, <code>dataflow</code>, <code>Delay</code>, <code>TimerTask</code> into single framework. It uses extensively
-new synchronization layer to make all the paths <strong>lock-free</strong> with exception of blocking threads on <code>#wait</code>.
-It offers better performance and does not block threads when not required.</li>
+new synchronization layer to make all the features <strong>non-blocking</strong> and <strong>lock-free</strong> with exception of obviously blocking
+operations like <code>#wait</code>, <code>#value</code>. It also offers better performance.</li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Agent.html">Agent</a>: A single atomic value that represents an identity.</li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Channel.html">Channel</a>:
 Communicating Sequential Processes (CSP).</li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Exchanger.html">Exchanger</a></li>
 <li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/LazyRegister.html">LazyRegister</a></li>
-<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Edge.html">New Future Promise Framework</a> - new 
-unified implementation of Futures and Promises which combines Features of previous <code>Future</code>,
-<code>Promise</code>, <code>IVar</code>, <code>Probe</code>, <code>dataflow</code>, <code>Delay</code>, <code>TimerTask</code> into single framework. It uses extensively
-new synchronization layer to make all the paths lock-free with exception of blocking threads on <code>#wait</code>.
-It offers better performance and does not block threads (exception being <code>#wait</code> and similar methods where it&#39;s
-intended).</li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Edge/AtomicMarkableReference.html">Atomic Markable Reference</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Edge/LockFreeLinkedSet.html">LockFreeLinked Set</a></li>
+<li><a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/Edge/LockFreeStack.html">LockFreeStack</a></li>
 </ul>
 
 <h4>Statuses:</h4>
@@ -211,12 +216,13 @@ intended).</li>
 <p><em>Why are these not in core?</em></p>
 
 <ul>
-<li><strong>Actor</strong> - Partial documentation and tests; stability is good. </li>
+<li><strong>Actor</strong> - Partial documentation and tests; stability is good.</li>
 <li><strong>Future/Promise Framework</strong> - API changes; partial documentation and tests; stability good.</li>
 <li><strong>Agent</strong> - Incomplete behaviour compared to Clojure&#39;s models; stability good.</li>
 <li><strong>Channel</strong> - Missing documentation; limted features; stability good.</li>
 <li><strong>Exchanger</strong> - Known race condition requiring a new implementation.</li>
-<li><strong>LazyRegister</strong> - Missing documentation and tests.<br></li>
+<li><strong>LazyRegister</strong> - Missing documentation and tests.</li>
+<li><strong>AtomicMarkableReference, LockFreeLinkedSet, LockFreeStack</strong> - Needs real world battle testing</li>
 </ul>
 
 <h2>Usage</h2>
@@ -259,8 +265,6 @@ intended).</li>
 </span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/edge/future</span><span class='tstring_end'>&#39;</span></span>    <span class='comment'># new Future Framework
 </span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/agent</span><span class='tstring_end'>&#39;</span></span>          <span class='comment'># Concurrent::Agent
 </span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/channel </span><span class='tstring_end'>&#39;</span></span>       <span class='comment'># Concurrent::Channel and supporting code
-</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/exchanger</span><span class='tstring_end'>&#39;</span></span>      <span class='comment'># Concurrent::Exchanger
-</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>concurrent/lazy_register</span><span class='tstring_end'>&#39;</span></span>  <span class='comment'># Concurrent::LazyRegister
 </span></code></pre>
 
 <p>If the library does not behave as expected, <code>Concurrent.use_stdlib_logger(Logger::DEBUG)</code> could help to reveal the problem.</p>
@@ -370,9 +374,9 @@ It is Copyright &copy; 2014 <a href="https://twitter.com/jerrydantonio">Jerry D&
 </div></div>
 
     <div id="footer">
-  Generated on Fri Jul 10 12:10:55 2015 by
+  Generated on Sun Aug  9 12:17:05 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.1).
+  0.8.7.6 (ruby-2.2.2).
 </div>
 
 <script>
