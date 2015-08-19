@@ -159,7 +159,7 @@ Each task is represented as a <code>ScheduledTask</code>.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Symbol) <strong>fallback_policy</strong> </a>
     
 
     
@@ -183,7 +183,8 @@ Each task is represented as a <code>ScheduledTask</code>.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>The fallback policy in effect.</p>
+</div></span>
   
 </li>
 
@@ -191,7 +192,7 @@ Each task is represented as a <code>ScheduledTask</code>.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Symbol) <strong>fallback_policy</strong> </a>
     
 
     
@@ -215,7 +216,7 @@ Each task is represented as a <code>ScheduledTask</code>.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute fallback_policy.</p>
+    <span class="summary_desc"><div class='inline'><p>The fallback policy in effect.</p>
 </div></span>
   
 </li>
@@ -226,97 +227,6 @@ Each task is represented as a <code>ScheduledTask</code>.</p>
 
 
 
-  
-    <h2>
-      Class Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
-
-    <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#deprecated-class_method" title="#deprecated (class method)">+ (Object) <strong>deprecated</strong>(message, strip = 2) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      extended
-      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated-class_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concern::Deprecation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#deprecated_method-class_method" title="#deprecated_method (class method)">+ (Object) <strong>deprecated_method</strong>(old_name, new_name) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      extended
-      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-class_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concern::Deprecation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#log-class_method" title="#log (class method)">+ (Object) <strong>log</strong>(level, progname, message = nil, &amp;block) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      extended
-      from <span class='object_link'><a href="Concern/Logging.html#log-class_method" title="Concurrent::Concern::Logging#log (method)">Concern::Logging</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Configuration#logger</a></span>, it can be overridden by setting @logger.</p>
-</div></span>
-  
-</li>
-
-      
-    </ul>
   
     <h2>
       Instance Method Summary
@@ -410,8 +320,6 @@ Each task is represented as a <code>ScheduledTask</code>.</p>
   
   
   
-  
-  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -440,7 +348,7 @@ Each task is represented as a <code>ScheduledTask</code>.</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -485,12 +393,12 @@ Three special values are also supported: <code>:task</code> returns the global t
       <pre class="lines">
 
 
-30
-31
-32</pre>
+28
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -510,7 +418,7 @@ Three special values are also supported: <code>:task</code> returns the global t
       <div class="method_details first">
   <h3 class="signature first" id="fallback_policy-instance_method">
   
-    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Symbol</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -521,7 +429,34 @@ Three special values are also supported: <code>:task</code> returns the global t
         <span class='object_link'><a href="RubyExecutorService.html#fallback_policy-instance_method" title="Concurrent::RubyExecutorService#fallback_policy (method)">RubyExecutorService</a></span>
     </span>
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       
@@ -529,7 +464,7 @@ Three special values are also supported: <code>:task</code> returns the global t
       <div class="method_details ">
   <h3 class="signature " id="fallback_policy-instance_method">
   
-    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Symbol</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -542,144 +477,25 @@ Three special values are also supported: <code>:task</code> returns the global t
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute fallback_policy</p>
+    <p>Returns The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-
-</div>
-</div>
-    
-  </div>
-
-
-  <div id="class_method_details" class="method_details_list">
-    <h2>Class Method Details</h2>
-
-    
-      <div class="method_details first">
-  <h3 class="signature first" id="deprecated-class_method">
-  
-    + (<tt>Object</tt>) <strong>deprecated</strong>(message, strip = 2) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Deprecation.html#deprecated-class_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concern::Deprecation</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="deprecated_method-class_method">
-  
-    + (<tt>Object</tt>) <strong>deprecated_method</strong>(old_name, new_name) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-class_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concern::Deprecation</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="log-class_method">
-  
-    + (<tt>Object</tt>) <strong>log</strong>(level, progname, message = nil, &amp;block) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Logging.html#log-class_method" title="Concurrent::Concern::Logging#log (method)">Concern::Logging</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Concurrent::Configuration#logger</a></span>, it can be overridden by setting @logger</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>level</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>one of Logger::Severity constants</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>progname</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>e.g. a path of an Actor</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>message</span>
-      
-      
-        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>when nil block is used to generate the message</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Yield Returns:</p>
-<ul class="yieldreturn">
+<p class="tag_title">Returns:</p>
+<ul class="return">
   
     <li>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Symbol</tt>)</span>
       
       
       
         &mdash;
-        <div class='inline'><p>a message</p>
+        <div class='inline'><p>The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
 </div>
       
     </li>
@@ -690,6 +506,7 @@ Three special values are also supported: <code>:task</code> returns the global t
 </div>
     
   </div>
+
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
@@ -723,12 +540,12 @@ not running.</p>
       <pre class="lines">
 
 
-66
-67
-68</pre>
+62
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kill'>kill</span>
   <span class='id identifier rubyid_shutdown'>shutdown</span>
@@ -749,17 +566,7 @@ not running.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Scheduling is now based on a monotonic clock. This makes the timer much
-more accurate, but only when scheduling based on a delay interval.
-Scheduling a task based on a clock time is deprecated. It will still work
-but will not be supported in the 1.0 release.</p>
-</div>
-  </div>
-
-<p>Post a task to be execute run after a given delay (in seconds). If the
+    <p>Post a task to be execute run after a given delay (in seconds). If the
 delay is less than 1/100th of a second the task will be immediately post
 to the executor.</p>
 
@@ -790,7 +597,7 @@ to the executor.</p>
         <span class='name'>args</span>
       
       
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;Object&gt;</tt>)</span>
       
       
       
@@ -874,20 +681,20 @@ is successful; false after shutdown.</p>
       <pre class="lines">
 
 
+46
+47
+48
+49
 50
 51
 52
 53
 54
 55
-56
-57
-58
-59
-60</pre>
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -910,7 +717,7 @@ is successful; false after shutdown.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:14 2015 by
+  Generated on Wed Aug 19 19:32:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

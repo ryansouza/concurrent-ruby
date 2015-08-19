@@ -183,7 +183,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Configuration#logger</a></span>, it can be overridden by setting @logger.</p>
+    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="../root/Concurrent.html#global_logger-class_method" title="Concurrent.global_logger (method)">global_logger</a></span>, it can be overridden by setting @logger.</p>
 </div></span>
   
 </li>
@@ -271,13 +271,13 @@
       <pre class="lines">
 
 
+11
 12
 13
-14
-15</pre>
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -311,7 +311,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Concurrent::Configuration#logger</a></span>, it can be overridden by setting @logger</p>
+    <p>Logs through <span class='object_link'><a href="../root/Concurrent.html#global_logger-class_method" title="Concurrent.global_logger (method)">Concurrent.global_logger</a></span>, it can be overridden by setting @logger</p>
 
 
   </div>
@@ -430,7 +430,7 @@
         <span class='name'>args</span>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
       
       
       
@@ -501,13 +501,13 @@ is not running</p>
       <pre class="lines">
 
 
+34
 35
 36
-37
-38</pre>
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_posts'>posts</span> <span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_task'>task</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
@@ -544,7 +544,7 @@ be interleaved by other tasks.</p>
         <span class='name'>posts</span>
       
       
-        <span class='type'>(<tt>Array&lt;Array(<span class='object_link'>Executor</span>, Array&lt;Object&gt;, Proc)&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;<span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>(<span class='object_link'>Executor</span>, <span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;Object&gt;, Proc)&gt;</tt>)</span>
       
       
       
@@ -564,6 +564,7 @@ first is a <span class='object_link'>Executor</span>, second is array of args fo
       <pre class="lines">
 
 
+44
 45
 46
 47
@@ -585,11 +586,10 @@ first is a <span class='object_link'>Executor</span>, second is array of args fo
 63
 64
 65
-66
-67</pre>
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/serialized_execution.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_posts'>posts</span><span class='lparen'>(</span><span class='id identifier rubyid_posts'>posts</span><span class='rparen'>)</span>
   <span class='comment'># if can_overflow?
@@ -624,7 +624,7 @@ first is a <span class='object_link'>Executor</span>, second is array of args fo
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:17 2015 by
+  Generated on Wed Aug 19 19:32:53 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

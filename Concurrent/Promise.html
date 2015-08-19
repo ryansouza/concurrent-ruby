@@ -324,9 +324,6 @@ the parent reason.</p>
   
 
 </div>
-  <h2>Constant Summary</h2>
-  
-
 
 
 
@@ -633,7 +630,7 @@ the parent reason.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#set-instance_method" title="#set (instance method)">- (IVar) <strong>set</strong>(value = IVar::NO_VALUE) { ... }</a>
+      <a href="#set-instance_method" title="#set (instance method)">- (IVar) <strong>set</strong>(value = NULL) { ... }</a>
     
 
     
@@ -712,11 +709,6 @@ the parent reason.</p>
   
   
   
-  
-  
-  
-  
-  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -745,7 +737,7 @@ the parent reason.</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -868,7 +860,7 @@ argument then return the new value returned from the proc.</p>
       
         <li>
           <span class="name">:args</span>
-          <span class="type">(<tt>object</tt>, <tt>Array</tt>)</span>
+          <span class="type">(<tt>object</tt>, <tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
           <span class="default">
             
           </span>
@@ -942,7 +934,7 @@ the task block on execution</p>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete_if'>delete_if</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='rbrace'>}</span>
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='const'>IVar</span><span class='op'>::</span><span class='const'>NO_VALUE</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>__promise_body_from_block__:</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='const'>NULL</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>__promise_body_from_block__:</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='kw'>nil</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1051,7 +1043,7 @@ on the aggregating promise will then be executed as appropriate. If the
         <span class='name'>promises</span>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
       
       
       
@@ -1138,7 +1130,7 @@ the promises given as arguments</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -1261,7 +1253,7 @@ argument then return the new value returned from the proc.</p>
       
         <li>
           <span class="name">:args</span>
-          <span class="type">(<tt>object</tt>, <tt>Array</tt>)</span>
+          <span class="type">(<tt>object</tt>, <tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
           <span class="default">
             
           </span>
@@ -1358,7 +1350,7 @@ the task block on execution</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -1483,7 +1475,7 @@ argument then return the new value returned from the proc.</p>
       
         <li>
           <span class="name">:args</span>
-          <span class="type">(<tt>object</tt>, <tt>Array</tt>)</span>
+          <span class="type">(<tt>object</tt>, <tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
           <span class="default">
             
           </span>
@@ -1578,7 +1570,7 @@ the task block on execution</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -1703,7 +1695,7 @@ argument then return the new value returned from the proc.</p>
       
         <li>
           <span class="name">:args</span>
-          <span class="type">(<tt>object</tt>, <tt>Array</tt>)</span>
+          <span class="type">(<tt>object</tt>, <tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
           <span class="default">
             
           </span>
@@ -1776,7 +1768,7 @@ the task block on execution</p>
       <div class="method_details ">
   <h3 class="signature " id="zip-class_method">
   
-    + (<tt><span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&lt;Array&gt;</tt>) <strong>zip</strong>(*promises) 
+    + (<tt><span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&lt;<span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&gt;</tt>) <strong>zip</strong>(*promises) 
   
 
   
@@ -1799,7 +1791,7 @@ and fails if any of them fails.</p>
         <span class='name'>promises</span>
       
       
-        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;<span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&gt;</tt>)</span>
       
       
       
@@ -1813,7 +1805,7 @@ and fails if any of them fails.</p>
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&lt;Array&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&lt;<span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&gt;</tt>)</span>
       
       
       
@@ -2317,7 +2309,7 @@ If either part fails the whole also fails.</p>
       <div class="method_details ">
   <h3 class="signature " id="set-instance_method">
   
-    - (<tt><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">IVar</a></span></tt>) <strong>set</strong>(value = IVar::NO_VALUE) { ... }
+    - (<tt><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">IVar</a></span></tt>) <strong>set</strong>(value = NULL) { ... }
   
 
   
@@ -2342,7 +2334,7 @@ If either part fails the whole also fails.</p>
         <span class='type'>(<tt>Object</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>IVar::NO_VALUE</tt>)</em>
+        <em class="default">(defaults to: <tt>NULL</tt>)</em>
       
       
         &mdash;
@@ -2454,7 +2446,7 @@ been set or otherwise completed</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/promise.rb', line 257</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_set'>set</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='const'>IVar</span><span class='op'>::</span><span class='const'>NO_VALUE</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_set'>set</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='const'>NULL</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>PromiseExecutionError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>supported only on root promise</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_root?'>root?</span>
   <span class='id identifier rubyid_check_for_block_or_value!'>check_for_block_or_value!</span><span class='lparen'>(</span><span class='id identifier rubyid_block_given?'>block_given?</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -2615,7 +2607,7 @@ promise is rejected.</p>
       <div class="method_details ">
   <h3 class="signature " id="zip-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&lt;Array&gt;</tt>) <strong>zip</strong>(*others) 
+    - (<tt><span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&lt;<span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&gt;</tt>) <strong>zip</strong>(*others) 
   
 
   
@@ -2638,7 +2630,7 @@ and fails if any of them fails.</p>
         <span class='name'>others</span>
       
       
-        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;<span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&gt;</tt>)</span>
       
       
       
@@ -2652,7 +2644,7 @@ and fails if any of them fails.</p>
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&lt;Array&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Concurrent::Promise (class)">Promise</a></span>&lt;<span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&gt;</tt>)</span>
       
       
       
@@ -2686,7 +2678,7 @@ and fails if any of them fails.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:10 2015 by
+  Generated on Wed Aug 19 19:32:48 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

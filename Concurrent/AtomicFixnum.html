@@ -129,8 +129,6 @@ Testing with Concurrent::JavaAtomicFixnum...
     
       <li><a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/atomic/AtomicLong.html" target="_parent" title="java.util.concurrent.atomic.AtomicLong">java.util.concurrent.atomic.AtomicLong</a></li>
     
-      <li><span class='object_link'>MutexAtomicFixnum</span></li>
-    
   </ul>
 
 </div>
@@ -237,6 +235,29 @@ Testing with Concurrent::JavaAtomicFixnum...
 
   
     <span class="summary_desc"><div class='inline'><p>Creates a new <code>AtomicFixnum</code> with the given initial value.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#update-instance_method" title="#update (instance method)">- (Object) <strong>update</strong> {|Object| ... }</a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Pass the current value to the given block, replacing it with the block&#39;s result.</p>
 </div></span>
   
 </li>
@@ -357,12 +378,14 @@ Testing with Concurrent::JavaAtomicFixnum...
       <pre class="lines">
 
 
-</pre>
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 129</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>AtomicFixnum</span> <span class='op'>&lt;</span> <span class='const'>AtomicFixnumImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -452,12 +475,14 @@ value == the expected value.</p>
       <pre class="lines">
 
 
-</pre>
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 194</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 129</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>AtomicFixnum</span> <span class='op'>&lt;</span> <span class='const'>AtomicFixnumImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -524,12 +549,14 @@ value == the expected value.</p>
       <pre class="lines">
 
 
-</pre>
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 188</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 129</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>AtomicFixnum</span> <span class='op'>&lt;</span> <span class='const'>AtomicFixnumImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -596,12 +623,108 @@ value == the expected value.</p>
       <pre class="lines">
 
 
-</pre>
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 185</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 129</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>AtomicFixnum</span> <span class='op'>&lt;</span> <span class='const'>AtomicFixnumImplementation</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="update-instance_method">
+  
+    - (<tt>Object</tt>) <strong>update</strong> {|Object| ... }
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Pass the current value to the given block, replacing it
+with the block&#39;s result. May retry if the value changes
+during the block&#39;s execution.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Yields:</p>
+<ul class="yield">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>Calculate a new value for the atomic reference using
+given (old) value</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Yield Parameters:</p>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='name'>old_value</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the starting value of the atomic reference</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the new value</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+129
+130</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 129</span>
+
+<span class='kw'>class</span> <span class='const'>AtomicFixnum</span> <span class='op'>&lt;</span> <span class='const'>AtomicFixnumImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -649,12 +772,14 @@ value == the expected value.</p>
       <pre class="lines">
 
 
-</pre>
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 179</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 129</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>AtomicFixnum</span> <span class='op'>&lt;</span> <span class='const'>AtomicFixnumImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -738,12 +863,14 @@ value == the expected value.</p>
       <pre class="lines">
 
 
-</pre>
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 182</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/atomic_fixnum.rb', line 129</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>AtomicFixnum</span> <span class='op'>&lt;</span> <span class='const'>AtomicFixnumImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -754,7 +881,7 @@ value == the expected value.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:15 2015 by
+  Generated on Wed Aug 19 19:32:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

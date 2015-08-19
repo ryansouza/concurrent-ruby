@@ -131,11 +131,7 @@ lead to suboptimal performance.</p>
 <div class="tags">
   
 
-</div><div id="subclasses">
-  <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="PerThreadExecutor.html" title="Concurrent::PerThreadExecutor (class)">PerThreadExecutor</a></span></p>
 </div>
-
   <h2>Constant Summary</h2>
   
 
@@ -148,7 +144,7 @@ lead to suboptimal performance.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Symbol) <strong>fallback_policy</strong> </a>
     
 
     
@@ -172,7 +168,8 @@ lead to suboptimal performance.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>The fallback policy in effect.</p>
+</div></span>
   
 </li>
 
@@ -180,7 +177,7 @@ lead to suboptimal performance.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Symbol) <strong>fallback_policy</strong> </a>
     
 
     
@@ -204,7 +201,7 @@ lead to suboptimal performance.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute fallback_policy.</p>
+    <span class="summary_desc"><div class='inline'><p>The fallback policy in effect.</p>
 </div></span>
   
 </li>
@@ -318,7 +315,8 @@ lead to suboptimal performance.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Begin an immediate shutdown.</p>
+</div></span>
   
 </li>
 
@@ -363,7 +361,8 @@ lead to suboptimal performance.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Is the executor running?.</p>
+</div></span>
   
 </li>
 
@@ -385,7 +384,8 @@ lead to suboptimal performance.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Begin an orderly shutdown.</p>
+</div></span>
   
 </li>
 
@@ -407,7 +407,8 @@ lead to suboptimal performance.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Is the executor shutdown?.</p>
+</div></span>
   
 </li>
 
@@ -429,7 +430,8 @@ lead to suboptimal performance.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Is the executor shuttingdown?.</p>
+</div></span>
   
 </li>
 
@@ -437,7 +439,7 @@ lead to suboptimal performance.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Object) <strong>wait_for_termination</strong>(timeout = nil) </a>
+      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Boolean) <strong>wait_for_termination</strong>(timeout = nil) </a>
     
 
     
@@ -451,7 +453,8 @@ lead to suboptimal performance.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Block until executor shutdown is complete or until <code>timeout</code> seconds have passed.</p>
+</div></span>
   
 </li>
 
@@ -460,8 +463,6 @@ lead to suboptimal performance.</p>
   
 
 
-  
-  
   
   
   
@@ -487,7 +488,7 @@ lead to suboptimal performance.</p>
       <div class="method_details first">
   <h3 class="signature first" id="fallback_policy-instance_method">
   
-    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Symbol</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -498,7 +499,34 @@ lead to suboptimal performance.</p>
         <span class='object_link'><a href="RubyExecutorService.html#fallback_policy-instance_method" title="Concurrent::RubyExecutorService#fallback_policy (method)">RubyExecutorService</a></span>
     </span>
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       
@@ -506,7 +534,7 @@ lead to suboptimal performance.</p>
       <div class="method_details ">
   <h3 class="signature " id="fallback_policy-instance_method">
   
-    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Symbol</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -519,13 +547,30 @@ lead to suboptimal performance.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute fallback_policy</p>
+    <p>Returns The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div>
 </div>
@@ -640,7 +685,7 @@ lead to suboptimal performance.</p>
         <span class='name'>args</span>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
       
       
       
@@ -829,7 +874,20 @@ is not running</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Begin an immediate shutdown. In-progress tasks will be allowed to
+complete but enqueued tasks will be dismissed and no new tasks
+will be accepted. Has no additional effect if the thread pool is
+not running.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
@@ -879,7 +937,7 @@ is not running</p>
         <span class='name'>args</span>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
       
       
       
@@ -998,7 +1056,8 @@ is not running</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Is the executor running?</p>
+
 
   </div>
 </div>
@@ -1013,6 +1072,10 @@ is not running</p>
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'><p><code>true</code> when running, <code>false</code> when shutting down or shutdown</p>
+</div>
       
     </li>
   
@@ -1048,7 +1111,19 @@ is not running</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Begin an orderly shutdown. Tasks already in the queue will be executed,
+but no new tasks will be accepted. Has no additional effect if the
+thread pool is not running.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
@@ -1084,7 +1159,8 @@ is not running</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Is the executor shutdown?</p>
+
 
   </div>
 </div>
@@ -1099,6 +1175,10 @@ is not running</p>
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'><p><code>true</code> when shutdown, <code>false</code> when shutting down or running</p>
+</div>
       
     </li>
   
@@ -1136,7 +1216,8 @@ is not running</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Is the executor shuttingdown?</p>
+
 
   </div>
 </div>
@@ -1151,6 +1232,10 @@ is not running</p>
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'><p><code>true</code> when not running and not shutdown, else <code>false</code></p>
+</div>
       
     </li>
   
@@ -1180,13 +1265,70 @@ is not running</p>
       <div class="method_details ">
   <h3 class="signature " id="wait_for_termination-instance_method">
   
-    - (<tt>Object</tt>) <strong>wait_for_termination</strong>(timeout = nil) 
+    - (<tt>Boolean</tt>) <strong>wait_for_termination</strong>(timeout = nil) 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Does not initiate shutdown or termination. Either <code>shutdown</code> or <code>kill</code>
+must be called before this method (or on another thread).</p>
+</div>
+  </div>
+
+<p>Block until executor shutdown is complete or until <code>timeout</code> seconds have
+passed.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>timeout</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the maximum number of seconds to wait for shutdown to complete</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p><code>true</code> if shutdown complete or false on <code>timeout</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
@@ -1212,7 +1354,7 @@ is not running</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:18 2015 by
+  Generated on Wed Aug 19 19:32:54 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

@@ -114,13 +114,6 @@ count of the number available and acts accordingly.</p>
 <div class="tags">
   
 
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><span class='object_link'>MutexSemaphore</span></li>
-    
-  </ul>
-
 </div>
 
 
@@ -139,7 +132,7 @@ count of the number available and acts accordingly.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#acquire-instance_method" title="#acquire (instance method)">- (Nil) <strong>acquire</strong>(permits = 1) </a>
+      <a href="#acquire-instance_method" title="#acquire (instance method)">- (nil) <strong>acquire</strong>(permits = 1) </a>
     
 
     
@@ -233,30 +226,7 @@ count of the number available and acts accordingly.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#reduce_permits-instance_method" title="#reduce_permits (instance method)">- (Nil) <strong>reduce_permits</strong>(reduction) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  <span class="private note title">private</span>
-
-  
-    <span class="summary_desc"><div class='inline'><p>Shrinks the number of available permits by the indicated reduction.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#release-instance_method" title="#release (instance method)">- (Nil) <strong>release</strong>(permits = 1) </a>
+      <a href="#release-instance_method" title="#release (instance method)">- (nil) <strong>release</strong>(permits = 1) </a>
     
 
     
@@ -366,12 +336,14 @@ count of the number available and acts accordingly.</p>
       <pre class="lines">
 
 
-</pre>
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 185</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 111</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>Semaphore</span> <span class='op'>&lt;</span> <span class='const'>SemaphoreImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -387,7 +359,7 @@ count of the number available and acts accordingly.</p>
       <div class="method_details first">
   <h3 class="signature first" id="acquire-instance_method">
   
-    - (<tt>Nil</tt>) <strong>acquire</strong>(permits = 1) 
+    - (<tt>nil</tt>) <strong>acquire</strong>(permits = 1) 
   
 
   
@@ -430,7 +402,7 @@ count of the number available and acts accordingly.</p>
     <li>
       
       
-        <span class='type'>(<tt>Nil</tt>)</span>
+        <span class='type'>(<tt>nil</tt>)</span>
       
       
       
@@ -462,12 +434,14 @@ one</p>
       <pre class="lines">
 
 
-</pre>
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 188</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 111</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>Semaphore</span> <span class='op'>&lt;</span> <span class='const'>SemaphoreImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -511,12 +485,14 @@ one</p>
       <pre class="lines">
 
 
-</pre>
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 191</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 111</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>Semaphore</span> <span class='op'>&lt;</span> <span class='const'>SemaphoreImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -560,114 +536,14 @@ one</p>
       <pre class="lines">
 
 
-</pre>
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 194</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 111</span>
 
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="reduce_permits-instance_method">
-  
-    - (<tt>Nil</tt>) <strong>reduce_permits</strong>(reduction) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p class="note private">
-  <strong>This method is part of a private API.</strong>
-  You should avoid using this method if possible, as it may be removed or be changed in the future.
-</p>
-<p>Shrinks the number of available permits by the indicated reduction.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>reduction</span>
-      
-      
-        <span class='type'>(<tt>Fixnum</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>Number of permits to remove.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Nil</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>if <code>reduction</code> is not an integer or is negative</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>if <code>@free</code> - <code>@reduction</code> is less than zero</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 206</span>
-
-</pre>
+<span class='kw'>class</span> <span class='const'>Semaphore</span> <span class='op'>&lt;</span> <span class='const'>SemaphoreImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -676,7 +552,7 @@ one</p>
       <div class="method_details ">
   <h3 class="signature " id="release-instance_method">
   
-    - (<tt>Nil</tt>) <strong>release</strong>(permits = 1) 
+    - (<tt>nil</tt>) <strong>release</strong>(permits = 1) 
   
 
   
@@ -718,7 +594,7 @@ one</p>
     <li>
       
       
-        <span class='type'>(<tt>Nil</tt>)</span>
+        <span class='type'>(<tt>nil</tt>)</span>
       
       
       
@@ -749,12 +625,14 @@ one</p>
       <pre class="lines">
 
 
-</pre>
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 200</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 111</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>Semaphore</span> <span class='op'>&lt;</span> <span class='const'>SemaphoreImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -862,12 +740,14 @@ one</p>
       <pre class="lines">
 
 
-</pre>
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 197</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/semaphore.rb', line 111</span>
 
-</pre>
+<span class='kw'>class</span> <span class='const'>Semaphore</span> <span class='op'>&lt;</span> <span class='const'>SemaphoreImplementation</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -878,7 +758,7 @@ one</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:14 2015 by
+  Generated on Wed Aug 19 19:32:50 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

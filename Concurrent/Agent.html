@@ -73,10 +73,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></span>
       
         <ul class="fullTree">
           <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
           
             <li class="next">Concurrent::Agent</li>
           
@@ -504,60 +506,6 @@ or Haskell) as we are likely to get in Ruby.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#deprecated-instance_method" title="#deprecated (instance method)">- (Object) <strong>deprecated</strong>(message, strip = 2) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated-instance_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concern::Deprecation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#deprecated_method-instance_method" title="#deprecated_method (instance method)">- (Object) <strong>deprecated_method</strong>(old_name, new_name) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-instance_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concern::Deprecation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (Agent) <strong>initialize</strong>(initial, opts = {}) </a>
     
 
@@ -602,7 +550,7 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Configuration#logger</a></span>, it can be overridden by setting @logger.</p>
+    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="../root/Concurrent.html#global_logger-class_method" title="Concurrent.global_logger (method)">global_logger</a></span>, it can be overridden by setting @logger.</p>
 </div></span>
   
 </li>
@@ -634,7 +582,7 @@ or Haskell) as we are likely to get in Ruby.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#post_off-instance_method" title="#post_off (instance method)">- (true<sup>?</sup>) <strong>post_off</strong>(timeout = nil) {|value| ... }</a>
+      <a href="#post_off-instance_method" title="#post_off (instance method)">- (true<sup>?</sup>) <strong>post_off</strong> {|value| ... }</a>
     
 
     
@@ -698,7 +646,7 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>A block fast to be performed after every update to validate if the new value is valid.</p>
+    <span class="summary_desc"><div class='inline'><p>A block task to be performed after every update to validate if the new value is valid.</p>
 </div></span>
   
 </li>
@@ -817,7 +765,7 @@ or Haskell) as we are likely to get in Ruby.</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -914,31 +862,17 @@ argument then return the new value returned from the proc.</p>
       <pre class="lines">
 
 
+95
+96
 97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107</pre>
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 95</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial'>initial</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='ivar'>@value</span>                <span class='op'>=</span> <span class='id identifier rubyid_initial'>initial</span>
-  <span class='ivar'>@rescuers</span>             <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  <span class='ivar'>@validator</span>            <span class='op'>=</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_result'>result</span><span class='op'>|</span> <span class='kw'>true</span> <span class='rbrace'>}</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_observers'>observers</span>        <span class='op'>=</span> <span class='const'>Collection</span><span class='op'>::</span><span class='const'>CopyOnWriteObserverSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@serialized_execution</span> <span class='op'>=</span> <span class='const'>SerializedExecution</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@io_executor</span>          <span class='op'>=</span> <span class='const'>Executor</span><span class='period'>.</span><span class='id identifier rubyid_executor_from_options'>executor_from_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span>
-  <span class='ivar'>@fast_executor</span>        <span class='op'>=</span> <span class='const'>Executor</span><span class='period'>.</span><span class='id identifier rubyid_executor_from_options'>executor_from_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_fast_executor'>global_fast_executor</span>
-  <span class='id identifier rubyid_init_mutex'>init_mutex</span>
-  <span class='id identifier rubyid_set_deref_options'>set_deref_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_ns_initialize'>ns_initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial'>initial</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -976,12 +910,12 @@ argument then return the new value returned from the proc.</p>
       <pre class="lines">
 
 
-90
-91
-92</pre>
+88
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 88</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fast_executor'>fast_executor</span>
   <span class='ivar'>@fast_executor</span>
@@ -1017,12 +951,12 @@ argument then return the new value returned from the proc.</p>
       <pre class="lines">
 
 
-90
-91
-92</pre>
+88
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 88</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_io_executor'>io_executor</span>
   <span class='ivar'>@io_executor</span>
@@ -1076,6 +1010,7 @@ argument then return the new value returned from the proc.</p>
       <pre class="lines">
 
 
+83
 84
 85
 86
@@ -1250,38 +1185,15 @@ argument then return the new value returned from the proc.</p>
 255
 256
 257
-258
-259
-260
-261
-262
-263
-264
-265
-266
-267
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277
-278
-279
-280</pre>
+258</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 83</span>
 
-<span class='kw'>class</span> <span class='const'>Agent</span>
+<span class='kw'>class</span> <span class='const'>Agent</span> <span class='op'>&lt;</span> <span class='const'>Synchronization</span><span class='op'>::</span><span class='const'>Object</span>
   <span class='id identifier rubyid_include'>include</span> <span class='const'>Concern</span><span class='op'>::</span><span class='const'>Dereferenceable</span>
   <span class='id identifier rubyid_include'>include</span> <span class='const'>Concern</span><span class='op'>::</span><span class='const'>Observable</span>
   <span class='id identifier rubyid_include'>include</span> <span class='const'>Concern</span><span class='op'>::</span><span class='const'>Logging</span>
-  <span class='id identifier rubyid_include'>include</span> <span class='const'>Concern</span><span class='op'>::</span><span class='const'>Deprecation</span>
 
   <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:timeout</span><span class='comma'>,</span> <span class='symbol'>:io_executor</span><span class='comma'>,</span> <span class='symbol'>:fast_executor</span>
 
@@ -1291,15 +1203,8 @@ argument then return the new value returned from the proc.</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'># @!macro executor_and_deref_options
 </span>  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial'>initial</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-    <span class='ivar'>@value</span>                <span class='op'>=</span> <span class='id identifier rubyid_initial'>initial</span>
-    <span class='ivar'>@rescuers</span>             <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-    <span class='ivar'>@validator</span>            <span class='op'>=</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_result'>result</span><span class='op'>|</span> <span class='kw'>true</span> <span class='rbrace'>}</span>
-    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_observers'>observers</span>        <span class='op'>=</span> <span class='const'>Collection</span><span class='op'>::</span><span class='const'>CopyOnWriteObserverSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-    <span class='ivar'>@serialized_execution</span> <span class='op'>=</span> <span class='const'>SerializedExecution</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-    <span class='ivar'>@io_executor</span>          <span class='op'>=</span> <span class='const'>Executor</span><span class='period'>.</span><span class='id identifier rubyid_executor_from_options'>executor_from_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span>
-    <span class='ivar'>@fast_executor</span>        <span class='op'>=</span> <span class='const'>Executor</span><span class='period'>.</span><span class='id identifier rubyid_executor_from_options'>executor_from_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_fast_executor'>global_fast_executor</span>
-    <span class='id identifier rubyid_init_mutex'>init_mutex</span>
-    <span class='id identifier rubyid_set_deref_options'>set_deref_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
+    <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_ns_initialize'>ns_initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial'>initial</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='kw'>end</span>
 
   <span class='comment'># Specifies a block fast to be performed when an update fast raises
@@ -1325,9 +1230,7 @@ argument then return the new value returned from the proc.</p>
 </span>  <span class='comment'>#   #=&gt; puts &quot;Pow!&quot;
 </span>  <span class='kw'>def</span> <span class='kw'>rescue</span><span class='lparen'>(</span><span class='id identifier rubyid_clazz'>clazz</span> <span class='op'>=</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
     <span class='kw'>unless</span> <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-      <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
-        <span class='ivar'>@rescuers</span> <span class='op'>&lt;&lt;</span> <span class='const'>Rescuer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_clazz'>clazz</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-      <span class='kw'>end</span>
+      <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@rescuers</span> <span class='op'>&lt;&lt;</span> <span class='const'>Rescuer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_clazz'>clazz</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
     <span class='kw'>end</span>
     <span class='kw'>self</span>
   <span class='kw'>end</span>
@@ -1335,7 +1238,7 @@ argument then return the new value returned from the proc.</p>
   <span class='id identifier rubyid_alias_method'>alias_method</span> <span class='symbol'>:catch</span><span class='comma'>,</span> <span class='symbol'>:rescue</span>
   <span class='id identifier rubyid_alias_method'>alias_method</span> <span class='symbol'>:on_error</span><span class='comma'>,</span> <span class='symbol'>:rescue</span>
 
-  <span class='comment'># A block fast to be performed after every update to validate if the new
+  <span class='comment'># A block task to be performed after every update to validate if the new
 </span>  <span class='comment'># value is valid. If the new value is not valid then the current value is not
 </span>  <span class='comment'># updated. If no validator is provided then all updates are considered valid.
 </span>  <span class='comment'>#
@@ -1346,12 +1249,7 @@ argument then return the new value returned from the proc.</p>
 </span>  <span class='kw'>def</span> <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 
     <span class='kw'>unless</span> <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-      <span class='kw'>begin</span>
-        <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
-        <span class='ivar'>@validator</span> <span class='op'>=</span> <span class='id identifier rubyid_block'>block</span>
-      <span class='kw'>ensure</span>
-        <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
-      <span class='kw'>end</span>
+      <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@validator</span> <span class='op'>=</span> <span class='id identifier rubyid_block'>block</span> <span class='rbrace'>}</span>
     <span class='kw'>end</span>
     <span class='kw'>self</span>
   <span class='kw'>end</span>
@@ -1375,30 +1273,13 @@ argument then return the new value returned from the proc.</p>
   <span class='comment'># Update the current value with the result of the given block fast,
 </span>  <span class='comment'># block can do blocking calls
 </span>  <span class='comment'>#
-</span>  <span class='comment'># @param [Fixnum, nil] timeout [DEPRECATED] maximum number of seconds before an update is cancelled
-</span>  <span class='comment'>#
 </span>  <span class='comment'># @yield the fast to be performed with the current value in order to calculate
 </span>  <span class='comment'>#   the new value
 </span>  <span class='comment'># @yieldparam [Object] value the current value
 </span>  <span class='comment'># @yieldreturn [Object] the new value
 </span>  <span class='comment'># @return [true, nil] nil when no block is given
-</span>  <span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_task'>task</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_timeout'>timeout</span>
-             <span class='id identifier rubyid_deprecated'>deprecated</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>post_off with option timeout options is deprecated and will be removed</span><span class='tstring_end'>&#39;</span></span>
-             <span class='id identifier rubyid_lambda'>lambda</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span>
-               <span class='id identifier rubyid_future'>future</span> <span class='op'>=</span> <span class='const'>Future</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span> <span class='kw'>do</span>
-                 <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-               <span class='kw'>end</span>
-               <span class='kw'>if</span> <span class='id identifier rubyid_future'>future</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
-                 <span class='id identifier rubyid_future'>future</span><span class='period'>.</span><span class='id identifier rubyid_value!'>value!</span>
-               <span class='kw'>else</span>
-                 <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>TimeoutError</span>
-               <span class='kw'>end</span>
-             <span class='kw'>end</span>
-           <span class='kw'>else</span>
-             <span class='id identifier rubyid_block'>block</span>
-           <span class='kw'>end</span>
-    <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@io_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
+</span>  <span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@io_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 
   <span class='comment'># Update the current value with the result of the given block fast,
@@ -1423,6 +1304,20 @@ argument then return the new value returned from the proc.</p>
     <span class='id identifier rubyid_done'>done</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span> <span class='id identifier rubyid_timeout'>timeout</span>
   <span class='kw'>end</span>
 
+  <span class='id identifier rubyid_protected'>protected</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_ns_initialize'>ns_initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_initial'>initial</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_init_mutex'>init_mutex</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
+    <span class='ivar'>@value</span>                <span class='op'>=</span> <span class='id identifier rubyid_initial'>initial</span>
+    <span class='ivar'>@rescuers</span>             <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+    <span class='ivar'>@validator</span>            <span class='op'>=</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_result'>result</span><span class='op'>|</span> <span class='kw'>true</span> <span class='rbrace'>}</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_observers'>observers</span>        <span class='op'>=</span> <span class='const'>Collection</span><span class='op'>::</span><span class='const'>CopyOnWriteObserverSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+    <span class='ivar'>@serialized_execution</span> <span class='op'>=</span> <span class='const'>SerializedExecution</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+    <span class='ivar'>@io_executor</span>          <span class='op'>=</span> <span class='const'>Executor</span><span class='period'>.</span><span class='id identifier rubyid_executor_from_options'>executor_from_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span>
+    <span class='ivar'>@fast_executor</span>        <span class='op'>=</span> <span class='const'>Executor</span><span class='period'>.</span><span class='id identifier rubyid_executor_from_options'>executor_from_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_fast_executor'>global_fast_executor</span>
+    <span class='id identifier rubyid_set_deref_options'>set_deref_options</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
   <span class='id identifier rubyid_private'>private</span>
 
   <span class='kw'>def</span> <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1436,7 +1331,7 @@ argument then return the new value returned from the proc.</p>
 </span>
   <span class='comment'># @!visibility private
 </span>  <span class='kw'>def</span> <span class='id identifier rubyid_try_rescue'>try_rescue</span><span class='lparen'>(</span><span class='id identifier rubyid_ex'>ex</span><span class='rparen'>)</span> <span class='comment'># :nodoc:
-</span>    <span class='id identifier rubyid_rescuer'>rescuer</span> <span class='op'>=</span> <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+</span>    <span class='id identifier rubyid_rescuer'>rescuer</span> <span class='op'>=</span> <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
       <span class='ivar'>@rescuers</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='id identifier rubyid_ex'>ex</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_clazz'>clazz</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
     <span class='kw'>end</span>
     <span class='id identifier rubyid_rescuer'>rescuer</span><span class='period'>.</span><span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_ex'>ex</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_rescuer'>rescuer</span>
@@ -1447,7 +1342,7 @@ argument then return the new value returned from the proc.</p>
 
   <span class='comment'># @!visibility private
 </span>  <span class='kw'>def</span> <span class='id identifier rubyid_work'>work</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_handler'>handler</span><span class='rparen'>)</span> <span class='comment'># :nodoc:
-</span>    <span class='id identifier rubyid_validator'>validator</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='lbracket'>[</span><span class='ivar'>@validator</span><span class='comma'>,</span> <span class='ivar'>@value</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+</span>    <span class='id identifier rubyid_validator'>validator</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='lbracket'>[</span><span class='ivar'>@validator</span><span class='comma'>,</span> <span class='ivar'>@value</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
 
     <span class='kw'>begin</span>
       <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_handler'>handler</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
@@ -1456,14 +1351,11 @@ argument then return the new value returned from the proc.</p>
       <span class='id identifier rubyid_exception'>exception</span> <span class='op'>=</span> <span class='id identifier rubyid_ex'>ex</span>
     <span class='kw'>end</span>
 
-    <span class='kw'>begin</span>
-      <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
-      <span class='id identifier rubyid_should_notify'>should_notify</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exception'>exception</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_valid'>valid</span>
-                        <span class='ivar'>@value</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span>
-                        <span class='kw'>true</span>
-                      <span class='kw'>end</span>
-    <span class='kw'>ensure</span>
-      <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+    <span class='id identifier rubyid_should_notify'>should_notify</span> <span class='op'>=</span> <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+      <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_exception'>exception</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_valid'>valid</span>
+        <span class='ivar'>@value</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span>
+        <span class='kw'>true</span>
+      <span class='kw'>end</span>
     <span class='kw'>end</span>
 
     <span class='kw'>if</span> <span class='id identifier rubyid_should_notify'>should_notify</span>
@@ -1566,13 +1458,13 @@ the new value</p>
       <pre class="lines">
 
 
-215
-216
-217
-218</pre>
+182
+183
+184
+185</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 215</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 182</span>
 
 <span class='kw'>def</span> <span class='op'>&lt;&lt;</span><span class='lparen'>(</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1690,14 +1582,14 @@ the new value</p>
       <pre class="lines">
 
 
-224
-225
-226
-227
-228</pre>
+191
+192
+193
+194
+195</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 224</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 191</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_await'>await</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_done'>done</span> <span class='op'>=</span> <span class='const'>Event</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1842,40 +1734,6 @@ the new value</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="deprecated-instance_method">
-  
-    - (<tt>Object</tt>) <strong>deprecated</strong>(message, strip = 2) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Deprecation.html#deprecated-instance_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concern::Deprecation</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="deprecated_method-instance_method">
-  
-    - (<tt>Object</tt>) <strong>deprecated_method</strong>(old_name, new_name) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-instance_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concern::Deprecation</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="log-instance_method">
   
     - (<tt>Object</tt>) <strong>log</strong>(level, progname, message = nil, &amp;block) 
@@ -1891,7 +1749,7 @@ the new value</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Concurrent::Configuration#logger</a></span>, it can be overridden by setting @logger</p>
+    <p>Logs through <span class='object_link'><a href="../root/Concurrent.html#global_logger-class_method" title="Concurrent.global_logger (method)">Concurrent.global_logger</a></span>, it can be overridden by setting @logger</p>
 
 
   </div>
@@ -2067,12 +1925,12 @@ the new value</p>
       <pre class="lines">
 
 
-175
-176
-177</pre>
+159
+160
+161</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 175</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 159</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@fast_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -2085,7 +1943,7 @@ the new value</p>
       <div class="method_details ">
   <h3 class="signature " id="post_off-instance_method">
   
-    - (<tt>true</tt><sup>?</sup>) <strong>post_off</strong>(timeout = nil) {|value| ... }
+    - (<tt>true</tt><sup>?</sup>) <strong>post_off</strong> {|value| ... }
   
 
   
@@ -2100,28 +1958,7 @@ block can do blocking calls</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
   
-    <li>
-      
-        <span class='name'>timeout</span>
-      
-      
-        <span class='type'>(<tt>Fixnum</tt>, <tt>nil</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>[DEPRECATED] maximum number of seconds before an update is cancelled</p>
-</div>
-      
-    </li>
-  
-</ul>
-
 <p class="tag_title">Yields:</p>
 <ul class="yield">
   
@@ -2200,45 +2037,15 @@ the new value</p>
       <pre class="lines">
 
 
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206</pre>
+171
+172
+173</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 189</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 171</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_task'>task</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_timeout'>timeout</span>
-           <span class='id identifier rubyid_deprecated'>deprecated</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>post_off with option timeout options is deprecated and will be removed</span><span class='tstring_end'>&#39;</span></span>
-           <span class='id identifier rubyid_lambda'>lambda</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span>
-             <span class='id identifier rubyid_future'>future</span> <span class='op'>=</span> <span class='const'>Future</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span> <span class='kw'>do</span>
-               <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-             <span class='kw'>end</span>
-             <span class='kw'>if</span> <span class='id identifier rubyid_future'>future</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
-               <span class='id identifier rubyid_future'>future</span><span class='period'>.</span><span class='id identifier rubyid_value!'>value!</span>
-             <span class='kw'>else</span>
-               <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>TimeoutError</span>
-             <span class='kw'>end</span>
-           <span class='kw'>end</span>
-         <span class='kw'>else</span>
-           <span class='id identifier rubyid_block'>block</span>
-         <span class='kw'>end</span>
-  <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@io_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_post_off'>post_off</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='ivar'>@io_executor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2352,23 +2159,19 @@ caught exceptions will be suppressed.</p>
       <pre class="lines">
 
 
-130
-131
-132
-133
-134
-135
-136
-137</pre>
+121
+122
+123
+124
+125
+126</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='kw'>rescue</span><span class='lparen'>(</span><span class='id identifier rubyid_clazz'>clazz</span> <span class='op'>=</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-    <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
-      <span class='ivar'>@rescuers</span> <span class='op'>&lt;&lt;</span> <span class='const'>Rescuer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_clazz'>clazz</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-    <span class='kw'>end</span>
+    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@rescuers</span> <span class='op'>&lt;&lt;</span> <span class='const'>Rescuer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_clazz'>clazz</span><span class='comma'>,</span> <span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='kw'>end</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
@@ -2392,7 +2195,7 @@ caught exceptions will be suppressed.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>A block fast to be performed after every update to validate if the new
+    <p>A block task to be performed after every update to validate if the new
 value is valid. If the new value is not valid then the current value is not
 updated. If no validator is provided then all updates are considered valid.</p>
 
@@ -2462,31 +2265,21 @@ the result is valid</p>
       <pre class="lines">
 
 
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161</pre>
+139
+140
+141
+142
+143
+144
+145</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 150</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/agent.rb', line 139</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_validate'>validate</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 
   <span class='kw'>unless</span> <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-    <span class='kw'>begin</span>
-      <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
-      <span class='ivar'>@validator</span> <span class='op'>=</span> <span class='id identifier rubyid_block'>block</span>
-    <span class='kw'>ensure</span>
-      <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
-    <span class='kw'>end</span>
+    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@validator</span> <span class='op'>=</span> <span class='id identifier rubyid_block'>block</span> <span class='rbrace'>}</span>
   <span class='kw'>end</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
@@ -2593,7 +2386,7 @@ by the <code>#set_deref_options</code> method.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:09 2015 by
+  Generated on Wed Aug 19 19:32:47 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

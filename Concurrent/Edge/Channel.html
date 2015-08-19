@@ -300,14 +300,14 @@
       <pre class="lines">
 
 
-1377
 1378
 1379
 1380
-1381</pre>
+1381
+1382</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1377</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1378</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='kw'>super</span>
@@ -350,12 +350,12 @@
       <pre class="lines">
 
 
-1401
 1402
-1403</pre>
+1403
+1404</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1401</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1402</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inspect'>inspect</span>
   <span class='id identifier rubyid_to_s'>to_s</span>
@@ -389,12 +389,12 @@
       <pre class="lines">
 
 
-1392
 1393
-1394</pre>
+1394
+1395</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1392</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1393</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pop'>pop</span>
   <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span><span class='rparen'>)</span>
@@ -428,12 +428,12 @@
       <pre class="lines">
 
 
-1383
 1384
-1385</pre>
+1385
+1386</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1383</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1384</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_probe_set_size'>probe_set_size</span>
   <span class='ivar'>@ProbeSet</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
@@ -467,13 +467,13 @@
       <pre class="lines">
 
 
-1387
 1388
 1389
-1390</pre>
+1390
+1391</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1387</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1388</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='kw'>until</span> <span class='ivar'>@ProbeSet</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span><span class='period'>.</span><span class='id identifier rubyid_try_success'>try_success</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='kw'>self</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -508,13 +508,13 @@
       <pre class="lines">
 
 
-1396
 1397
 1398
-1399</pre>
+1399
+1400</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1396</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 1397</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='id identifier rubyid_probe'>probe</span><span class='rparen'>)</span>
   <span class='ivar'>@ProbeSet</span><span class='period'>.</span><span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_probe'>probe</span><span class='rparen'>)</span>
@@ -530,7 +530,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:12 2015 by
+  Generated on Wed Aug 19 19:32:49 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

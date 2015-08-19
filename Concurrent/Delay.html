@@ -236,87 +236,6 @@ or Haskell) as we are likely to get in Ruby.</p>
 </li>
 
       
-        <li class="public deprecated">
-  <span class="summary_signature">
-    
-      <a href="#completed%3F-instance_method" title="#completed? (instance method)">- (Boolean) <strong>completed?</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Concern/Obligation.html#completed%3F-instance_method" title="Concurrent::Concern::Obligation#completed? (method)">Concern::Obligation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  <span class="deprecated note title">deprecated</span>
-  
-
-  
-    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#deprecated-instance_method" title="#deprecated (instance method)">- (Object) <strong>deprecated</strong>(message, strip = 2) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated-instance_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concern::Deprecation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#deprecated_method-instance_method" title="#deprecated_method (instance method)">- (Object) <strong>deprecated_method</strong>(old_name, new_name) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-instance_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concern::Deprecation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
         <li class="public ">
   <span class="summary_signature">
     
@@ -422,34 +341,6 @@ or Haskell) as we are likely to get in Ruby.</p>
 
   
     <span class="summary_desc"><div class='inline'><p>Create a new <code>Delay</code> in the <code>:pending</code> state.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#log-instance_method" title="#log (instance method)">- (Object) <strong>log</strong>(level, progname, message = nil, &amp;block) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Concern/Logging.html#log-instance_method" title="Concurrent::Concern::Logging#log (method)">Concern::Logging</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Configuration#logger</a></span>, it can be overridden by setting @logger.</p>
 </div></span>
   
 </li>
@@ -726,11 +617,6 @@ or Haskell) as we are likely to get in Ruby.</p>
   
   
   
-  
-  
-  
-  
-  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -759,7 +645,7 @@ or Haskell) as we are likely to get in Ruby.</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -888,14 +774,14 @@ argument then return the new value returned from the proc.</p>
       <pre class="lines">
 
 
-60
 61
 62
 63
-64</pre>
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -952,81 +838,6 @@ argument then return the new value returned from the proc.</p>
 </ul>
 
 </div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="completed?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>completed?</strong> 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Obligation.html#completed%3F-instance_method" title="Concurrent::Concern::Obligation#completed? (method)">Concern::Obligation</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'></div></div>
-<p>Has the obligation completed processing?</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="deprecated-instance_method">
-  
-    - (<tt>Object</tt>) <strong>deprecated</strong>(message, strip = 2) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Deprecation.html#deprecated-instance_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concern::Deprecation</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="deprecated_method-instance_method">
-  
-    - (<tt>Object</tt>) <strong>deprecated_method</strong>(old_name, new_name) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-instance_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concern::Deprecation</a></span>
-    </span>
-  
-</h3>
 </div>
     
       <div class="method_details ">
@@ -1143,101 +954,6 @@ argument then return the new value returned from the proc.</p>
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="log-instance_method">
-  
-    - (<tt>Object</tt>) <strong>log</strong>(level, progname, message = nil, &amp;block) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Logging.html#log-instance_method" title="Concurrent::Concern::Logging#log (method)">Concern::Logging</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Concurrent::Configuration#logger</a></span>, it can be overridden by setting @logger</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>level</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>one of Logger::Severity constants</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>progname</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>e.g. a path of an Actor</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>message</span>
-      
-      
-        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>when nil block is used to generate the message</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Yield Returns:</p>
-<ul class="yieldreturn">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>a message</p>
-</div>
       
     </li>
   
@@ -1391,7 +1107,6 @@ the obligation has been successfully fulfilled.</p>
       <pre class="lines">
 
 
-142
 143
 144
 145
@@ -1401,13 +1116,14 @@ the obligation has been successfully fulfilled.</p>
 149
 150
 151
-152</pre>
+152
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 142</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 143</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_reconfigure'>reconfigure</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
     <span class='kw'>unless</span> <span class='ivar'>@computing</span>
       <span class='ivar'>@task</span> <span class='op'>=</span> <span class='id identifier rubyid_block'>block</span>
@@ -1624,7 +1340,6 @@ can be accessed via the <code>#reason</code> method.</p>
       <pre class="lines">
 
 
-75
 76
 77
 78
@@ -1646,10 +1361,11 @@ can be accessed via the <code>#reason</code> method.</p>
 94
 95
 96
-97</pre>
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 75</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value'>value</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='ivar'>@task_executor</span>
@@ -1657,7 +1373,7 @@ can be accessed via the <code>#reason</code> method.</p>
   <span class='kw'>else</span>
     <span class='comment'># this function has been optimized for performance and
 </span>    <span class='comment'># should not be modified without running new benchmarks
-</span>    <span class='id identifier rubyid_mutex'>mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+</span>    <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
       <span class='id identifier rubyid_execute'>execute</span> <span class='op'>=</span> <span class='ivar'>@computing</span> <span class='op'>=</span> <span class='kw'>true</span> <span class='kw'>unless</span> <span class='ivar'>@computing</span>
       <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span>
         <span class='kw'>begin</span>
@@ -1774,7 +1490,6 @@ the operation has already been executed).</p>
       <pre class="lines">
 
 
-109
 110
 111
 112
@@ -1782,10 +1497,11 @@ the operation has already been executed).</p>
 114
 115
 116
-117</pre>
+117
+118</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value!'>value!</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='ivar'>@task_executor</span>
@@ -1878,7 +1594,6 @@ the value to be computed. When <code>nil</code> the caller will block indefinite
       <pre class="lines">
 
 
-128
 129
 130
 131
@@ -1886,10 +1601,11 @@ the value to be computed. When <code>nil</code> the caller will block indefinite
 133
 134
 135
-136</pre>
+136
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 128</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='ivar'>@task_executor</span>
@@ -1998,7 +1714,7 @@ on timeout).</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:09 2015 by
+  Generated on Wed Aug 19 19:32:47 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

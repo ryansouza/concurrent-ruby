@@ -233,7 +233,7 @@ prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</co
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Symbol) <strong>fallback_policy</strong> </a>
     
 
     
@@ -257,7 +257,8 @@ prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</co
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>The fallback policy in effect.</p>
+</div></span>
   
 </li>
 
@@ -645,7 +646,7 @@ prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</co
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -810,7 +811,7 @@ prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</co
       <div class="method_details ">
   <h3 class="signature " id="fallback_policy-instance_method">
   
-    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Symbol</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -821,7 +822,34 @@ prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</co
         <span class='object_link'><a href="ThreadPoolExecutor.html#fallback_policy-instance_method" title="Concurrent::ThreadPoolExecutor#fallback_policy (method)">ThreadPoolExecutor</a></span>
     </span>
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       
@@ -1250,7 +1278,7 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:16 2015 by
+  Generated on Wed Aug 19 19:32:52 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

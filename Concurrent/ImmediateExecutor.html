@@ -73,10 +73,14 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'>AbstractExecutorService</span></span>
       
         <ul class="fullTree">
           <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
+          
+            <li class="next"><span class='object_link'>AbstractExecutorService</span></li>
           
             <li class="next">Concurrent::ImmediateExecutor</li>
           
@@ -128,8 +132,49 @@ during testing because it makes all operations deterministic.</p>
   <p class="children"><span class='object_link'><a href="IndirectImmediateExecutor.html" title="Concurrent::IndirectImmediateExecutor (class)">IndirectImmediateExecutor</a></span></p>
 </div>
 
+  <h2>Constant Summary</h2>
+  
 
 
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Symbol) <strong>fallback_policy</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="AbstractExecutorService.html#fallback_policy-instance_method" title="Concurrent::AbstractExecutorService#fallback_policy (method)">AbstractExecutorService</a></span>
+    </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>The fallback policy in effect.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
 
 
 
@@ -196,60 +241,6 @@ during testing because it makes all operations deterministic.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#deprecated-instance_method" title="#deprecated (instance method)">- (Object) <strong>deprecated</strong>(message, strip = 2) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated-instance_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concern::Deprecation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#deprecated_method-instance_method" title="#deprecated_method (instance method)">- (Object) <strong>deprecated_method</strong>(old_name, new_name) </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      included
-      from <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-instance_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concern::Deprecation</a></span>
-    </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (ImmediateExecutor) <strong>initialize</strong> </a>
     
 
@@ -294,7 +285,7 @@ during testing because it makes all operations deterministic.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Configuration#logger</a></span>, it can be overridden by setting @logger.</p>
+    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="../root/Concurrent.html#global_logger-class_method" title="Concurrent.global_logger (method)">global_logger</a></span>, it can be overridden by setting @logger.</p>
 </div></span>
   
 </li>
@@ -340,7 +331,8 @@ during testing because it makes all operations deterministic.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Is the executor running?.</p>
+</div></span>
   
 </li>
 
@@ -392,7 +384,8 @@ during testing because it makes all operations deterministic.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Begin an orderly shutdown.</p>
+</div></span>
   
 </li>
 
@@ -414,7 +407,8 @@ during testing because it makes all operations deterministic.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Is the executor shutdown?.</p>
+</div></span>
   
 </li>
 
@@ -436,7 +430,8 @@ during testing because it makes all operations deterministic.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Is the executor shuttingdown?.</p>
+</div></span>
   
 </li>
 
@@ -444,7 +439,7 @@ during testing because it makes all operations deterministic.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Object) <strong>wait_for_termination</strong>(timeout = nil) </a>
+      <a href="#wait_for_termination-instance_method" title="#wait_for_termination (instance method)">- (Boolean) <strong>wait_for_termination</strong>(timeout = nil) </a>
     
 
     
@@ -458,7 +453,8 @@ during testing because it makes all operations deterministic.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>Block until executor shutdown is complete or until <code>timeout</code> seconds have passed.</p>
+</div></span>
   
 </li>
 
@@ -467,6 +463,8 @@ during testing because it makes all operations deterministic.</p>
   
 
 
+  
+  
   
   
   
@@ -503,12 +501,12 @@ during testing because it makes all operations deterministic.</p>
       <pre class="lines">
 
 
-20
 21
-22</pre>
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@stopped</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Event</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -519,6 +517,57 @@ during testing because it makes all operations deterministic.</p>
 </div>
   
 </div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="fallback_policy-instance_method">
+  
+    - (<tt>Symbol</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="AbstractExecutorService.html#fallback_policy-instance_method" title="Concurrent::AbstractExecutorService#fallback_policy (method)">AbstractExecutorService</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+  </div>
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -586,13 +635,13 @@ during testing because it makes all operations deterministic.</p>
       <pre class="lines">
 
 
-33
 34
 35
-36</pre>
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='op'>&lt;&lt;</span><span class='lparen'>(</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
@@ -655,40 +704,6 @@ during testing because it makes all operations deterministic.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="deprecated-instance_method">
-  
-    - (<tt>Object</tt>) <strong>deprecated</strong>(message, strip = 2) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Deprecation.html#deprecated-instance_method" title="Concurrent::Concern::Deprecation#deprecated (method)">Concern::Deprecation</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="deprecated_method-instance_method">
-  
-    - (<tt>Object</tt>) <strong>deprecated_method</strong>(old_name, new_name) 
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in module
-        <span class='object_link'><a href="Concern/Deprecation.html#deprecated_method-instance_method" title="Concurrent::Concern::Deprecation#deprecated_method (method)">Concern::Deprecation</a></span>
-    </span>
-  
-</h3>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="log-instance_method">
   
     - (<tt>Object</tt>) <strong>log</strong>(level, progname, message = nil, &amp;block) 
@@ -704,7 +719,7 @@ during testing because it makes all operations deterministic.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Logs through <span class='object_link'><a href="Configuration.html#logger-instance_method" title="Concurrent::Configuration#logger (method)">Concurrent::Configuration#logger</a></span>, it can be overridden by setting @logger</p>
+    <p>Logs through <span class='object_link'><a href="../root/Concurrent.html#global_logger-class_method" title="Concurrent.global_logger (method)">Concurrent.global_logger</a></span>, it can be overridden by setting @logger</p>
 
 
   </div>
@@ -808,7 +823,7 @@ during testing because it makes all operations deterministic.</p>
         <span class='name'>args</span>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span></tt>)</span>
       
       
       
@@ -879,15 +894,15 @@ is not running</p>
       <pre class="lines">
 
 
-25
 26
 27
 28
 29
-30</pre>
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -911,7 +926,8 @@ is not running</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Is the executor running?</p>
+
 
   </div>
 </div>
@@ -927,6 +943,10 @@ is not running</p>
       
       
       
+        &mdash;
+        <div class='inline'><p><code>true</code> when running, <code>false</code> when shutting down or shutdown</p>
+</div>
+      
     </li>
   
 </ul>
@@ -937,12 +957,12 @@ is not running</p>
       <pre class="lines">
 
 
-39
 40
-41</pre>
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_running?'>running?</span>
   <span class='op'>!</span> <span class='id identifier rubyid_shutdown?'>shutdown?</span>
@@ -1018,19 +1038,31 @@ occur simultaneously. Else false.</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Begin an orderly shutdown. Tasks already in the queue will be executed,
+but no new tasks will be accepted. Has no additional effect if the
+thread pool is not running.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-54
 55
 56
-57</pre>
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_shutdown'>shutdown</span>
   <span class='ivar'>@stopped</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span>
@@ -1052,7 +1084,8 @@ occur simultaneously. Else false.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Is the executor shutdown?</p>
+
 
   </div>
 </div>
@@ -1068,6 +1101,10 @@ occur simultaneously. Else false.</p>
       
       
       
+        &mdash;
+        <div class='inline'><p><code>true</code> when shutdown, <code>false</code> when shutting down or running</p>
+</div>
+      
     </li>
   
 </ul>
@@ -1078,12 +1115,12 @@ occur simultaneously. Else false.</p>
       <pre class="lines">
 
 
-49
 50
-51</pre>
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_shutdown?'>shutdown?</span>
   <span class='ivar'>@stopped</span><span class='period'>.</span><span class='id identifier rubyid_set?'>set?</span>
@@ -1104,7 +1141,8 @@ occur simultaneously. Else false.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <p>Is the executor shuttingdown?</p>
+
 
   </div>
 </div>
@@ -1120,6 +1158,10 @@ occur simultaneously. Else false.</p>
       
       
       
+        &mdash;
+        <div class='inline'><p><code>true</code> when not running and not shutdown, else <code>false</code></p>
+</div>
+      
     </li>
   
 </ul>
@@ -1130,12 +1172,12 @@ occur simultaneously. Else false.</p>
       <pre class="lines">
 
 
-44
 45
-46</pre>
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_shuttingdown?'>shuttingdown?</span>
   <span class='kw'>false</span>
@@ -1148,24 +1190,81 @@ occur simultaneously. Else false.</p>
       <div class="method_details ">
   <h3 class="signature " id="wait_for_termination-instance_method">
   
-    - (<tt>Object</tt>) <strong>wait_for_termination</strong>(timeout = nil) 
+    - (<tt>Boolean</tt>) <strong>wait_for_termination</strong>(timeout = nil) 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>Does not initiate shutdown or termination. Either <code>shutdown</code> or <code>kill</code>
+must be called before this method (or on another thread).</p>
+</div>
+  </div>
+
+<p>Block until executor shutdown is complete or until <code>timeout</code> seconds have
+passed.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>timeout</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the maximum number of seconds to wait for shutdown to complete</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p><code>true</code> if shutdown complete or false on <code>timeout</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-61
 62
-63</pre>
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/immediate_executor.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for_termination'>wait_for_termination</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@stopped</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
@@ -1180,7 +1279,7 @@ occur simultaneously. Else false.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:17 2015 by
+  Generated on Wed Aug 19 19:32:52 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>

@@ -399,7 +399,7 @@ or Haskell) as we are likely to get in Ruby.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Symbol) <strong>fallback_policy</strong> </a>
     
 
     
@@ -423,7 +423,8 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>The fallback policy in effect.</p>
+</div></span>
   
 </li>
 
@@ -431,7 +432,7 @@ or Haskell) as we are likely to get in Ruby.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Object) <strong>fallback_policy</strong> </a>
+      <a href="#fallback_policy-instance_method" title="#fallback_policy (instance method)">- (Symbol) <strong>fallback_policy</strong> </a>
     
 
     
@@ -455,7 +456,7 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute fallback_policy.</p>
+    <span class="summary_desc"><div class='inline'><p>The fallback policy in effect.</p>
 </div></span>
   
 </li>
@@ -791,8 +792,6 @@ or Haskell) as we are likely to get in Ruby.</p>
   
   
   
-  
-  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -821,7 +820,7 @@ or Haskell) as we are likely to get in Ruby.</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -1085,7 +1084,7 @@ task is performed again.</p>
       <div class="method_details ">
   <h3 class="signature " id="fallback_policy-instance_method">
   
-    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Symbol</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -1096,7 +1095,34 @@ task is performed again.</p>
         <span class='object_link'><a href="RubyExecutorService.html#fallback_policy-instance_method" title="Concurrent::RubyExecutorService#fallback_policy (method)">RubyExecutorService</a></span>
     </span>
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       
@@ -1104,7 +1130,7 @@ task is performed again.</p>
       <div class="method_details ">
   <h3 class="signature " id="fallback_policy-instance_method">
   
-    - (<tt>Object</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Symbol</tt>) <strong>fallback_policy</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -1117,13 +1143,30 @@ task is performed again.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute fallback_policy</p>
+    <p>Returns The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The fallback policy in effect. Either <code>:abort</code>, <code>:discard</code>, or <code>:caller_runs</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div>
 </div>
@@ -1230,7 +1273,7 @@ considered to have failed.</p>
         <span class='name'>opts</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Concurrent::Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -1865,7 +1908,7 @@ by the <code>#set_deref_options</code> method.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  9 12:17:11 2015 by
+  Generated on Wed Aug 19 19:32:49 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>
