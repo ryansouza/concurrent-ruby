@@ -274,12 +274,12 @@ contending for the global +Kernel.rand+.</p>
       <pre class="lines">
 
 
-25
-26
-27</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/thread_safe/util/xor_shift_random.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/thread_safe/util/xor_shift_random.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get'>get</span>
   <span class='const'>Kernel</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='const'>MAX_XOR_SHIFTABLE_INT</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='int'>1</span> <span class='comment'># 0 can&#39;t be xorshifted
@@ -314,14 +314,14 @@ contending for the global +Kernel.rand+.</p>
       <pre class="lines">
 
 
-32
-33
 34
 35
-36</pre>
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/thread_safe/util/xor_shift_random.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/thread_safe/util/xor_shift_random.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_xorshift'>xorshift</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_x'>x</span> <span class='op'>^=</span> <span class='id identifier rubyid_x'>x</span> <span class='op'>&gt;&gt;</span> <span class='int'>3</span>
@@ -364,12 +364,12 @@ contending for the global +Kernel.rand+.</p>
       <pre class="lines">
 
 
-25
-26
-27</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/thread_safe/util/xor_shift_random.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/thread_safe/util/xor_shift_random.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get'>get</span>
   <span class='const'>Kernel</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='const'>MAX_XOR_SHIFTABLE_INT</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='int'>1</span> <span class='comment'># 0 can&#39;t be xorshifted
@@ -404,14 +404,14 @@ contending for the global +Kernel.rand+.</p>
       <pre class="lines">
 
 
-32
-33
 34
 35
-36</pre>
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/thread_safe/util/xor_shift_random.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/thread_safe/util/xor_shift_random.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_xorshift'>xorshift</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_x'>x</span> <span class='op'>^=</span> <span class='id identifier rubyid_x'>x</span> <span class='op'>&gt;&gt;</span> <span class='int'>3</span>
@@ -428,9 +428,9 @@ contending for the global +Kernel.rand+.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:46 2015 by
+  Generated on Fri Nov 13 10:01:23 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

@@ -78,7 +78,7 @@
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
+            <li class="next"><span class='object_link'>Synchronization::LockableObject</span></li>
           
             <li class="next"><span class='object_link'>AbstractExecutorService</span></li>
           
@@ -370,7 +370,7 @@ Each task is represented as a <code>ScheduledTask</code>.</p>
       
         <li>
           <span class="name">:executor</span>
-          <span class="type">(<tt><span class='object_link'>Executor</span></tt>)</span>
+          <span class="type">(<tt>Executor</tt>)</span>
           <span class="default">
             
           </span>
@@ -393,12 +393,12 @@ Three special values are also supported: <code>:task</code> returns the global t
       <pre class="lines">
 
 
-28
-29
-30</pre>
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -540,12 +540,12 @@ not running.</p>
       <pre class="lines">
 
 
-62
-63
-64</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kill'>kill</span>
   <span class='id identifier rubyid_shutdown'>shutdown</span>
@@ -681,8 +681,6 @@ is successful; false after shutdown.</p>
       <pre class="lines">
 
 
-46
-47
 48
 49
 50
@@ -691,10 +689,12 @@ is successful; false after shutdown.</p>
 53
 54
 55
-56</pre>
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/timer_set.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_delay'>delay</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -717,9 +717,9 @@ is successful; false after shutdown.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:51 2015 by
+  Generated on Fri Nov 13 10:01:28 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

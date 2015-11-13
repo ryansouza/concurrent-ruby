@@ -101,92 +101,27 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-  <div class="note notetag">
-    <strong>Note:</strong>
-    <div class='inline'><p>Failure to properly shutdown a thread pool can lead to unpredictable results.
-Please read <em>Shutting Down Thread Pools</em> for more information.</p>
-</div>
-  </div>
+    <p>A thread pool with a single thread an unlimited queue. Should the thread
+die for any reason it will be removed and replaced, thus ensuring that
+the executor will always remain viable and available to process jobs.</p>
 
-<p>A thread pool with a set number of threads. The number of threads in the pool
-is set on construction and remains constant. When all threads are busy new
-tasks <code>#post</code> to the thread pool are enqueued until a thread becomes available.
-Should a thread crash for any reason the thread will immediately be removed
-from the pool and replaced.</p>
+<p>A common pattern for background processing is to create a single thread
+on which an infinite loop is run. The thread&#39;s loop blocks on an input
+source (perhaps blocking I/O or a queue) and processes each input as it
+is received. This pattern has several issues. The thread itself is highly
+susceptible to errors during processing. Also, the thread itself must be
+constantly monitored and restarted should it die. <code>SingleThreadExecutor</code>
+encapsulates all these bahaviors. The task processor is highly resilient
+to errors from within tasks. Also, should the thread die it will
+automatically be restarted.</p>
 
-<p>The API and behavior of this class are based on Java&#39;s <code>SingleThreadExecutor</code></p>
-
-<p><strong>Thread Pool Options</strong></p>
-
-<p>Thread pools support several configuration options:</p>
-
-<ul>
-<li><code>idletime</code>: The number of seconds that a thread may be idle before being reclaimed.</li>
-<li><code>max_queue</code>: The maximum number of tasks that may be waiting in the work queue at
-any one time. When the queue size reaches <code>max_queue</code> subsequent tasks will be
-rejected in accordance with the configured <code>fallback_policy</code>.</li>
-<li><code>auto_terminate</code>: When true (default) an <code>at_exit</code> handler will be registered which
-will stop the thread pool when the application exits. See below for more information
-on shutting down thread pools.</li>
-<li><code>fallback_policy</code>: The policy defining how rejected tasks are handled.</li>
-</ul>
-
-<p>Three fallback policies are supported:</p>
-
-<ul>
-<li><code>:abort</code>: Raise a <code>RejectedExecutionError</code> exception and discard the task.</li>
-<li><code>:discard</code>: Discard the task and return false.</li>
-<li><code>:caller_runs</code>: Execute the task on the calling thread.</li>
-</ul>
-
-<p><strong>Shutting Down Thread Pools</strong></p>
-
-<p>Killing a thread pool while tasks are still being processed, either by calling
-the <code>#kill</code> method or at application exit, will have unpredictable results. There
-is no way for the thread pool to know what resources are being used by the
-in-progress tasks. When those tasks are killed the impact on those resources
-cannot be predicted. The <em>best</em> practice is to explicitly shutdown all thread
-pools using the provided methods:</p>
-
-<ul>
-<li>Call <code>#shutdown</code> to initiate an orderly termination of all in-progress tasks</li>
-<li>Call <code>#wait_for_termination</code> with an appropriate timeout interval an allow
-the orderly shutdown to complete</li>
-<li>Call <code>#kill</code> <em>only when</em> the thread pool fails to shutdown in the allotted time</li>
-</ul>
-
-<p>On some runtime platforms (most notably the JVM) the application will not
-exit until all thread pools have been shutdown. To prevent applications from
-&quot;hanging&quot; on exit all thread pools include an <code>at_exit</code> handler that will
-stop the thread pool when the application exists. This handler uses a brute
-force method to stop the pool and makes no guarantees regarding resources being
-used by any tasks still running. Registration of this <code>at_exit</code> handler can be
-prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</code> option to
-<code>false</code> when the thread pool is created. All thread pools support this option.</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool1'>pool1</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>FixedThreadPool</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>5</span><span class='rparen'>)</span> <span class='comment'># an `at_exit` handler will be registered
-</span><span class='id identifier rubyid_pool2'>pool2</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>FixedThreadPool</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>5</span><span class='comma'>,</span> <span class='label'>auto_terminate:</span> <span class='kw'>false</span><span class='rparen'>)</span> <span class='comment'># prevent `at_exit` handler registration
-</span></code></pre>
+<p>The API and behavior of this class are based on Java&#39;s <code>SingleThreadExecutor</code>.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><a href="http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html" target="_parent" title="Java Tutorials: Thread Pools">Java Tutorials: Thread Pools</a></li>
-    
-      <li><a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html" target="_parent" title="Java Executors class">Java Executors class</a></li>
-    
-      <li><a href="http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html" target="_parent" title="Java ExecutorService interface">Java ExecutorService interface</a></li>
-    
-      <li><a href="http://ruby-doc.org//core-2.2.0/Kernel.html#method-i-at_exit" target="_parent" title="Kernel#at_exit">Kernel#at_exit</a></li>
-    
-  </ul>
 
 </div>
 
@@ -577,9 +512,9 @@ prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</co
             
           </span>
           
-            &mdash; <div class='inline'><p>the policy for
-handling new tasks that are received when the queue size has
-reached <code>max_queue</code> or after the executor has shut down</p>
+            &mdash; <div class='inline'><p>the policy for handling new
+tasks that are received when the queue size has reached
+<code>max_queue</code> or the executor has shut down</p>
 </div>
           
         </li>
@@ -587,6 +522,24 @@ reached <code>max_queue</code> or after the executor has shut down</p>
     </ul>
   
 
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>if <code>:fallback_policy</code> is not one of the values specified
+in <code>FALLBACK_POLICIES</code></p>
+</div>
+      
+    </li>
+  
+</ul>
 
   <p class="tag_title">See Also:</p>
   <ul class="see">
@@ -608,7 +561,7 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 </pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 55</span>
 
 </pre>
     </td>
@@ -665,13 +618,6 @@ reached <code>max_queue</code> or after the executor has shut down</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -681,10 +627,20 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -692,9 +648,12 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -776,13 +735,6 @@ reached <code>max_queue</code> or after the executor has shut down</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -792,10 +744,20 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -803,9 +765,12 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -880,13 +845,6 @@ reached <code>max_queue</code> or after the executor has shut down</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -896,10 +854,20 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -907,9 +875,12 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -965,13 +936,6 @@ reached <code>max_queue</code> or after the executor has shut down</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -981,10 +945,20 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -992,9 +966,12 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1050,13 +1027,6 @@ reached <code>max_queue</code> or after the executor has shut down</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1066,10 +1036,20 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1077,9 +1057,12 @@ reached <code>max_queue</code> or after the executor has shut down</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1121,13 +1104,6 @@ not running.</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1137,10 +1113,20 @@ not running.</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1148,9 +1134,12 @@ not running.</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1260,13 +1249,6 @@ is not running</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1276,10 +1258,20 @@ is not running</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1287,9 +1279,12 @@ is not running</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1345,13 +1340,6 @@ is not running</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1361,10 +1349,20 @@ is not running</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1372,9 +1370,12 @@ is not running</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1432,13 +1433,6 @@ occur simultaneously. Else false.</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1448,10 +1442,20 @@ occur simultaneously. Else false.</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1459,9 +1463,12 @@ occur simultaneously. Else false.</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1502,13 +1509,6 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1518,10 +1518,20 @@ thread pool is not running.</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1529,9 +1539,12 @@ thread pool is not running.</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1587,13 +1600,6 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1603,10 +1609,20 @@ thread pool is not running.</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1614,9 +1630,12 @@ thread pool is not running.</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1672,13 +1691,6 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1688,10 +1700,20 @@ thread pool is not running.</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1699,9 +1721,12 @@ thread pool is not running.</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1787,13 +1812,6 @@ passed.</p>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -1803,10 +1821,20 @@ passed.</p>
 42
 43
 44
-45</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/single_thread_executor.rb', line 36</span>
 
 <span class='kw'>class</span> <span class='const'>SingleThreadExecutor</span> <span class='op'>&lt;</span> <span class='const'>SingleThreadExecutorImplementation</span>
 
@@ -1814,9 +1842,12 @@ passed.</p>
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   Create a new thread pool.
 </span>  <span class='comment'>#
-</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for
-</span>  <span class='comment'>#     handling new tasks that are received when the queue size has
-</span>  <span class='comment'>#     reached `max_queue` or after the executor has shut down
+</span>  <span class='comment'>#   @option opts [Symbol] :fallback_policy (:discard) the policy for handling new
+</span>  <span class='comment'>#     tasks that are received when the queue size has reached
+</span>  <span class='comment'>#     `max_queue` or the executor has shut down
+</span>  <span class='comment'>#
+</span>  <span class='comment'>#   @raise [ArgumentError] if `:fallback_policy` is not one of the values specified
+</span>  <span class='comment'>#     in `FALLBACK_POLICIES`
 </span>  <span class='comment'>#
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html
 </span>  <span class='comment'>#   @see http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html
@@ -1835,9 +1866,9 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:53 2015 by
+  Generated on Fri Nov 13 10:01:31 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

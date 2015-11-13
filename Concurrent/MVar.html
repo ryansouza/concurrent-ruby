@@ -73,10 +73,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></span>
       
         <ul class="fullTree">
           <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
           
             <li class="next">Concurrent::MVar</li>
           
@@ -234,6 +236,29 @@ to produce a value.</p>
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#borrow-instance_method" title="#borrow (instance method)">- (Object) <strong>borrow</strong>(timeout = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>acquires lock on the from an <code>MVAR</code>, yields the value to provided block, and release lock.</p>
+</div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -502,6 +527,8 @@ to produce a value.</p>
 
 
   
+  
+  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -611,16 +638,16 @@ argument then return the new value returned from the proc.</p>
       <pre class="lines">
 
 
-53
 54
 55
 56
 57
 58
-59</pre>
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='const'>EMPTY</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@value</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
@@ -642,7 +669,84 @@ argument then return the new value returned from the proc.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="empty?-instance_method">
+  <h3 class="signature first" id="borrow-instance_method">
+  
+    - (<tt>Object</tt>) <strong>borrow</strong>(timeout = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>acquires lock on the from an <code>MVAR</code>, yields the value to provided block,
+and release lock. A timeout can be set to limit the time spent blocked,
+in which case it returns <code>TIMEOUT</code> if the time is exceeded.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the value returned by the block, or <code>TIMEOUT</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 86</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_borrow'>borrow</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_wait_for_full'>wait_for_full</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
+
+    <span class='comment'># if we timeoud out we&#39;ll still be empty
+</span>    <span class='kw'>if</span> <span class='id identifier rubyid_unlocked_full?'>unlocked_full?</span>
+      <span class='kw'>yield</span> <span class='ivar'>@value</span>
+    <span class='kw'>else</span>
+      <span class='const'>TIMEOUT</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="empty?-instance_method">
   
     - (<tt>Boolean</tt>) <strong>empty?</strong> 
   
@@ -679,12 +783,12 @@ argument then return the new value returned from the proc.</p>
       <pre class="lines">
 
 
-177
-178
-179</pre>
+195
+196
+197</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 177</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 195</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_empty?'>empty?</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@value</span> <span class='op'>==</span> <span class='const'>EMPTY</span> <span class='rbrace'>}</span>
@@ -732,12 +836,12 @@ argument then return the new value returned from the proc.</p>
       <pre class="lines">
 
 
-182
-183
-184</pre>
+200
+201
+202</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 182</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 200</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_full?'>full?</span>
   <span class='op'>!</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -805,26 +909,26 @@ if the time is exceeded.</p>
       <pre class="lines">
 
 
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121</pre>
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_modify'>modify</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -886,23 +990,23 @@ if the time is exceeded.</p>
       <pre class="lines">
 
 
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174</pre>
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 161</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 179</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_modify!'>modify!</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -967,23 +1071,23 @@ which case it returns <code>TIMEOUT</code> if the time is exceeded.</p>
       <pre class="lines">
 
 
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98</pre>
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -1029,17 +1133,17 @@ which case it returns <code>TIMEOUT</code> if the time is exceeded.</p>
       <pre class="lines">
 
 
-151
-152
-153
-154
-155
-156
-157
-158</pre>
+169
+170
+171
+172
+173
+174
+175
+176</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 151</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 169</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_set!'>set!</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -1098,7 +1202,6 @@ which case it returns <code>TIMEOUT</code> if the time is exceeded.</p>
       <pre class="lines">
 
 
-65
 66
 67
 68
@@ -1112,10 +1215,11 @@ which case it returns <code>TIMEOUT</code> if the time is exceeded.</p>
 76
 77
 78
-79</pre>
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_take'>take</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -1162,20 +1266,20 @@ which case it returns <code>TIMEOUT</code> if the time is exceeded.</p>
       <pre class="lines">
 
 
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148</pre>
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 156</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_try_put!'>try_put!</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -1218,21 +1322,21 @@ which case it returns <code>TIMEOUT</code> if the time is exceeded.</p>
       <pre class="lines">
 
 
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135</pre>
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 124</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/mvar.rb', line 142</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_try_take!'>try_take!</span>
   <span class='ivar'>@mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -1305,9 +1409,9 @@ by the <code>#set_deref_options</code> method.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:47 2015 by
+  Generated on Fri Nov 13 10:01:23 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

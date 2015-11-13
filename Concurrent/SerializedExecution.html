@@ -73,12 +73,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Concurrent::Synchronization::Object</a></span></span>
+      <span class="inheritName"><span class='object_link'>Concurrent::Synchronization::LockableObject</span></span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Concurrent::Synchronization::Object</a></span></li>
+            <li class="next"><span class='object_link'>Concurrent::Synchronization::LockableObject</span></li>
           
             <li class="next">Concurrent::SerializedExecution</li>
           
@@ -415,7 +415,7 @@
         <span class='name'>executor</span>
       
       
-        <span class='type'>(<tt><span class='object_link'>Executor</span></tt>)</span>
+        <span class='type'>(<tt>Executor</tt>)</span>
       
       
       
@@ -544,13 +544,13 @@ be interleaved by other tasks.</p>
         <span class='name'>posts</span>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;<span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>(<span class='object_link'>Executor</span>, <span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;Object&gt;, Proc)&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;<span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>(<span class='object_link'>ExecutorService</span>, <span class='object_link'><a href="Array.html" title="Concurrent::Array (class)">Array</a></span>&lt;Object&gt;, Proc)&gt;</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'><p>array of triplets where
-first is a <span class='object_link'>Executor</span>, second is array of args for task, third is a task (Proc)</p>
+first is a <span class='object_link'>ExecutorService</span>, second is array of args for task, third is a task (Proc)</p>
 </div>
       
     </li>
@@ -624,9 +624,9 @@ first is a <span class='object_link'>Executor</span>, second is array of args fo
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:53 2015 by
+  Generated on Fri Nov 13 10:01:30 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

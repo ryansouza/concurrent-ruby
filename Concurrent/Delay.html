@@ -73,12 +73,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></span>
+      <span class="inheritName"><span class='object_link'>Synchronization::LockableObject</span></span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
+            <li class="next"><span class='object_link'>Synchronization::LockableObject</span></li>
           
             <li class="next">Concurrent::Delay</li>
           
@@ -668,7 +668,7 @@ and to specify the executor on which to perform actions</p>
       
         <li>
           <span class="name">:executor</span>
-          <span class="type">(<tt><span class='object_link'>Executor</span></tt>)</span>
+          <span class="type">(<tt>Executor</tt>)</span>
           <span class="default">
             
           </span>
@@ -1368,8 +1368,8 @@ can be accessed via the <code>#reason</code> method.</p>
       <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value'>value</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='ivar'>@task_executor</span>
-    <span class='kw'>super</span>
+  <span class='kw'>if</span> <span class='ivar'>@executor</span> <span class='comment'># TODO (pitr 12-Sep-2015): broken unsafe read?
+</span>    <span class='kw'>super</span>
   <span class='kw'>else</span>
     <span class='comment'># this function has been optimized for performance and
 </span>    <span class='comment'># should not be modified without running new benchmarks
@@ -1504,7 +1504,7 @@ the operation has already been executed).</p>
       <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value!'>value!</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='ivar'>@task_executor</span>
+  <span class='kw'>if</span> <span class='ivar'>@executor</span>
     <span class='kw'>super</span>
   <span class='kw'>else</span>
     <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
@@ -1608,7 +1608,7 @@ the value to be computed. When <code>nil</code> the caller will block indefinite
       <pre class="code"><span class="info file"># File 'lib/concurrent/delay.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='ivar'>@task_executor</span>
+  <span class='kw'>if</span> <span class='ivar'>@executor</span>
     <span class='id identifier rubyid_execute_task_once'>execute_task_once</span>
     <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
@@ -1714,9 +1714,9 @@ on timeout).</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:47 2015 by
+  Generated on Fri Nov 13 10:01:23 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

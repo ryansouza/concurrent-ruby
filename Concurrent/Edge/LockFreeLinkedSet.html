@@ -554,7 +554,7 @@ despite being different objects.</p>
 
     <span class='id identifier rubyid_node'>node</span> <span class='op'>=</span> <span class='const'>Node</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_item'>item</span><span class='comma'>,</span> <span class='id identifier rubyid_curr'>curr</span>
 
-    <span class='kw'>if</span> <span class='id identifier rubyid_pred'>pred</span><span class='period'>.</span><span class='const'>Successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_compare_and_set'>compare_and_set</span> <span class='id identifier rubyid_curr'>curr</span><span class='comma'>,</span> <span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='kw'>false</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_pred'>pred</span><span class='period'>.</span><span class='id identifier rubyid_successor_reference'>successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_compare_and_set'>compare_and_set</span> <span class='id identifier rubyid_curr'>curr</span><span class='comma'>,</span> <span class='id identifier rubyid_node'>node</span><span class='comma'>,</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='kw'>false</span>
       <span class='kw'>return</span> <span class='kw'>true</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
@@ -647,7 +647,7 @@ hashed contents of an object is what determines equality instead of
 
   <span class='kw'>while</span> <span class='id identifier rubyid_curr'>curr</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_item'>item</span>
     <span class='id identifier rubyid_curr'>curr</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='id identifier rubyid_next_node'>next_node</span>
-    <span class='id identifier rubyid_marked'>marked</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='const'>Successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_marked?'>marked?</span>
+    <span class='id identifier rubyid_marked'>marked</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='id identifier rubyid_successor_reference'>successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_marked?'>marked?</span>
   <span class='kw'>end</span>
 
   <span class='id identifier rubyid_curr'>curr</span> <span class='op'>==</span> <span class='id identifier rubyid_item'>item</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_marked'>marked</span>
@@ -735,7 +735,6 @@ hashed contents of an object is what determines equality instead of
       <pre class="lines">
 
 
-130
 131
 132
 133
@@ -748,10 +747,11 @@ hashed contents of an object is what determines equality instead of
 140
 141
 142
-143</pre>
+143
+144</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/lock_free_linked_set.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/lock_free_linked_set.rb', line 131</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each'>each</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_to_enum'>to_enum</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -760,9 +760,9 @@ hashed contents of an object is what determines equality instead of
 
   <span class='kw'>until</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='id identifier rubyid_last?'>last?</span>
     <span class='id identifier rubyid_curr'>curr</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='id identifier rubyid_next_node'>next_node</span>
-    <span class='id identifier rubyid_marked'>marked</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='const'>Successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_marked?'>marked?</span>
+    <span class='id identifier rubyid_marked'>marked</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='id identifier rubyid_successor_reference'>successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_marked?'>marked?</span>
 
-    <span class='kw'>yield</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='const'>Data</span> <span class='kw'>unless</span> <span class='id identifier rubyid_marked'>marked</span>
+    <span class='kw'>yield</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span> <span class='kw'>unless</span> <span class='id identifier rubyid_marked'>marked</span>
   <span class='kw'>end</span>
 
   <span class='kw'>self</span>
@@ -849,7 +849,8 @@ hashed contents of an object is what determines equality instead of
 117
 118
 119
-120</pre>
+120
+121</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/edge/lock_free_linked_set.rb', line 104</span>
@@ -862,11 +863,12 @@ hashed contents of an object is what determines equality instead of
     <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='id identifier rubyid_curr'>curr</span> <span class='op'>!=</span> <span class='id identifier rubyid_item'>item</span>
 
     <span class='id identifier rubyid_succ'>succ</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='id identifier rubyid_next_node'>next_node</span>
-    <span class='id identifier rubyid_removed'>removed</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='const'>Successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_compare_and_set'>compare_and_set</span> <span class='id identifier rubyid_succ'>succ</span><span class='comma'>,</span> <span class='id identifier rubyid_succ'>succ</span><span class='comma'>,</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='kw'>true</span>
+    <span class='id identifier rubyid_removed'>removed</span> <span class='op'>=</span> <span class='id identifier rubyid_curr'>curr</span><span class='period'>.</span><span class='id identifier rubyid_successor_reference'>successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_compare_and_set'>compare_and_set</span> <span class='id identifier rubyid_succ'>succ</span><span class='comma'>,</span> <span class='id identifier rubyid_succ'>succ</span><span class='comma'>,</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='kw'>true</span>
 
-    <span class='id identifier rubyid_next_node'>next_node</span> <span class='kw'>unless</span> <span class='id identifier rubyid_removed'>removed</span>
+    <span class='comment'>#next_node unless removed
+</span>    <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id identifier rubyid_removed'>removed</span>
 
-    <span class='id identifier rubyid_pred'>pred</span><span class='period'>.</span><span class='const'>Successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_compare_and_set'>compare_and_set</span> <span class='id identifier rubyid_curr'>curr</span><span class='comma'>,</span> <span class='id identifier rubyid_succ'>succ</span><span class='comma'>,</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_pred'>pred</span><span class='period'>.</span><span class='id identifier rubyid_successor_reference'>successor_reference</span><span class='period'>.</span><span class='id identifier rubyid_compare_and_set'>compare_and_set</span> <span class='id identifier rubyid_curr'>curr</span><span class='comma'>,</span> <span class='id identifier rubyid_succ'>succ</span><span class='comma'>,</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='kw'>false</span>
 
     <span class='kw'>return</span> <span class='kw'>true</span>
   <span class='kw'>end</span>
@@ -881,9 +883,9 @@ hashed contents of an object is what determines equality instead of
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:52 2015 by
+  Generated on Fri Nov 13 10:01:29 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

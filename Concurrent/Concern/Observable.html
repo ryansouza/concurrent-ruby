@@ -78,7 +78,7 @@
   
   
     <dt class="r1">Included in:</dt>
-    <dd class="r1"><span class='object_link'><a href="../Agent.html" title="Concurrent::Agent (class)">Agent</a></span>, <span class='object_link'><a href="../IVar.html" title="Concurrent::IVar (class)">IVar</a></span>, <span class='object_link'><a href="../TimerTask.html" title="Concurrent::TimerTask (class)">TimerTask</a></span></dd>
+    <dd class="r1"><span class='object_link'><a href="../Agent.html" title="Concurrent::Agent (class)">Agent</a></span>, <span class='object_link'><a href="../Atom.html" title="Concurrent::Atom (class)">Atom</a></span>, <span class='object_link'><a href="../IVar.html" title="Concurrent::IVar (class)">IVar</a></span>, <span class='object_link'><a href="../TimerTask.html" title="Concurrent::TimerTask (class)">TimerTask</a></span></dd>
     
   
   
@@ -110,8 +110,8 @@ caring about synchronization.</p>
 
 <p>In a multi threaded environment things are more complex. The <code>subject</code> must
 synchronize the access to its data structure and to do so currently we&#39;re
-using two specialized ObserverSet: CopyOnWriteObserverSet and
-CopyOnNotifyObserverSet.</p>
+using two specialized ObserverSet: CopyOnWriteObserverSet
+and CopyOnNotifyObserverSet.</p>
 
 <p>When implementing and <code>observer</code> there&#39;s a very important rule to remember:
 <strong>there are no guarantees about the thread that will execute the callback</strong></p>
@@ -161,7 +161,7 @@ or an AtomicFixum)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#add_observer-instance_method" title="#add_observer (instance method)">- (Object) <strong>add_observer</strong>(*args, &amp;block) </a>
+      <a href="#add_observer-instance_method" title="#add_observer (instance method)">- (Object) <strong>add_observer</strong>(observer = nil, func = :update, &amp;block) </a>
     
 
     
@@ -175,7 +175,7 @@ or an AtomicFixum)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>The added observer.</p>
+    <span class="summary_desc"><div class='inline'><p>Adds an observer to this set.</p>
 </div></span>
   
 </li>
@@ -198,7 +198,7 @@ or an AtomicFixum)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>The observers count.</p>
+    <span class="summary_desc"><div class='inline'><p>Return the number of observers associated with this object.</p>
 </div></span>
   
 </li>
@@ -207,7 +207,7 @@ or an AtomicFixum)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#delete_observer-instance_method" title="#delete_observer (instance method)">- (Object) <strong>delete_observer</strong>(*args) </a>
+      <a href="#delete_observer-instance_method" title="#delete_observer (instance method)">- (Object) <strong>delete_observer</strong>(observer) </a>
     
 
     
@@ -221,7 +221,7 @@ or an AtomicFixum)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>The deleted observer.</p>
+    <span class="summary_desc"><div class='inline'><p>Remove <code>observer</code> as an observer on this object so that it will no longer receive notifications.</p>
 </div></span>
   
 </li>
@@ -244,7 +244,7 @@ or an AtomicFixum)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Self.</p>
+    <span class="summary_desc"><div class='inline'><p>Remove all observers associated with this object.</p>
 </div></span>
   
 </li>
@@ -253,7 +253,7 @@ or an AtomicFixum)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#with_observer-instance_method" title="#with_observer (instance method)">- (Observable) <strong>with_observer</strong>(*args, &amp;block) </a>
+      <a href="#with_observer-instance_method" title="#with_observer (instance method)">- (Observable) <strong>with_observer</strong>(observer = nil, func = :update, &amp;block) </a>
     
 
     
@@ -267,7 +267,7 @@ or an AtomicFixum)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>as #add_observer but it can be used for chaining.</p>
+    <span class="summary_desc"><div class='inline'><p>As <code>#add_observer</code> but can be used for chaining.</p>
 </div></span>
   
 </li>
@@ -285,7 +285,7 @@ or an AtomicFixum)</p>
       <div class="method_details first">
   <h3 class="signature first" id="add_observer-instance_method">
   
-    - (<tt>Object</tt>) <strong>add_observer</strong>(*args, &amp;block) 
+    - (<tt>Object</tt>) <strong>add_observer</strong>(observer = nil, func = :update, &amp;block) 
   
 
   
@@ -293,13 +293,53 @@ or an AtomicFixum)</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the added observer</p>
+    <p>Adds an observer to this set. If a block is passed, the observer will be
+created by this method and no other params should be passed.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>observer</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the observer to add</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>func</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>:update</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the function to call on the observer during notification.
+Default is :update</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -324,15 +364,15 @@ or an AtomicFixum)</p>
       <pre class="lines">
 
 
-53
-54
-55</pre>
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 61</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='id identifier rubyid_observer'>observer</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_func'>func</span> <span class='op'>=</span> <span class='symbol'>:update</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='id identifier rubyid_observer'>observer</span><span class='comma'>,</span> <span class='id identifier rubyid_func'>func</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -350,7 +390,7 @@ or an AtomicFixum)</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the observers count</p>
+    <p>Return the number of observers associated with this object.</p>
 
 
   </div>
@@ -381,12 +421,12 @@ or an AtomicFixum)</p>
       <pre class="lines">
 
 
-76
-77
-78</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 101</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_count_observers'>count_observers</span>
   <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_count_observers'>count_observers</span>
@@ -399,7 +439,7 @@ or an AtomicFixum)</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_observer-instance_method">
   
-    - (<tt>Object</tt>) <strong>delete_observer</strong>(*args) 
+    - (<tt>Object</tt>) <strong>delete_observer</strong>(observer) 
   
 
   
@@ -407,13 +447,33 @@ or an AtomicFixum)</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the deleted observer</p>
+    <p>Remove <code>observer</code> as an observer on this object so that it will no
+longer receive notifications.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>observer</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the observer to remove</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -438,15 +498,15 @@ or an AtomicFixum)</p>
       <pre class="lines">
 
 
-65
-66
-67</pre>
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 82</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_delete_observer'>delete_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_delete_observer'>delete_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_delete_observer'>delete_observer</span><span class='lparen'>(</span><span class='id identifier rubyid_observer'>observer</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_delete_observer'>delete_observer</span><span class='lparen'>(</span><span class='id identifier rubyid_observer'>observer</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -464,13 +524,110 @@ or an AtomicFixum)</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns self</p>
+    <p>Remove all observers associated with this object.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>self</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+91
+92
+93
+94</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 91</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_delete_observers'>delete_observers</span>
+  <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_delete_observers'>delete_observers</span>
+  <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="with_observer-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>) <strong>with_observer</strong>(observer = nil, func = :update, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>As <code>#add_observer</code> but can be used for chaining.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>observer</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the observer to add</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>func</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>:update</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the function to call on the observer during notification.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -503,67 +660,8 @@ or an AtomicFixum)</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 70</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_delete_observers'>delete_observers</span>
-  <span class='id identifier rubyid_observers'>observers</span><span class='period'>.</span><span class='id identifier rubyid_delete_observers'>delete_observers</span>
-  <span class='kw'>self</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="with_observer-instance_method">
-  
-    - (<tt><span class='object_link'><a href="" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>) <strong>with_observer</strong>(*args, &amp;block) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>as #add_observer but it can be used for chaining</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>self</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-59
-60
-61
-62</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/concern/observable.rb', line 59</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_with_observer'>with_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_with_observer'>with_observer</span><span class='lparen'>(</span><span class='id identifier rubyid_observer'>observer</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_func'>func</span> <span class='op'>=</span> <span class='symbol'>:update</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_add_observer'>add_observer</span><span class='lparen'>(</span><span class='id identifier rubyid_observer'>observer</span><span class='comma'>,</span> <span class='id identifier rubyid_func'>func</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -576,9 +674,9 @@ or an AtomicFixum)</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:46 2015 by
+  Generated on Fri Nov 13 10:01:22 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

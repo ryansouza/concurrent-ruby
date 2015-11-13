@@ -86,45 +86,208 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>A mixin module that provides simple asynchronous behavior to any standard
-class/object or object. </p>
+    <p>A mixin module that provides simple asynchronous behavior to a class,
+turning it into a simple actor. Loosely based on Erlang&#39;s
+<a href="http://www.erlang.org/doc/man/gen_server.html">gen_server</a>, but without
+supervision or linking.</p>
+
+<p>A more feature-rich <span class='object_link'><a href="Actor.html" title="Concurrent::Actor (module)">Actor</a></span> is also available when the
+capabilities of <code>Async</code> are too limited.</p>
 
 <pre class="code cucumber"><code class="cucumber">Feature:
-  As a stateful, plain old Ruby class/object
+  As a stateful, plain old Ruby class
   I want safe, asynchronous behavior
   So my long-running methods don&#39;t block the main thread
 </code></pre>
 
-<p>Stateful, mutable objects must be managed carefully when used asynchronously.
-But Ruby is an object-oriented language so designing with objects and classes
-plays to Ruby&#39;s strengths and is often more natural to many Ruby programmers.
-The <code>Async</code> module is a way to mix simple yet powerful asynchronous capabilities
-into any plain old Ruby object or class. These capabilities provide a reasonable
-level of thread safe guarantees when used correctly.</p>
+<p>The <code>Async</code> module is a way to mix simple yet powerful asynchronous
+capabilities into any plain old Ruby object or class, turning each object
+into a simple Actor. Method calls are processed on a background thread. The
+caller is free to perform other actions while processing occurs in the
+background.</p>
 
-<p>When this module is mixed into a class or object it provides to new methods:
-<code>async</code> and <code>await</code>. These methods are thread safe with respect to the enclosing
-object. The former method allows methods to be called asynchronously by posting
-to the global thread pool. The latter allows a method to be called synchronously
-on the current thread but does so safely with respect to any pending asynchronous
-method calls. Both methods return an <code>IVar</code> which can be inspected for
-the result of the method call. Calling a method with <code>async</code> will return a
+<p>Method calls to the asynchronous object are made via two proxy methods:
+<code>async</code> (alias <code>cast</code>) and <code>await</code> (alias <code>call</code>). These proxy methods post
+the method call to the object&#39;s background thread and return a &quot;future&quot;
+which will eventually contain the result of the method call.</p>
+
+<p>This behavior is loosely patterned after Erlang&#39;s <code>gen_server</code> behavior.
+When an Erlang module implements the <code>gen_server</code> behavior it becomes
+inherently asynchronous. The <code>start</code> or <code>start_link</code> function spawns a
+process (similar to a thread but much more lightweight and efficient) and
+reurns the ID of the process. Using the process ID, other processes can
+send messages to the <code>gen_server</code> via the <code>cast</code> and <code>call</code> methods. Unlike
+Erlang&#39;s <code>gen_server</code>, however, <code>Async</code> classes do not support linking or
+supervision trees.</p>
+
+<h2>Basic Usage</h2>
+
+<p>When this module is mixed into a class, objects of the class become inherently
+asynchronous. Each object gets its own background thread on which to post
+asynchronous method calls. Asynchronous method calls are executed in the
+background one at a time in the order they are received.</p>
+
+<p>To create an asynchronous class, simply mix in the <code>Concurrent::Async</code> module:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Hello</span>
+  <span class='id identifier rubyid_include'>include</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Async</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_hello'>hello</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hello, </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>!</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>When defining a constructor it is critica that the first line be a call to
+<code>super</code> with no arguments. The <code>super</code> method initializes the background
+thread and other asynchronous components.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>BackgroundLogger</span>
+  <span class='id identifier rubyid_include'>include</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Async</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
+    <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
+    <span class='ivar'>@logger</span> <span class='op'>=</span> <span class='const'>Logger</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='const'>STDOUT</span><span class='rparen'>)</span>
+    <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>=</span> <span class='id identifier rubyid_level'>level</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>def</span> <span class='id identifier rubyid_info'>info</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
+    <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>Mixing this module into a class provides each object two proxy methods:
+<code>async</code> and <code>await</code>. These methods are thread safe with respect to the
+enclosing object. The former proxy allows methods to be called
+asynchronously by posting to the object&#39;s internal thread. The latter proxy
+allows a method to be called synchronously but does so safely with respect
+to any pending asynchronous method calls and ensures proper ordering. Both
+methods return a <span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">IVar</a></span> which can be inspected for the result
+of the proxied method call. Calling a method with <code>async</code> will return a
 <code>:pending</code> <code>IVar</code> whereas <code>await</code> will return a <code>:complete</code> <code>IVar</code>.</p>
 
-<p>Very loosely based on the <code>async</code> and <code>await</code> keywords in C#.</p>
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Echo</span>
+  <span class='id identifier rubyid_include'>include</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Async</span>
 
-<h3>An Important Note About Thread Safe Guarantees</h3>
+  <span class='kw'>def</span> <span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_msg'>msg</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_horn'>horn</span> <span class='op'>=</span> <span class='const'>Echo</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>      <span class='comment'># synchronous, not thread-safe
+</span>                       <span class='comment'># returns the actual return value of the method
+</span>
+<span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_async'>async</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>one</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># asynchronous, non-blocking, thread-safe
+</span>                       <span class='comment'># returns an IVar in the :pending state
+</span>
+<span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_await'>await</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>two</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># synchronous, blocking, thread-safe
+</span>                       <span class='comment'># returns an IVar in the :complete state
+</span></code></pre>
+
+<h2>Let It Fail</h2>
+
+<p>The <code>async</code> and <code>await</code> proxy methods have built-in error protection based
+on Erlang&#39;s famous &quot;let it fail&quot; philosophy. Instance methods should not be
+programmed defensively. When an exception is raised by a delegated method
+the proxy will rescue the exception, expose it to the caller as the <code>reason</code>
+attribute of the returned future, then process the next method call.</p>
+
+<h2>Calling Methods Internally</h2>
+
+<p>External method calls should <em>always</em> use the <code>async</code> and <code>await</code> proxy
+methods. When one method calls another method, the <code>async</code> proxy should
+rarely be used and the <code>await</code> proxy should <em>never</em> be used.</p>
+
+<p>When an object calls one of its own methods using the <code>await</code> proxy the
+second call will be enqueued <em>behind</em> the currently running method call.
+Any attempt to wait on the result will fail as the second call will never
+run until after the current call completes.</p>
+
+<p>Calling a method using the <code>await</code> proxy from within a method that was
+itself called using <code>async</code> or <code>await</code> will irreversibly deadlock the
+object. Do <em>not</em> do this, ever.</p>
+
+<h2>Instance Variables and Attribute Accessors</h2>
+
+<p>Instance variables do not need to be thread-safe so long as they are private.
+Asynchronous method calls are processed in the order they are received and
+are processed one at a time. Therefore private instance variables can only
+be accessed by one thread at a time. This is inherently thread-safe.</p>
+
+<p>When using private instance variables within asynchronous methods, the best
+practice is to read the instance variable into a local variable at the start
+of the method then update the instance variable at the <em>end</em> of the method.
+This way, should an exception be raised during method execution the internal
+state of the boject will not have been changed.</p>
+
+<h3>Reader Attributes</h3>
+
+<p>The use of <code>attr_reader</code> is discouraged. Internal state exposed externally,
+when necessary, should be done through accessor methods. The instance
+variables exposed by these methods <em>must</em> be thread-safe, or they must be
+called using the <code>async</code> and <code>await</code> proxy methods. These two approaches are
+subtly different.</p>
+
+<p>When internal state is accessed via the <code>async</code> and <code>await</code> proxy methods,
+the returned value represents the object&#39;s sate <em>at the time the call is
+processed</em>, which may <em>not</em> be the state of the object at the time the call
+is made.</p>
+
+<p>To get the state <em>at the current</em> time, irrespective of an enqueued method
+calls, a reader method must be called directly. This is inherently unsafe
+unless the instance variable is itself thread-safe, preferrably using one
+of the thread-safe classes within this library. Because the thread-safe
+classes within this library are internally-locking or non-locking, they can
+be safely used from within asynchronous methods without causing deadlocks.</p>
+
+<p>Generally speaking, the best practice is to <em>not</em> expose internal state via
+reader methods. The best practice is to simply use the method&#39;s return value.</p>
+
+<h3>Writer Attributes</h3>
+
+<p>Writer attributes should never be used with asynchronous classes. Changing
+the state externally, even when done in the thread-safe way, is not logically
+consistent. Changes to state need to be timed with respect to all asynchronous
+method calls which my be in-process or enqueued. The only safe practice is to
+pass all necessary data to each method as arguments and let the method update
+the internal state as necessary.</p>
+
+<h2>Class Constants, Variables, and Methods</h2>
+
+<h3>Class Constants</h3>
+
+<p>Class constants do not need to be thread-safe. Since they are read-only and
+immutable they may be safely read both externally and from within
+asynchronous methods.</p>
+
+<h3>Class Variables</h3>
+
+<p>Class variables should be avoided. Class variables represent shared state.
+Shared state is anathema to concurrency. Should there be a need to share
+state using class variables they <em>must</em> be thread-safe, preferrably
+using the thread-safe classes within this library. When updating class
+variables, never assign a new value/object to the variable itself. Assignment
+is not thread-safe in Ruby. Instead, use the thread-safe update functions
+of the variable itself to change the value.</p>
+
+<p>The best practice is to <em>never</em> use class variables with <code>Async</code> classes.</p>
+
+<h3>Class Methods</h3>
+
+<p>Class methods which are pure functions are safe. Class methods which modify
+class variables should be avoided, for all the reasons listed above.</p>
+
+<h2>An Important Note About Thread Safe Guarantees</h2>
 
 <blockquote>
 <p>Thread safe guarantees can only be made when asynchronous method calls
-are not mixed with synchronous method calls. Use only synchronous calls
+are not mixed with direct method calls. Use only direct method calls
 when the object is used exclusively on a single thread. Use only
 <code>async</code> and <code>await</code> when the object is shared between threads. Once you
-call a method using <code>async</code>, you should no longer call any methods
-directly on the object. Use <code>async</code> and <code>await</code> exclusively from then on.
-With careful programming it is possible to switch back and forth but it&#39;s
-also very easy to create race conditions and break your application.
-Basically, it&#39;s &quot;async all the way down.&quot;</p>
+call a method using <code>async</code> or <code>await</code>, you should no longer call methods
+directly on the object. Use <code>async</code> and <code>await</code> exclusively from then on.</p>
 </blockquote>
 
 
@@ -141,17 +304,19 @@ Basically, it&#39;s &quot;async all the way down.&quot;</p>
   <span class='id identifier rubyid_include'>include</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Async</span>
 
   <span class='kw'>def</span> <span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='id identifier rubyid_rand'>rand</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_msg'>msg</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
-    <span class='kw'>nil</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span>
 
 <span class='id identifier rubyid_horn'>horn</span> <span class='op'>=</span> <span class='const'>Echo</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
 <span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>zero</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>      <span class='comment'># synchronous, not thread-safe
+</span>                       <span class='comment'># returns the actual return value of the method
 </span>
 <span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_async'>async</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>one</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># asynchronous, non-blocking, thread-safe
-</span><span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_await'>await</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>two</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># synchronous, blocking, thread-safe</span></code></pre>
+</span>                       <span class='comment'># returns an IVar in the :pending state
+</span>
+<span class='id identifier rubyid_horn'>horn</span><span class='period'>.</span><span class='id identifier rubyid_await'>await</span><span class='period'>.</span><span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>two</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># synchronous, blocking, thread-safe
+</span>                       <span class='comment'># returns an IVar in the :complete state</span></code></pre>
     
   </div>
 
@@ -159,7 +324,13 @@ Basically, it&#39;s &quot;async all the way down.&quot;</p>
   <p class="tag_title">See Also:</p>
   <ul class="see">
     
-      <li><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">IVar</a></span></li>
+      <li><span class='object_link'><a href="Actor.html" title="Concurrent::Actor (module)">Actor</a></span></li>
+    
+      <li><a href="https://en.wikipedia.org/wiki/Actor_model" target="_parent" title="&quot;Actor Model&quot; at Wikipedia">"Actor Model" at Wikipedia</a></li>
+    
+      <li><a href="http://www.erlang.org/doc/man/gen_server.html" target="_parent" title="Erlang gen_server">Erlang gen_server</a></li>
+    
+      <li><a href="http://c2.com/cgi/wiki?LetItCrash" target="_parent" title="&quot;Let It Crash&quot; at http://c2.com/">"Let It Crash" at http://c2.com/</a></li>
     
   </ul>
 
@@ -217,6 +388,8 @@ Basically, it&#39;s &quot;async all the way down.&quot;</p>
     
 
     
+      (also: #cast)
+    
   </span>
   
   
@@ -227,7 +400,7 @@ Basically, it&#39;s &quot;async all the way down.&quot;</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Causes the chained method call to be performed asynchronously on the global thread pool.</p>
+    <span class="summary_desc"><div class='inline'><p>Causes the chained method call to be performed asynchronously on the object&#39;s thread.</p>
 </div></span>
   
 </li>
@@ -240,6 +413,8 @@ Basically, it&#39;s &quot;async all the way down.&quot;</p>
     
 
     
+      (also: #call)
+    
   </span>
   
   
@@ -251,29 +426,6 @@ Basically, it&#39;s &quot;async all the way down.&quot;</p>
 
   
     <span class="summary_desc"><div class='inline'><p>Causes the chained method call to be performed synchronously on the current thread.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#executor%3D-instance_method" title="#executor= (instance method)">- (Object) <strong>executor=</strong>(executor) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Set a new executor.</p>
 </div></span>
   
 </li>
@@ -327,7 +479,7 @@ object&#39;s initializer.</p>
   
     <li>
       
-        <span class='name'>bloc</span>
+        <span class='name'>block</span>
       
       
         <span class='type'>(<tt>Proc</tt>)</span>
@@ -369,7 +521,7 @@ object&#39;s initializer.</p>
 </pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 239</span>
 
 </pre>
     </td>
@@ -390,6 +542,10 @@ object&#39;s initializer.</p>
   
 
   
+    <span class="aliases">Also known as:
+    <span class="names"><span id='cast-instance_method'>cast</span></span>
+    </span>
+  
 
   
 </h3><div class="docstring">
@@ -401,24 +557,16 @@ object&#39;s initializer.</p>
 all other method calls against the same object that are called with
 either <code>async</code> or <code>await</code>. The mutable nature of Ruby references
 (and object orientation in general) prevent any other thread safety
-guarantees. Do NOT mix non-protected method calls with protected
-method call. Use <em>only</em> protected method calls when sharing the object
-between threads.</p>
+guarantees. Do NOT mix direct method calls with delegated method calls.
+Use <em>only</em> delegated method calls when sharing the object between threads.</p>
 </div>
   </div>
 
 <p>Causes the chained method call to be performed asynchronously on the
-global thread pool. The method called by this method will return a
-future object in the <code>:pending</code> state and the method call will have
-been scheduled on the global thread pool. The final disposition of the
-method call can be obtained by inspecting the returned future.</p>
-
-<p>Before scheduling the method on the global thread pool a best-effort
-attempt will be made to validate that the method exists on the object
-and that the given arguments match the arity of the requested function.
-Due to the dynamic nature of Ruby and limitations of its reflection
-library, some edge cases will be missed. For more information see
-the documentation for the <code>validate_argc</code> method.</p>
+object&#39;s thread. The delegated method will return a future in the
+<code>:pending</code> state and the method call will have been scheduled on the
+object&#39;s thread. The final disposition of the method call can be obtained
+by inspecting the returned future.</p>
 
 
   </div>
@@ -453,7 +601,7 @@ the documentation for the <code>validate_argc</code> method.</p>
       
       
         &mdash;
-        <div class='inline'><p>the object does not respond to <code>method</code> method</p>
+        <div class='inline'><p>the object does not respond to the requested method</p>
 </div>
       
     </li>
@@ -466,19 +614,13 @@ the documentation for the <code>validate_argc</code> method.</p>
       
       
         &mdash;
-        <div class='inline'><p>the given <code>args</code> do not match the arity of <code>method</code></p>
+        <div class='inline'><p>the given <code>args</code> do not match the arity of
+the requested method</p>
 </div>
       
     </li>
   
 </ul>
-
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">IVar</a></span></li>
-    
-  </ul>
 
 </div><table class="source_code">
   <tr>
@@ -486,15 +628,15 @@ the documentation for the <code>validate_argc</code> method.</p>
       <pre class="lines">
 
 
-213
-214
-215</pre>
+408
+409
+410</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 213</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 408</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_async'>async</span>
-  <span class='ivar'>@__async_delegator__</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
+  <span class='ivar'>@__async_delegator__</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -508,6 +650,10 @@ the documentation for the <code>validate_argc</code> method.</p>
   
 
   
+    <span class="aliases">Also known as:
+    <span class="names"><span id='call-instance_method'>call</span></span>
+    </span>
+  
 
   
 </h3><div class="docstring">
@@ -519,24 +665,16 @@ the documentation for the <code>validate_argc</code> method.</p>
 all other method calls against the same object that are called with
 either <code>async</code> or <code>await</code>. The mutable nature of Ruby references
 (and object orientation in general) prevent any other thread safety
-guarantees. Do NOT mix non-protected method calls with protected
-method call. Use <em>only</em> protected method calls when sharing the object
-between threads.</p>
+guarantees. Do NOT mix direct method calls with delegated method calls.
+Use <em>only</em> delegated method calls when sharing the object between threads.</p>
 </div>
   </div>
 
 <p>Causes the chained method call to be performed synchronously on the
-current thread. The method called by this method will return an
-<code>IVar</code> object in either the <code>:fulfilled</code> or <code>rejected</code> state and the
-method call will have completed. The final disposition of the
-method call can be obtained by inspecting the returned <code>IVar</code>.</p>
-
-<p>Before scheduling the method on the global thread pool a best-effort
-attempt will be made to validate that the method exists on the object
-and that the given arguments match the arity of the requested function.
-Due to the dynamic nature of Ruby and limitations of its reflection
-library, some edge cases will be missed. For more information see
-the documentation for the <code>validate_argc</code> method.</p>
+current thread. The delegated will return a future in either the
+<code>:fulfilled</code> or <code>:rejected</code> state and the delegated method will have
+completed. The final disposition of the delegated method can be obtained
+by inspecting the returned future.</p>
 
 
   </div>
@@ -571,7 +709,7 @@ the documentation for the <code>validate_argc</code> method.</p>
       
       
         &mdash;
-        <div class='inline'><p>the object does not respond to <code>method</code> method</p>
+        <div class='inline'><p>the object does not respond to the requested method</p>
 </div>
       
     </li>
@@ -584,19 +722,13 @@ the documentation for the <code>validate_argc</code> method.</p>
       
       
         &mdash;
-        <div class='inline'><p>the given <code>args</code> do not match the arity of <code>method</code></p>
+        <div class='inline'><p>the given <code>args</code> do not match the arity of the
+requested method</p>
 </div>
       
     </li>
   
 </ul>
-
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><span class='object_link'><a href="IVar.html" title="Concurrent::IVar (class)">IVar</a></span></li>
-    
-  </ul>
 
 </div><table class="source_code">
   <tr>
@@ -604,74 +736,15 @@ the documentation for the <code>validate_argc</code> method.</p>
       <pre class="lines">
 
 
-238
-239
-240</pre>
+426
+427
+428</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 238</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 426</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_await'>await</span>
-  <span class='ivar'>@__await_delegator__</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="executor=-instance_method">
-  
-    - (<tt>Object</tt>) <strong>executor=</strong>(executor) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Set a new executor.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>executor has already been set.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-245
-246
-247
-248</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/async.rb', line 245</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_executor='>executor=</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
-  <span class='ivar'>@__async_executor__</span><span class='period'>.</span><span class='id identifier rubyid_reconfigure'>reconfigure</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_executor'>executor</span> <span class='rbrace'>}</span> <span class='kw'>or</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>executor has already been set</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='ivar'>@__await_delegator__</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -683,9 +756,9 @@ the documentation for the <code>validate_argc</code> method.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:46 2015 by
+  Generated on Fri Nov 13 10:01:22 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

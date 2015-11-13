@@ -73,12 +73,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Concurrent::Synchronization::Object</a></span></span>
+      <span class="inheritName"><span class='object_link'>Concurrent::Synchronization::LockableObject</span></span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Concurrent::Synchronization::Object</a></span></li>
+            <li class="next"><span class='object_link'>Concurrent::Synchronization::LockableObject</span></li>
           
             <li class="next">Concurrent::SafeTaskExecutor</li>
           
@@ -213,18 +213,16 @@ reason - the error risen by the callable if it has been executed with errors, ni
 12
 13
 14
-15
-16</pre>
+15</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/concurrent/executor/safe_task_executor.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_task'>task</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='ivar'>@task</span> <span class='op'>=</span> <span class='id identifier rubyid_task'>task</span>
+  <span class='ivar'>@task</span>            <span class='op'>=</span> <span class='id identifier rubyid_task'>task</span>
   <span class='ivar'>@exception_class</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:rescue_exception</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='const'>Exception</span> <span class='op'>:</span> <span class='const'>StandardError</span>
-  <span class='id identifier rubyid_ensure_ivar_visibility!'>ensure_ivar_visibility!</span>
-<span class='kw'>end</span></pre>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='comment'># ensures visibility
+</span><span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -274,6 +272,7 @@ reason - the error risen by the callable if it has been executed with errors, ni
       <pre class="lines">
 
 
+18
 19
 20
 21
@@ -288,22 +287,21 @@ reason - the error risen by the callable if it has been executed with errors, ni
 30
 31
 32
-33
-34</pre>
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/safe_task_executor.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/safe_task_executor.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
     <span class='id identifier rubyid_success'>success</span> <span class='op'>=</span> <span class='kw'>false</span>
-    <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_reason'>reason</span> <span class='op'>=</span> <span class='kw'>nil</span>
+    <span class='id identifier rubyid_value'>value</span>   <span class='op'>=</span> <span class='id identifier rubyid_reason'>reason</span> <span class='op'>=</span> <span class='kw'>nil</span>
 
     <span class='kw'>begin</span>
-      <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='ivar'>@task</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_value'>value</span>   <span class='op'>=</span> <span class='ivar'>@task</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
       <span class='id identifier rubyid_success'>success</span> <span class='op'>=</span> <span class='kw'>true</span>
     <span class='kw'>rescue</span> <span class='ivar'>@exception_class</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_ex'>ex</span>
-      <span class='id identifier rubyid_reason'>reason</span> <span class='op'>=</span> <span class='id identifier rubyid_ex'>ex</span>
+      <span class='id identifier rubyid_reason'>reason</span>  <span class='op'>=</span> <span class='id identifier rubyid_ex'>ex</span>
       <span class='id identifier rubyid_success'>success</span> <span class='op'>=</span> <span class='kw'>false</span>
     <span class='kw'>end</span>
 
@@ -320,9 +318,9 @@ reason - the error risen by the callable if it has been executed with errors, ni
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:52 2015 by
+  Generated on Fri Nov 13 10:01:30 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

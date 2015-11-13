@@ -119,107 +119,6 @@ a self-loop.</p>
 
 
 
-  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
-  <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#Data-instance_method" title="#Data (instance method)">- (Object) <strong>Data</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      inherited
-      from <span class='object_link'><a href="Node.html#Data-instance_method" title="Concurrent::Edge::LockFreeLinkedSet::Node#Data (method)">Node</a></span>
-    </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#Key-instance_method" title="#Key (instance method)">- (Object) <strong>Key</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      inherited
-      from <span class='object_link'><a href="Node.html#Key-instance_method" title="Concurrent::Edge::LockFreeLinkedSet::Node#Key (method)">Node</a></span>
-    </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#Successor_reference-instance_method" title="#Successor_reference (instance method)">- (Object) <strong>Successor_reference</strong> </a>
-    
-
-    
-  </span>
-  
-    <span class="note title not_defined_here">
-      inherited
-      from <span class='object_link'><a href="Node.html#Successor_reference-instance_method" title="Concurrent::Edge::LockFreeLinkedSet::Node#Successor_reference (method)">Node</a></span>
-    </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-    
-  </ul>
-
 
 
 
@@ -315,15 +214,15 @@ a self-loop.</p>
       <pre class="lines">
 
 
-51
-52
-53</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/lock_free_linked_set/node.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/lock_free_linked_set/node.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid__data'>_data</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid__succ'>_succ</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='ivar'>@Successor_reference</span> <span class='op'>=</span> <span class='const'>AtomicMarkableReference</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>self</span>
+  <span class='ivar'>@SuccessorReference</span> <span class='op'>=</span> <span class='const'>AtomicMarkableReference</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -331,95 +230,6 @@ a self-loop.</p>
 </div>
   
 </div>
-
-  <div id="instance_attr_details" class="attr_details">
-    <h2>Instance Attribute Details</h2>
-    
-      
-      <span id=""></span>
-      <div class="method_details first">
-  <h3 class="signature first" id="Data-instance_method">
-  
-    - (<tt>Object</tt>) <strong>Data</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in class
-        <span class='object_link'><a href="Node.html#Data-instance_method" title="Concurrent::Edge::LockFreeLinkedSet::Node#Data (method)">Node</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="Key-instance_method">
-  
-    - (<tt>Object</tt>) <strong>Key</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in class
-        <span class='object_link'><a href="Node.html#Key-instance_method" title="Concurrent::Edge::LockFreeLinkedSet::Node#Key (method)">Node</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="Successor_reference-instance_method">
-  
-    - (<tt>Object</tt>) <strong>Successor_reference</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-    <span class="not_defined_here">
-      Originally defined in class
-        <span class='object_link'><a href="Node.html#Successor_reference-instance_method" title="Concurrent::Edge::LockFreeLinkedSet::Node#Successor_reference (method)">Node</a></span>
-    </span>
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-</div>
-    
-  </div>
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -452,12 +262,12 @@ at the tail node since we are comparing node size in the traversal.</p>
       <pre class="lines">
 
 
-57
-58
-59</pre>
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/lock_free_linked_set/node.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/lock_free_linked_set/node.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='op'>&lt;=&gt;</span><span class='lparen'>(</span><span class='id identifier rubyid__other'>_other</span><span class='rparen'>)</span>
   <span class='int'>1</span>
@@ -472,9 +282,9 @@ at the tail node since we are comparing node size in the traversal.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:53 2015 by
+  Generated on Fri Nov 13 10:01:31 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

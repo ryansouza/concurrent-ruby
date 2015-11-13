@@ -73,10 +73,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></span>
       
         <ul class="fullTree">
           <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
           
             <li class="next">Concurrent::Maybe</li>
           
@@ -512,6 +514,8 @@ When <code>Nothing</code> the <span class='object_link'><a href="#just-instance_
 
 
   
+  
+  
   <div id="instance_attr_details" class="attr_details">
     <h2>Instance Attribute Details</h2>
     
@@ -546,12 +550,12 @@ When <code>Nothing</code> the <span class='object_link'><a href="#just-instance_
       <pre class="lines">
 
 
-111
-112
-113</pre>
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 111</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_just'>just</span>
   <span class='ivar'>@just</span>
@@ -592,12 +596,12 @@ When <code>Nothing</code> the <span class='object_link'><a href="#just-instance_
       <pre class="lines">
 
 
-114
-115
-116</pre>
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 117</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_nothing'>nothing</span>
   <span class='ivar'>@nothing</span>
@@ -735,18 +739,18 @@ arguments to the function.</p>
       <pre class="lines">
 
 
-134
-135
-136
 137
 138
 139
 140
 141
-142</pre>
+142
+143
+144
+145</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 137</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_from'>from</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -823,12 +827,12 @@ arguments to the function.</p>
       <pre class="lines">
 
 
-149
-150
-151</pre>
+152
+153
+154</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 149</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 152</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_just'>just</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='const'>NONE</span><span class='rparen'>)</span>
@@ -904,17 +908,17 @@ argument as the message. When no argument is given a new
       <pre class="lines">
 
 
-161
-162
-163
 164
 165
 166
 167
-168</pre>
+168
+169
+170
+171</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 161</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 164</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_nothing'>nothing</span><span class='lparen'>(</span><span class='id identifier rubyid_error'>error</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_error'>error</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Exception</span><span class='rparen'>)</span>
@@ -980,16 +984,16 @@ argument as the message. When no argument is given a new
       <pre class="lines">
 
 
-196
-197
-198
 199
 200
 201
-202</pre>
+202
+203
+204
+205</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 196</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 199</span>
 
 <span class='kw'>def</span> <span class='op'>&lt;=&gt;</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_nothing?'>nothing?</span>
@@ -1049,12 +1053,12 @@ argument as the message. When no argument is given a new
       <pre class="lines">
 
 
-173
-174
-175</pre>
+176
+177
+178</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 176</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_just?'>just?</span>
   <span class='op'>!</span> <span class='id identifier rubyid_nothing?'>nothing?</span>
@@ -1110,12 +1114,12 @@ argument as the message. When no argument is given a new
       <pre class="lines">
 
 
-181
-182
-183</pre>
+184
+185
+186</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 181</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 184</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_nothing?'>nothing?</span>
   <span class='ivar'>@nothing</span> <span class='op'>!=</span> <span class='const'>NONE</span>
@@ -1167,12 +1171,12 @@ argument as the message. When no argument is given a new
       <pre class="lines">
 
 
-207
-208
-209</pre>
+210
+211
+212</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 207</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/maybe.rb', line 210</span>
 
 <span class='kw'>def</span> <span class='kw'>or</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_just?'>just?</span> <span class='op'>?</span> <span class='id identifier rubyid_just'>just</span> <span class='op'>:</span> <span class='id identifier rubyid_other'>other</span>
@@ -1187,9 +1191,9 @@ argument as the message. When no argument is given a new
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:47 2015 by
+  Generated on Fri Nov 13 10:01:23 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

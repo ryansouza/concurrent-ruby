@@ -503,8 +503,6 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-41
-42
 43
 44
 45
@@ -512,10 +510,12 @@ does. For most uses it should do fine though, and we recommend you consider
 47
 48
 49
-50</pre>
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 43</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>Hash</span><span class='rparen'>)</span>
@@ -558,8 +558,6 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-52
-53
 54
 55
 56
@@ -570,10 +568,12 @@ does. For most uses it should do fine though, and we recommend you consider
 61
 62
 63
-64</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='op'>[]</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='kw'>super</span> <span class='comment'># non-falsy value is an existing mapping, return it right away
@@ -608,12 +608,12 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-115
-116
-117</pre>
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 117</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each_key'>each_key</span>
   <span class='id identifier rubyid_each_pair'>each_pair</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='kw'>yield</span> <span class='id identifier rubyid_k'>k</span><span class='rbrace'>}</span>
@@ -638,12 +638,12 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-119
-120
-121</pre>
+121
+122
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each_value'>each_value</span>
   <span class='id identifier rubyid_each_pair'>each_pair</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='kw'>yield</span> <span class='id identifier rubyid_v'>v</span><span class='rbrace'>}</span>
@@ -690,13 +690,13 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-129
-130
 131
-132</pre>
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 131</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_empty?'>empty?</span>
   <span class='id identifier rubyid_each_pair'>each_pair</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='kw'>return</span> <span class='kw'>false</span><span class='rbrace'>}</span>
@@ -722,8 +722,6 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-69
-70
 71
 72
 73
@@ -732,10 +730,12 @@ does. For most uses it should do fine though, and we recommend you consider
 76
 77
 78
-79</pre>
+79
+80
+81</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_default_value'>default_value</span> <span class='op'>=</span> <span class='const'>NULL</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='const'>NULL</span> <span class='op'>!=</span> <span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_get_or_default'>get_or_default</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='const'>NULL</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -768,14 +768,14 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-81
-82
 83
 84
-85</pre>
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_or_store'>fetch_or_store</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_default_value'>default_value</span> <span class='op'>=</span> <span class='const'>NULL</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -806,13 +806,13 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-123
-124
 125
-126</pre>
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 125</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_key'>key</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_each_pair'>each_pair</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='kw'>return</span> <span class='id identifier rubyid_k'>k</span> <span class='kw'>if</span> <span class='id identifier rubyid_v'>v</span> <span class='op'>==</span> <span class='id identifier rubyid_value'>value</span><span class='rbrace'>}</span>
@@ -838,14 +838,14 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-103
-104
 105
 106
-107</pre>
+107
+108
+109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 103</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_keys'>keys</span>
   <span class='id identifier rubyid_arr'>arr</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -894,15 +894,15 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-140
-141
 142
 143
 144
-145</pre>
+145
+146
+147</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 142</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_marshal_dump'>marshal_dump</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>TypeError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>can&#39;t dump hash with default proc</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@default_proc</span>
@@ -930,13 +930,13 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-147
-148
 149
-150</pre>
+150
+151
+152</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 149</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_marshal_load'>marshal_load</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_initialize'>initialize</span>
@@ -962,17 +962,17 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-87
-88
 89
 90
 91
 92
 93
-94</pre>
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 87</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_put_if_absent'>put_if_absent</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_computed'>computed</span> <span class='op'>=</span> <span class='kw'>false</span>
@@ -1002,14 +1002,14 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-134
-135
 136
 137
-138</pre>
+138
+139
+140</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_size'>size</span>
   <span class='id identifier rubyid_count'>count</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -1058,15 +1058,15 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-96
-97
 98
 99
 100
-101</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 96</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value?'>value?</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_each_value'>each_value</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span>
@@ -1094,14 +1094,14 @@ does. For most uses it should do fine though, and we recommend you consider
       <pre class="lines">
 
 
-109
-110
 111
 112
-113</pre>
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/map.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_values'>values</span>
   <span class='id identifier rubyid_arr'>arr</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -1118,9 +1118,9 @@ does. For most uses it should do fine though, and we recommend you consider
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:47 2015 by
+  Generated on Fri Nov 13 10:01:23 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

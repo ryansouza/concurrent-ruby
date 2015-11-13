@@ -78,7 +78,7 @@
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><span class='object_link'><a href="Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
+            <li class="next"><span class='object_link'>Synchronization::LockableObject</span></li>
           
             <li class="next"><span class='object_link'>AbstractExecutorService</span></li>
           
@@ -536,7 +536,7 @@ or Haskell) as we are likely to get in Ruby.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#add_observer-instance_method" title="#add_observer (instance method)">- (Object) <strong>add_observer</strong>(*args, &amp;block) </a>
+      <a href="#add_observer-instance_method" title="#add_observer (instance method)">- (Object) <strong>add_observer</strong>(observer = nil, func = :update, &amp;block) </a>
     
 
     
@@ -555,7 +555,7 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>The added observer.</p>
+    <span class="summary_desc"><div class='inline'><p>Adds an observer to this set.</p>
 </div></span>
   
 </li>
@@ -583,7 +583,7 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>The observers count.</p>
+    <span class="summary_desc"><div class='inline'><p>Return the number of observers associated with this object.</p>
 </div></span>
   
 </li>
@@ -592,7 +592,7 @@ or Haskell) as we are likely to get in Ruby.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#delete_observer-instance_method" title="#delete_observer (instance method)">- (Object) <strong>delete_observer</strong>(*args) </a>
+      <a href="#delete_observer-instance_method" title="#delete_observer (instance method)">- (Object) <strong>delete_observer</strong>(observer) </a>
     
 
     
@@ -611,7 +611,7 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>The deleted observer.</p>
+    <span class="summary_desc"><div class='inline'><p>Remove <code>observer</code> as an observer on this object so that it will no longer receive notifications.</p>
 </div></span>
   
 </li>
@@ -639,7 +639,7 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Self.</p>
+    <span class="summary_desc"><div class='inline'><p>Remove all observers associated with this object.</p>
 </div></span>
   
 </li>
@@ -749,7 +749,7 @@ or Haskell) as we are likely to get in Ruby.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#with_observer-instance_method" title="#with_observer (instance method)">- (Observable) <strong>with_observer</strong>(*args, &amp;block) </a>
+      <a href="#with_observer-instance_method" title="#with_observer (instance method)">- (Observable) <strong>with_observer</strong>(observer = nil, func = :update, &amp;block) </a>
     
 
     
@@ -768,7 +768,7 @@ or Haskell) as we are likely to get in Ruby.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>as #add_observer but it can be used for chaining.</p>
+    <span class="summary_desc"><div class='inline'><p>As <code>#add_observer</code> but can be used for chaining.</p>
 </div></span>
   
 </li>
@@ -1490,7 +1490,7 @@ refer to the execution context of the block rather than the running
       <div class="method_details first">
   <h3 class="signature first" id="add_observer-instance_method">
   
-    - (<tt>Object</tt>) <strong>add_observer</strong>(*args, &amp;block) 
+    - (<tt>Object</tt>) <strong>add_observer</strong>(observer = nil, func = :update, &amp;block) 
   
 
   
@@ -1503,13 +1503,53 @@ refer to the execution context of the block rather than the running
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the added observer</p>
+    <p>Adds an observer to this set. If a block is passed, the observer will be
+created by this method and no other params should be passed.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>observer</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the observer to add</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>func</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>:update</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the function to call on the observer during notification.
+Default is :update</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1547,7 +1587,7 @@ refer to the execution context of the block rather than the running
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the observers count</p>
+    <p>Return the number of observers associated with this object.</p>
 
 
   </div>
@@ -1578,7 +1618,7 @@ refer to the execution context of the block rather than the running
       <div class="method_details ">
   <h3 class="signature " id="delete_observer-instance_method">
   
-    - (<tt>Object</tt>) <strong>delete_observer</strong>(*args) 
+    - (<tt>Object</tt>) <strong>delete_observer</strong>(observer) 
   
 
   
@@ -1591,13 +1631,33 @@ refer to the execution context of the block rather than the running
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the deleted observer</p>
+    <p>Remove <code>observer</code> as an observer on this object so that it will no
+longer receive notifications.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>observer</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the observer to remove</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1635,7 +1695,7 @@ refer to the execution context of the block rather than the running
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns self</p>
+    <p>Remove all observers associated with this object.</p>
 
 
   </div>
@@ -1862,7 +1922,7 @@ by the <code>#set_deref_options</code> method.</p>
       <div class="method_details ">
   <h3 class="signature " id="with_observer-instance_method">
   
-    - (<tt><span class='object_link'><a href="Concern/Observable.html" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>) <strong>with_observer</strong>(*args, &amp;block) 
+    - (<tt><span class='object_link'><a href="Concern/Observable.html" title="Concurrent::Concern::Observable (module)">Observable</a></span></tt>) <strong>with_observer</strong>(observer = nil, func = :update, &amp;block) 
   
 
   
@@ -1875,13 +1935,51 @@ by the <code>#set_deref_options</code> method.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>as #add_observer but it can be used for chaining</p>
+    <p>As <code>#add_observer</code> but can be used for chaining.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>observer</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the observer to add</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>func</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>:update</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>the function to call on the observer during notification.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1908,9 +2006,9 @@ by the <code>#set_deref_options</code> method.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:49 2015 by
+  Generated on Fri Nov 13 10:01:25 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

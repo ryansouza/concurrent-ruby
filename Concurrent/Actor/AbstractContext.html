@@ -167,7 +167,7 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
 </span><span class='id identifier rubyid_an_actor'>an_actor</span> <span class='op'>&lt;&lt;</span> <span class='symbol'>:boo</span> <span class='op'>&lt;&lt;</span> <span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:add</span><span class='comma'>,</span> <span class='int'>1</span><span class='rparen'>)</span> 
 <span class='id identifier rubyid_an_actor'>an_actor</span><span class='period'>.</span><span class='id identifier rubyid_ask!'>ask!</span><span class='lparen'>(</span><span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:value</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='rparen'>)</span>            <span class='comment'># =&gt; 1
 </span><span class='id identifier rubyid_an_actor'>an_actor</span> <span class='op'>&lt;&lt;</span> <span class='symbol'>:terminate!</span>
-    <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference:0x7fb6fc9165d0 /an_actor (AnActor)&gt;</span></pre></p>
+    <span class='comment'># =&gt; #&lt;Concurrent::Actor::Reference:0x7ff3ab16edc8 /an_actor (AnActor)&gt;</span></pre></p>
 
 <p>See methods of <span class='object_link'><a href="" title="Concurrent::Actor::AbstractContext (class)">AbstractContext</a></span> what else can be tweaked, e.g <span class='object_link'><a href="#default_reference_class-instance_method" title="Concurrent::Actor::AbstractContext#default_reference_class (method)">#default_reference_class</a></span></p>
 
@@ -644,7 +644,7 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#log-instance_method" title="#log (instance method)">- (Object) <strong>log</strong>(level, progname, message = nil, &amp;block) </a>
+      <a href="#log-instance_method" title="#log (instance method)">- (Object) <strong>log</strong>(level, message = nil, &amp;block) </a>
     
 
     
@@ -652,7 +652,7 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
   
     <span class="note title not_defined_here">
       included
-      from <span class='object_link'><a href="../Concern/Logging.html#log-instance_method" title="Concurrent::Concern::Logging#log (method)">Concern::Logging</a></span>
+      from <span class='object_link'><a href="InternalDelegations.html#log-instance_method" title="Concurrent::Actor::InternalDelegations#log (method)">InternalDelegations</a></span>
     </span>
   
   
@@ -663,7 +663,7 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Logs through <span class='object_link'><a href="../../root/Concurrent.html#global_logger-class_method" title="Concurrent.global_logger (method)">Concurrent.global_logger</a></span>, it can be overridden by setting @logger.</p>
+    <span class="summary_desc"><div class='inline'><p>delegates to core.log.</p>
 </div></span>
   
 </li>
@@ -1095,8 +1095,6 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
   
   
   
-  
-  
   <div id="instance_attr_details" class="attr_details">
     <h2>Instance Attribute Details</h2>
     
@@ -1126,12 +1124,12 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
       <pre class="lines">
 
 
+28
 29
-30
-31</pre>
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_core'>core</span>
   <span class='ivar'>@core</span>
@@ -1202,12 +1200,12 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
       <pre class="lines">
 
 
+115
 116
-117
-118</pre>
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='id identifier rubyid_name_or_opts'>name_or_opts</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='const'>Actor</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span> <span class='id identifier rubyid_to_spawn_options'>to_spawn_options</span><span class='lparen'>(</span><span class='id identifier rubyid_name_or_opts'>name_or_opts</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -1242,12 +1240,12 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
       <pre class="lines">
 
 
+120
 121
-122
-123</pre>
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_spawn!'>spawn!</span><span class='lparen'>(</span><span class='id identifier rubyid_name_or_opts'>name_or_opts</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='const'>Actor</span><span class='period'>.</span><span class='id identifier rubyid_spawn!'>spawn!</span> <span class='id identifier rubyid_to_spawn_options'>to_spawn_options</span><span class='lparen'>(</span><span class='id identifier rubyid_name_or_opts'>name_or_opts</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -1291,12 +1289,12 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
       <pre class="lines">
 
 
+96
 97
-98
-99</pre>
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>actor cannot ask itself</span><span class='tstring_end'>&#39;</span></span>
@@ -1410,12 +1408,12 @@ Uses <span class='object_link'><a href="Behaviour.html#restarting_behaviour_defi
       <pre class="lines">
 
 
+70
 71
-72
-73</pre>
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_behaviour_definition'>behaviour_definition</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span>
@@ -1643,12 +1641,12 @@ agent which will log warning.</p>
       <pre class="lines">
 
 
+65
 66
-67
-68</pre>
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dead_letter_routing'>dead_letter_routing</span>
   <span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_dead_letter_routing'>dead_letter_routing</span>
@@ -1661,7 +1659,7 @@ agent which will log warning.</p>
       <div class="method_details ">
   <h3 class="signature " id="default_executor-instance_method">
   
-    - (<tt><span class='object_link'>Executor</span></tt>) <strong>default_executor</strong> 
+    - (<tt>Executor</tt>) <strong>default_executor</strong> 
   
 
   
@@ -1682,7 +1680,7 @@ agent which will log warning.</p>
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'>Executor</span></tt>)</span>
+        <span class='type'>(<tt>Executor</tt>)</span>
       
       
       
@@ -1696,12 +1694,12 @@ agent which will log warning.</p>
       <pre class="lines">
 
 
+87
 88
-89
-90</pre>
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_default_executor'>default_executor</span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_global_io_executor'>global_io_executor</span>
@@ -1753,12 +1751,12 @@ agent which will log warning.</p>
       <pre class="lines">
 
 
+81
 82
-83
-84</pre>
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_default_reference_class'>default_reference_class</span>
   <span class='const'>Reference</span>
@@ -1810,12 +1808,12 @@ agent which will log warning.</p>
       <pre class="lines">
 
 
+75
 76
-77
-78</pre>
+77</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_envelope'>envelope</span>
   <span class='ivar'>@envelope</span> <span class='kw'>or</span> <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>envelope not set</span><span class='tstring_end'>&#39;</span></span>
@@ -1861,7 +1859,7 @@ agent which will log warning.</p>
       <div class="method_details ">
   <h3 class="signature " id="log-instance_method">
   
-    - (<tt>Object</tt>) <strong>log</strong>(level, progname, message = nil, &amp;block) 
+    - (<tt>Object</tt>) <strong>log</strong>(level, message = nil, &amp;block) 
   
 
   
@@ -1869,86 +1867,25 @@ agent which will log warning.</p>
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="../Concern/Logging.html#log-instance_method" title="Concurrent::Concern::Logging#log (method)">Concern::Logging</a></span>
+        <span class='object_link'><a href="InternalDelegations.html#log-instance_method" title="Concurrent::Actor::InternalDelegations#log (method)">InternalDelegations</a></span>
     </span>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Logs through <span class='object_link'><a href="../../root/Concurrent.html#global_logger-class_method" title="Concurrent.global_logger (method)">Concurrent.global_logger</a></span>, it can be overridden by setting @logger</p>
+    <p>delegates to core.log</p>
 
 
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
   
-    <li>
-      
-        <span class='name'>level</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>one of Logger::Severity constants</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>progname</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>e.g. a path of an Actor</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>message</span>
-      
-      
-        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>when nil block is used to generate the message</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Yield Returns:</p>
-<ul class="yieldreturn">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>a message</p>
-</div>
-      
-    </li>
-  
-</ul>
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li>Logging#log</li>
+    
+  </ul>
 
 </div>
 </div>
@@ -2079,15 +2016,15 @@ agent which will log warning.</p>
       <pre class="lines">
 
 
+44
 45
 46
 47
 48
-49
-50</pre>
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_envelope'>on_envelope</span><span class='lparen'>(</span><span class='id identifier rubyid_envelope'>envelope</span><span class='rparen'>)</span>
   <span class='ivar'>@envelope</span> <span class='op'>=</span> <span class='id identifier rubyid_envelope'>envelope</span>
@@ -2125,11 +2062,11 @@ agent which will log warning.</p>
       <pre class="lines">
 
 
-41
-42</pre>
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_event'>on_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -2221,12 +2158,12 @@ instead</p>
       <pre class="lines">
 
 
+35
 36
-37
-38</pre>
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_message'>on_message</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span>
@@ -2295,12 +2232,12 @@ instead</p>
       <pre class="lines">
 
 
+53
 54
-55
-56</pre>
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pass'>pass</span>
   <span class='id identifier rubyid_core'>core</span><span class='period'>.</span><span class='id identifier rubyid_behaviour!'>behaviour!</span><span class='lparen'>(</span><span class='const'>Behaviour</span><span class='op'>::</span><span class='const'>ExecutesContext</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pass'>pass</span> <span class='id identifier rubyid_envelope'>envelope</span>
@@ -2435,12 +2372,12 @@ instead</p>
       <pre class="lines">
 
 
+92
 93
-94
-95</pre>
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/actor/context.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tell'>tell</span><span class='lparen'>(</span><span class='id identifier rubyid_message'>message</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_reference'>reference</span><span class='period'>.</span><span class='id identifier rubyid_tell'>tell</span> <span class='id identifier rubyid_message'>message</span>
@@ -2599,9 +2536,9 @@ instead</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:50 2015 by
+  Generated on Fri Nov 13 10:01:27 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

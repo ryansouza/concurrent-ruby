@@ -78,7 +78,7 @@
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><span class='object_link'><a href="../Synchronization/Object.html" title="Concurrent::Synchronization::Object (class)">Synchronization::Object</a></span></li>
+            <li class="next"><span class='object_link'>Synchronization::LockableObject</span></li>
           
             <li class="next"><span class='object_link'><a href="Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></li>
           
@@ -232,7 +232,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#failed%3F-instance_method" title="#failed? (instance method)">- (Boolean) <strong>failed?</strong>(state = @State.get) </a>
+      <a href="#failed%3F-instance_method" title="#failed? (instance method)">- (Boolean) <strong>failed?</strong>(state = internal_state) </a>
     
 
     
@@ -527,7 +527,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#success%3F-instance_method" title="#success? (instance method)">- (Boolean) <strong>success?</strong>(state = @State.get) </a>
+      <a href="#success%3F-instance_method" title="#success? (instance method)">- (Boolean) <strong>success?</strong>(state = internal_state) </a>
     
 
     
@@ -595,7 +595,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#then_push-instance_method" title="#then_push (instance method)">- (Object) <strong>then_push</strong>(channel) </a>
+      <a href="#then_put-instance_method" title="#then_put (instance method)">- (Object) <strong>then_put</strong>(channel) </a>
     
 
     
@@ -824,12 +824,12 @@
       <pre class="lines">
 
 
-646
-647
-648</pre>
+650
+651
+652</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 646</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 650</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_any'>any</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_futures'>futures</span><span class='rparen'>)</span>
   <span class='const'>AnyPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='kw'>self</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_futures'>futures</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -867,12 +867,12 @@
       <pre class="lines">
 
 
-626
-627
-628</pre>
+630
+631
+632</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 626</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 630</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_chain_completable'>chain_completable</span><span class='lparen'>(</span><span class='id identifier rubyid_completable_future'>completable_future</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_on_completion!'>on_completion!</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_completable_future'>completable_future</span><span class='period'>.</span><span class='id identifier rubyid_complete_with'>complete_with</span> <span class='id identifier rubyid_internal_state'>internal_state</span> <span class='rbrace'>}</span>
@@ -920,12 +920,12 @@
       <pre class="lines">
 
 
-652
-653
-654</pre>
+656
+657
+658</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 652</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 656</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delay'>delay</span>
   <span class='const'>ZipFutureEventPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@DefaultExecutor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -970,23 +970,23 @@
       <pre class="lines">
 
 
-603
-604
-605
-606
 607
 608
 609
 610
 611
-612</pre>
+612
+613
+614
+615
+616</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 603</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 607</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_exception'>exception</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>obligation is not failed</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_failed?'>failed?</span>
-  <span class='id identifier rubyid_reason'>reason</span> <span class='op'>=</span> <span class='ivar'>@State</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='period'>.</span><span class='id identifier rubyid_reason'>reason</span>
+  <span class='id identifier rubyid_reason'>reason</span> <span class='op'>=</span> <span class='id identifier rubyid_internal_state'>internal_state</span><span class='period'>.</span><span class='id identifier rubyid_reason'>reason</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_reason'>reason</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='op'>::</span><span class='const'>Array</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_reason'>reason</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_e'>e</span><span class='op'>|</span> <span class='id identifier rubyid_log'>log</span> <span class='const'>ERROR</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Edge::Future</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_e'>e</span> <span class='rbrace'>}</span>
     <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>Error</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>multiple exceptions, inspect log</span><span class='tstring_end'>&#39;</span></span>
@@ -1002,7 +1002,7 @@
       <div class="method_details ">
   <h3 class="signature " id="failed?-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>failed?</strong>(state = @State.get) 
+    - (<tt>Boolean</tt>) <strong>failed?</strong>(state = internal_state) 
   
 
   
@@ -1037,14 +1037,14 @@
       <pre class="lines">
 
 
-544
-545
-546</pre>
+548
+549
+550</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 544</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 548</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_failed?'>failed?</span><span class='lparen'>(</span><span class='id identifier rubyid_state'>state</span> <span class='op'>=</span> <span class='ivar'>@State</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_failed?'>failed?</span><span class='lparen'>(</span><span class='id identifier rubyid_state'>state</span> <span class='op'>=</span> <span class='id identifier rubyid_internal_state'>internal_state</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_completed?'>completed?</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_success?'>success?</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1085,12 +1085,12 @@
       <pre class="lines">
 
 
-641
-642
-643</pre>
+645
+646
+647</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 641</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 645</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flat'>flat</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span> <span class='op'>=</span> <span class='int'>1</span><span class='rparen'>)</span>
   <span class='const'>FlatPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -1137,13 +1137,13 @@
       <pre class="lines">
 
 
-537
-538
-539
-540</pre>
+541
+542
+543
+544</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 537</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 541</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fulfilled?'>fulfilled?</span>
   <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>fulfilled?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>success?</span><span class='tstring_end'>&#39;</span></span>
@@ -1213,12 +1213,12 @@
       <pre class="lines">
 
 
-706
-707
-708</pre>
+710
+711
+712</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 706</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 710</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_failure'>on_failure</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_add_callback'>add_callback</span> <span class='symbol'>:pr_async_callback_on_failure</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span> <span class='op'>||</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span>
@@ -1287,12 +1287,12 @@
       <pre class="lines">
 
 
-718
-719
-720</pre>
+722
+723
+724</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 718</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 722</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_failure!'>on_failure!</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_add_callback'>add_callback</span> <span class='symbol'>:pr_callback_on_failure</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span>
@@ -1361,12 +1361,12 @@
       <pre class="lines">
 
 
-700
-701
-702</pre>
+704
+705
+706</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 700</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 704</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_success'>on_success</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_add_callback'>add_callback</span> <span class='symbol'>:pr_async_callback_on_success</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span> <span class='op'>||</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span>
@@ -1435,12 +1435,12 @@
       <pre class="lines">
 
 
-712
-713
-714</pre>
+716
+717
+718</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 712</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 716</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_success!'>on_success!</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_add_callback'>add_callback</span> <span class='symbol'>:pr_callback_on_success</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span>
@@ -1507,17 +1507,17 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-566
-567
-568
-569</pre>
+570
+571
+572
+573</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 566</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 570</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_reason'>reason</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_touch'>touch</span>
-  <span class='ivar'>@State</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='period'>.</span><span class='id identifier rubyid_reason'>reason</span> <span class='kw'>if</span> <span class='id identifier rubyid_wait_until_complete'>wait_until_complete</span> <span class='id identifier rubyid_timeout'>timeout</span>
+  <span class='id identifier rubyid_internal_state'>internal_state</span><span class='period'>.</span><span class='id identifier rubyid_reason'>reason</span> <span class='kw'>if</span> <span class='id identifier rubyid_wait_until_complete'>wait_until_complete</span> <span class='id identifier rubyid_timeout'>timeout</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1561,13 +1561,13 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-548
-549
-550
-551</pre>
+552
+553
+554
+555</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 548</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 552</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_rejected?'>rejected?</span>
   <span class='id identifier rubyid_deprecated_method'>deprecated_method</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>rejected?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>failed?</span><span class='tstring_end'>&#39;</span></span>
@@ -1632,12 +1632,12 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-634
-635
-636</pre>
+638
+639
+640</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 634</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 638</span>
 
 <span class='kw'>def</span> <span class='kw'>rescue</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='const'>RescuePromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span> <span class='op'>||</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -1704,17 +1704,17 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-574
-575
-576
-577</pre>
+578
+579
+580
+581</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 574</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 578</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_result'>result</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_touch'>touch</span>
-  <span class='ivar'>@State</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='period'>.</span><span class='id identifier rubyid_result'>result</span> <span class='kw'>if</span> <span class='id identifier rubyid_wait_until_complete'>wait_until_complete</span> <span class='id identifier rubyid_timeout'>timeout</span>
+  <span class='id identifier rubyid_internal_state'>internal_state</span><span class='period'>.</span><span class='id identifier rubyid_result'>result</span> <span class='kw'>if</span> <span class='id identifier rubyid_wait_until_complete'>wait_until_complete</span> <span class='id identifier rubyid_timeout'>timeout</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1759,16 +1759,16 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-658
-659
-660
-661
 662
 663
-664</pre>
+664
+665
+666
+667
+668</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 658</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 662</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_schedule'>schedule</span><span class='lparen'>(</span><span class='id identifier rubyid_intended_time'>intended_time</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_chain'>chain</span> <span class='kw'>do</span>
@@ -1822,7 +1822,7 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
 </pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 528</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 532</span>
 
 </pre>
     </td>
@@ -1833,7 +1833,7 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <div class="method_details ">
   <h3 class="signature " id="success?-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>success?</strong>(state = @State.get) 
+    - (<tt>Boolean</tt>) <strong>success?</strong>(state = internal_state) 
   
 
   
@@ -1868,14 +1868,14 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-533
-534
-535</pre>
+537
+538
+539</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 533</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 537</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_success?'>success?</span><span class='lparen'>(</span><span class='id identifier rubyid_state'>state</span> <span class='op'>=</span> <span class='ivar'>@State</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_success?'>success?</span><span class='lparen'>(</span><span class='id identifier rubyid_state'>state</span> <span class='op'>=</span> <span class='id identifier rubyid_internal_state'>internal_state</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_completed?'>completed?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_success?'>success?</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1937,12 +1937,12 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-616
-617
-618</pre>
+620
+621
+622</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 616</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 620</span>
 
 <span class='kw'>def</span> <span class='kw'>then</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='const'>ThenPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span> <span class='op'>||</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -1994,12 +1994,12 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-622
-623
-624</pre>
+626
+627
+628</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 622</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 626</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_then_ask'>then_ask</span><span class='lparen'>(</span><span class='id identifier rubyid_actor'>actor</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_then'>then</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_actor'>actor</span><span class='period'>.</span><span class='id identifier rubyid_ask'>ask</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_flat'>flat</span>
@@ -2010,9 +2010,9 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="then_push-instance_method">
+  <h3 class="signature " id="then_put-instance_method">
   
-    - (<tt>Object</tt>) <strong>then_push</strong>(channel) 
+    - (<tt>Object</tt>) <strong>then_put</strong>(channel) 
   
 
   
@@ -2046,15 +2046,15 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-694
-695
-696</pre>
+698
+699
+700</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 694</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 698</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_then_push'>then_push</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_on_success'>on_success</span><span class='lparen'>(</span><span class='symbol'>:io</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='id identifier rubyid_channel'>channel</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span> <span class='id identifier rubyid_value'>value</span> <span class='rbrace'>}</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_then_put'>then_put</span><span class='lparen'>(</span><span class='id identifier rubyid_channel'>channel</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_on_success'>on_success</span><span class='lparen'>(</span><span class='symbol'>:io</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='id identifier rubyid_channel'>channel</span><span class='period'>.</span><span class='id identifier rubyid_put'>put</span> <span class='id identifier rubyid_value'>value</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2099,12 +2099,12 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-668
-669
-670</pre>
+672
+673
+674</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 668</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 672</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_then_select'>then_select</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_channels'>channels</span><span class='rparen'>)</span>
   <span class='const'>ZipPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='kw'>self</span><span class='comma'>,</span> <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_channels'>channels</span><span class='rparen'>)</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -2171,17 +2171,17 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-558
-559
-560
-561</pre>
+562
+563
+564
+565</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 558</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 562</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value'>value</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_touch'>touch</span>
-  <span class='ivar'>@State</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='kw'>if</span> <span class='id identifier rubyid_wait_until_complete'>wait_until_complete</span> <span class='id identifier rubyid_timeout'>timeout</span>
+  <span class='id identifier rubyid_internal_state'>internal_state</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='kw'>if</span> <span class='id identifier rubyid_wait_until_complete'>wait_until_complete</span> <span class='id identifier rubyid_timeout'>timeout</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2279,17 +2279,17 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-596
-597
-598
-599</pre>
+600
+601
+602
+603</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 596</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 600</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_value!'>value!</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_touch'>touch</span>
-  <span class='ivar'>@State</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='kw'>if</span> <span class='id identifier rubyid_wait_until_complete!'>wait_until_complete!</span> <span class='id identifier rubyid_timeout'>timeout</span>
+  <span class='id identifier rubyid_internal_state'>internal_state</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span> <span class='kw'>if</span> <span class='id identifier rubyid_wait_until_complete!'>wait_until_complete!</span> <span class='id identifier rubyid_timeout'>timeout</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2384,14 +2384,14 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-584
-585
-586
-587
-588</pre>
+588
+589
+590
+591
+592</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 584</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 588</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait!'>wait!</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_touch'>touch</span>
@@ -2441,12 +2441,12 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-674
-675
-676</pre>
+678
+679
+680</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 674</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 678</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_with_default_executor'>with_default_executor</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
   <span class='const'>FutureWrapperPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -2498,16 +2498,16 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-680
-681
-682
-683
 684
 685
-686</pre>
+686
+687
+688
+689
+690</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 680</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 684</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_zip'>zip</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Future</span><span class='rparen'>)</span>
@@ -2526,9 +2526,9 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:49 2015 by
+  Generated on Fri Nov 13 10:01:26 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>

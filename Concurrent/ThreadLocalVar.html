@@ -105,6 +105,18 @@
 Each variable may have a default value, but when you modify the variable only
 the current thread will ever see that change.</p>
 
+<p>Testing with ruby 2.1.2
+Testing with Concurrent::MutexAtomicBoolean...
+  2.790000   0.000000   2.790000 (  2.791454)
+Testing with Concurrent::CAtomicBoolean...
+  0.740000   0.000000   0.740000 (  0.740206)</p>
+
+<p>Testing with jruby 1.9.3
+Testing with Concurrent::MutexAtomicBoolean...
+  5.240000   2.520000   7.760000 (  3.683000)
+Testing with Concurrent::JavaAtomicBoolean...
+  3.340000   0.010000   3.350000 (  0.855000)</p>
+
 
   </div>
 </div>
@@ -307,11 +319,11 @@ the current thread will ever see that change.</p>
       <pre class="lines">
 
 
-98
-99</pre>
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 100</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadLocalVar</span> <span class='op'>&lt;</span> <span class='const'>ThreadLocalVarImplementation</span>
 <span class='kw'>end</span></pre>
@@ -406,11 +418,11 @@ execution of the given block.</p>
       <pre class="lines">
 
 
-98
-99</pre>
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 100</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadLocalVar</span> <span class='op'>&lt;</span> <span class='const'>ThreadLocalVarImplementation</span>
 <span class='kw'>end</span></pre>
@@ -461,11 +473,11 @@ execution of the given block.</p>
       <pre class="lines">
 
 
-98
-99</pre>
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 100</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadLocalVar</span> <span class='op'>&lt;</span> <span class='const'>ThreadLocalVarImplementation</span>
 <span class='kw'>end</span></pre>
@@ -535,11 +547,11 @@ execution of the given block.</p>
       <pre class="lines">
 
 
-98
-99</pre>
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/atomic/thread_local_var.rb', line 100</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadLocalVar</span> <span class='op'>&lt;</span> <span class='const'>ThreadLocalVarImplementation</span>
 <span class='kw'>end</span></pre>
@@ -553,9 +565,9 @@ execution of the given block.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Aug 19 19:32:52 2015 by
+  Generated on Fri Nov 13 10:01:29 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.2).
+  0.8.7.6 (ruby-2.2.3).
 </div>
 
 <script>
