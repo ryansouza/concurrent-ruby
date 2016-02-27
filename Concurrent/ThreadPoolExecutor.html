@@ -110,16 +110,22 @@ Please read <em>Shutting Down Thread Pools</em> for more information.</p>
   </div>
 
 <p>An abstraction composed of one or more threads and a task queue. Tasks
-(blocks or <code>proc</code> objects) are submit to the pool and added to the queue.
+(blocks or <code>proc</code> objects) are submitted to the pool and added to the queue.
 The threads in the pool remove the tasks and execute them in the order
-they were received. When there are more tasks queued than there are
-threads to execute them the pool will create new threads, up to the
-configured maximum. Similarly, threads that are idle for too long will
-be garbage collected, down to the configured minimum options. Should a
-thread crash it, too, will be garbage collected.</p>
+they were received.</p>
+
+<p>A <code>ThreadPoolExecutor</code> will automatically adjust the pool size according
+to the bounds set by <code>min-threads</code> and <code>max-threads</code>. When a new task is
+submitted and fewer than <code>min-threads</code> threads are running, a new thread
+is created to handle the request, even if other worker threads are idle.
+If there are more than <code>min-threads</code> but less than <code>max-threads</code> threads
+running, a new thread will be created only if the queue is full.</p>
+
+<p>Threads that are idle for too long will be garbage collected, down to the
+configured minimum options. Should a thread crash it, too, will be garbage collected.</p>
 
 <p><code>ThreadPoolExecutor</code> is based on the Java class of the same name. From
-the official Java documentationa;</p>
+the official Java documentation;</p>
 
 <blockquote>
 <p>Thread pools address two different problems: they usually provide
@@ -144,8 +150,8 @@ scenarios.</p>
 <ul>
 <li><code>idletime</code>: The number of seconds that a thread may be idle before being reclaimed.</li>
 <li><code>max_queue</code>: The maximum number of tasks that may be waiting in the work queue at
-any one time. When the queue size reaches <code>max_queue</code> subsequent tasks will be
-rejected in accordance with the configured <code>fallback_policy</code>.</li>
+any one time. When the queue size reaches <code>max_queue</code> and no new threads can be created,
+subsequent tasks will be rejected in accordance with the configured <code>fallback_policy</code>.</li>
 <li><code>auto_terminate</code>: When true (default) an <code>at_exit</code> handler will be registered which
 will stop the thread pool when the application exits. See below for more information
 on shutting down thread pools.</li>
@@ -179,7 +185,7 @@ the orderly shutdown to complete</li>
 <p>On some runtime platforms (most notably the JVM) the application will not
 exit until all thread pools have been shutdown. To prevent applications from
 &quot;hanging&quot; on exit all thread pools include an <code>at_exit</code> handler that will
-stop the thread pool when the application exists. This handler uses a brute
+stop the thread pool when the application exits. This handler uses a brute
 force method to stop the pool and makes no guarantees regarding resources being
 used by any tasks still running. Registration of this <code>at_exit</code> handler can be
 prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</code> option to
@@ -918,8 +924,8 @@ number of threads to be created</p>
             
           </span>
           
-            &mdash; <div class='inline'><p>the minimum
-number of threads to be retained</p>
+            &mdash; <div class='inline'><p>When a new task is submitted
+and fewer than <code>min_threads</code> are running, a new thread is created</p>
 </div>
           
         </li>
@@ -1038,7 +1044,7 @@ in <code>FALLBACK_POLICIES</code></p>
 </pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 80</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 86</span>
 
 </pre>
     </td>
@@ -1095,12 +1101,6 @@ in <code>FALLBACK_POLICIES</code></p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -1125,10 +1125,16 @@ in <code>FALLBACK_POLICIES</code></p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -1140,8 +1146,8 @@ in <code>FALLBACK_POLICIES</code></p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -1210,12 +1216,6 @@ in <code>FALLBACK_POLICIES</code></p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -1240,10 +1240,16 @@ in <code>FALLBACK_POLICIES</code></p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -1255,8 +1261,8 @@ in <code>FALLBACK_POLICIES</code></p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -1325,12 +1331,6 @@ in <code>FALLBACK_POLICIES</code></p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -1355,10 +1355,16 @@ in <code>FALLBACK_POLICIES</code></p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -1370,8 +1376,8 @@ in <code>FALLBACK_POLICIES</code></p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -1440,12 +1446,6 @@ in <code>FALLBACK_POLICIES</code></p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -1470,10 +1470,16 @@ in <code>FALLBACK_POLICIES</code></p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -1485,8 +1491,8 @@ in <code>FALLBACK_POLICIES</code></p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -1555,12 +1561,6 @@ in <code>FALLBACK_POLICIES</code></p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -1585,10 +1585,16 @@ in <code>FALLBACK_POLICIES</code></p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -1600,8 +1606,8 @@ in <code>FALLBACK_POLICIES</code></p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -1670,12 +1676,6 @@ in <code>FALLBACK_POLICIES</code></p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -1700,10 +1700,16 @@ in <code>FALLBACK_POLICIES</code></p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -1715,8 +1721,8 @@ in <code>FALLBACK_POLICIES</code></p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -1789,12 +1795,6 @@ accordance with the configured <code>fallback_policy</code>.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -1819,10 +1819,16 @@ accordance with the configured <code>fallback_policy</code>.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -1834,8 +1840,8 @@ accordance with the configured <code>fallback_policy</code>.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -1904,12 +1910,6 @@ accordance with the configured <code>fallback_policy</code>.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -1934,10 +1934,16 @@ accordance with the configured <code>fallback_policy</code>.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -1949,8 +1955,8 @@ accordance with the configured <code>fallback_policy</code>.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -2019,12 +2025,6 @@ accordance with the configured <code>fallback_policy</code>.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -2049,10 +2049,16 @@ accordance with the configured <code>fallback_policy</code>.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -2064,8 +2070,8 @@ accordance with the configured <code>fallback_policy</code>.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -2136,12 +2142,6 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -2166,10 +2166,16 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -2181,8 +2187,8 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -2251,12 +2257,6 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -2281,10 +2281,16 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -2296,8 +2302,8 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -2390,12 +2396,6 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -2420,10 +2420,16 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -2435,8 +2441,8 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -2522,12 +2528,6 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -2552,10 +2552,16 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -2567,8 +2573,8 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -2635,12 +2641,6 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -2665,10 +2665,16 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -2680,8 +2686,8 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -2748,12 +2754,6 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -2778,10 +2778,16 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -2793,8 +2799,8 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -2847,12 +2853,6 @@ not running.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -2877,10 +2877,16 @@ not running.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -2892,8 +2898,8 @@ not running.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -3014,12 +3020,6 @@ is not running</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -3044,10 +3044,16 @@ is not running</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -3059,8 +3065,8 @@ is not running</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -3127,12 +3133,6 @@ is not running</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -3157,10 +3157,16 @@ is not running</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -3172,8 +3178,8 @@ is not running</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -3242,12 +3248,6 @@ occur simultaneously. Else false.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -3272,10 +3272,16 @@ occur simultaneously. Else false.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -3287,8 +3293,8 @@ occur simultaneously. Else false.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -3340,12 +3346,6 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -3370,10 +3370,16 @@ thread pool is not running.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -3385,8 +3391,8 @@ thread pool is not running.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -3453,12 +3459,6 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -3483,10 +3483,16 @@ thread pool is not running.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -3498,8 +3504,8 @@ thread pool is not running.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -3566,12 +3572,6 @@ thread pool is not running.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -3596,10 +3596,16 @@ thread pool is not running.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -3611,8 +3617,8 @@ thread pool is not running.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -3709,12 +3715,6 @@ passed.</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -3739,10 +3739,16 @@ passed.</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/executor/thread_pool_executor.rb', line 56</span>
 
 <span class='kw'>class</span> <span class='const'>ThreadPoolExecutor</span> <span class='op'>&lt;</span> <span class='const'>ThreadPoolExecutorImplementation</span>
 
@@ -3754,8 +3760,8 @@ passed.</p>
 </span>  <span class='comment'>#  
 </span>  <span class='comment'>#   @option opts [Integer] :max_threads (DEFAULT_MAX_POOL_SIZE) the maximum
 </span>  <span class='comment'>#     number of threads to be created
-</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) the minimum
-</span>  <span class='comment'>#     number of threads to be retained
+</span>  <span class='comment'>#   @option opts [Integer] :min_threads (DEFAULT_MIN_POOL_SIZE) When a new task is submitted
+</span>  <span class='comment'>#      and fewer than `min_threads` are running, a new thread is created
 </span>  <span class='comment'>#   @option opts [Integer] :idletime (DEFAULT_THREAD_IDLETIMEOUT) the maximum
 </span>  <span class='comment'>#     number of seconds a thread may be idle before being reclaimed
 </span>  <span class='comment'>#   @option opts [Integer] :max_queue (DEFAULT_MAX_QUEUE_SIZE) the maximum
@@ -3785,7 +3791,7 @@ passed.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 13 10:01:30 2015 by
+  Generated on Sat Feb 27 09:07:07 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

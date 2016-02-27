@@ -694,20 +694,20 @@
       <pre class="lines">
 
 
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187</pre>
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 177</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 189</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_promise'>promise</span><span class='comma'>,</span> <span class='id identifier rubyid_default_executor'>default_executor</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -777,12 +777,12 @@
       <pre class="lines">
 
 
-240
-241
-242</pre>
+252
+253
+254</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 240</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 252</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_chain'>chain</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='const'>ChainPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span> <span class='op'>||</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -820,12 +820,12 @@
       <pre class="lines">
 
 
-246
-247
-248</pre>
+258
+259
+260</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 246</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 258</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_chain_completable'>chain_completable</span><span class='lparen'>(</span><span class='id identifier rubyid_completable_event'>completable_event</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_on_completion!'>on_completion!</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_completable_event'>completable_event</span><span class='period'>.</span><span class='id identifier rubyid_complete_with'>complete_with</span> <span class='const'>COMPLETED</span> <span class='rbrace'>}</span>
@@ -877,12 +877,12 @@
       <pre class="lines">
 
 
-208
-209
-210</pre>
+220
+221
+222</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 208</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 220</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_completed?'>completed?</span><span class='lparen'>(</span><span class='id identifier rubyid_state'>state</span> <span class='op'>=</span> <span class='id identifier rubyid_internal_state'>internal_state</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_completed?'>completed?</span>
@@ -941,12 +941,12 @@
       <pre class="lines">
 
 
-235
-236
-237</pre>
+247
+248
+249</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 235</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 247</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_default_executor'>default_executor</span>
   <span class='ivar'>@DefaultExecutor</span>
@@ -994,12 +994,12 @@
       <pre class="lines">
 
 
-266
-267
-268</pre>
+278
+279
+280</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 266</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 278</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delay'>delay</span>
   <span class='const'>ZipEventEventPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='const'>Delay</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@DefaultExecutor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_event'>event</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_event'>event</span>
@@ -1067,12 +1067,12 @@
       <pre class="lines">
 
 
-308
-309
-310</pre>
+320
+321
+322</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 308</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 320</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inspect'>inspect</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_to_s'>to_s</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_content'> blocks:[</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_blocks'>blocks</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>]&gt;</span><span class='tstring_end'>&quot;</span></span>
@@ -1248,12 +1248,12 @@
       <pre class="lines">
 
 
-288
-289
-290</pre>
+300
+301
+302</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 288</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 300</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_completion'>on_completion</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_add_callback'>add_callback</span> <span class='symbol'>:pr_async_callback_on_completion</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span> <span class='op'>||</span> <span class='ivar'>@DefaultExecutor</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span>
@@ -1322,12 +1322,12 @@
       <pre class="lines">
 
 
-294
-295
-296</pre>
+306
+307
+308</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 294</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 306</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_on_completion!'>on_completion!</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_add_callback'>add_callback</span> <span class='symbol'>:pr_callback_on_completion</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span>
@@ -1379,12 +1379,12 @@
       <pre class="lines">
 
 
-196
-197
-198</pre>
+208
+209
+210</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 196</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 208</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pending?'>pending?</span><span class='lparen'>(</span><span class='id identifier rubyid_state'>state</span> <span class='op'>=</span> <span class='id identifier rubyid_internal_state'>internal_state</span><span class='rparen'>)</span>
   <span class='op'>!</span><span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_completed?'>completed?</span>
@@ -1418,13 +1418,13 @@
       <pre class="lines">
 
 
-312
-313
-314
-315</pre>
+324
+325
+326
+327</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 312</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 324</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_set'>set</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Use CompletableEvent#complete or CompletableFuture#complete instead, </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span>
@@ -1472,12 +1472,12 @@
       <pre class="lines">
 
 
-190
-191
-192</pre>
+202
+203
+204</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 190</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 202</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_state'>state</span>
   <span class='id identifier rubyid_internal_state'>internal_state</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
@@ -1525,12 +1525,12 @@
       <pre class="lines">
 
 
-282
-283
-284</pre>
+294
+295
+296</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 282</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 294</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_then_select'>then_select</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_channels'>channels</span><span class='rparen'>)</span>
   <span class='const'>ZipFutureEventPromise</span><span class='lparen'>(</span><span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_channels'>channels</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='ivar'>@DefaultExecutor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -1564,12 +1564,12 @@
       <pre class="lines">
 
 
-304
-305
-306</pre>
+316
+317
+318</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 304</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 316</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;#</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'>:0x</span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%x</span><span class='tstring_end'>&#39;</span></span> <span class='op'>%</span> <span class='lparen'>(</span><span class='id identifier rubyid_object_id'>object_id</span> <span class='op'>&lt;&lt;</span> <span class='int'>1</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='embexpr_end'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
@@ -1616,12 +1616,12 @@
       <pre class="lines">
 
 
-200
-201
-202</pre>
+212
+213
+214</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 200</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 212</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unscheduled?'>unscheduled?</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unsupported</span><span class='tstring_end'>&#39;</span></span>
@@ -1702,14 +1702,14 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-220
-221
-222
-223
-224</pre>
+232
+233
+234
+235
+236</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 220</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 232</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait'>wait</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_touch'>touch</span>
@@ -1759,12 +1759,12 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-300
-301
-302</pre>
+312
+313
+314</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 300</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 312</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_with_default_executor'>with_default_executor</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span>
   <span class='const'>EventWrapperPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -1816,16 +1816,16 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
       <pre class="lines">
 
 
-254
-255
-256
-257
-258
-259
-260</pre>
+266
+267
+268
+269
+270
+271
+272</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 254</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 266</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_zip'>zip</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_is?'>is?</span><span class='lparen'>(</span><span class='const'>Future</span><span class='rparen'>)</span>
@@ -1844,7 +1844,7 @@ If thread waits periodically it will dangerously grow the waiters stack.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 13 10:01:26 2015 by
+  Generated on Sat Feb 27 09:07:01 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

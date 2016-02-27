@@ -996,13 +996,13 @@ refer to the execution context of the block rather than the running
       <pre class="lines">
 
 
-187
-188
 189
-190</pre>
+190
+191
+192</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 187</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 189</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no block given</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -1064,12 +1064,12 @@ task is performed again.</p>
       <pre class="lines">
 
 
-236
-237
-238</pre>
+238
+239
+240</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 236</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 238</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execution_interval'>execution_interval</span>
   <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@execution_interval</span> <span class='rbrace'>}</span>
@@ -1217,12 +1217,12 @@ considered to have failed.</p>
       <pre class="lines">
 
 
-254
-255
-256</pre>
+256
+257
+258</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 254</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 256</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_timeout_interval'>timeout_interval</span>
   <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='lbrace'>{</span> <span class='ivar'>@timeout_interval</span> <span class='rbrace'>}</span>
@@ -1466,12 +1466,12 @@ refer to the execution context of the block rather than the running
       <pre class="lines">
 
 
-229
-230
-231</pre>
+231
+232
+233</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 229</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 231</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='const'>TimerTask</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span>
@@ -1786,18 +1786,18 @@ longer receive notifications.</p>
       <pre class="lines">
 
 
-212
-213
 214
 215
 216
 217
 218
 219
-220</pre>
+220
+221
+222</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 212</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 214</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span>
   <span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
@@ -1855,12 +1855,12 @@ longer receive notifications.</p>
       <pre class="lines">
 
 
-195
-196
-197</pre>
+197
+198
+199</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 195</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/timer_task.rb', line 197</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_running?'>running?</span>
   <span class='ivar'>@running</span><span class='period'>.</span><span class='id identifier rubyid_true?'>true?</span>
@@ -2006,7 +2006,7 @@ by the <code>#set_deref_options</code> method.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 13 10:01:25 2015 by
+  Generated on Sat Feb 27 09:07:01 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

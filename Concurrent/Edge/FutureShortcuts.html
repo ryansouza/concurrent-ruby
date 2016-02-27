@@ -708,7 +708,7 @@ intended).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#zip-instance_method" title="#zip (instance method)">- (Future) <strong>zip</strong>(*futures) </a>
+      <a href="#zip_events-instance_method" title="#zip_events (instance method)">- (Event) <strong>zip_events</strong>(*futures_and_or_events) </a>
     
 
     
@@ -722,7 +722,32 @@ intended).</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Future.html" title="Concurrent::Edge::Future (class)">Future</a></span> which is completed after all futures are complete.</p>
+    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Event.html" title="Concurrent::Edge::Event (class)">Event</a></span> which is completed after all futures_and_or_events are complete (Future is completed when Success or Failed).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#zip_futures-instance_method" title="#zip_futures (instance method)">- (Future) <strong>zip_futures</strong>(*futures_and_or_events) </a>
+    
+
+    
+      (also: #zip)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Future.html" title="Concurrent::Edge::Future (class)">Future</a></span> which is completed after all futures_and_or_events are complete.</p>
 </div></span>
   
 </li>
@@ -790,12 +815,12 @@ intended).</p>
       <pre class="lines">
 
 
-90
-91
-92</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 101</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_any'>any</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_futures'>futures</span><span class='rparen'>)</span>
   <span class='const'>AnyPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_futures'>futures</span><span class='comma'>,</span> <span class='symbol'>:io</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
@@ -1239,12 +1264,12 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
       <pre class="lines">
 
 
-114
-115
-116</pre>
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 126</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_job'>job</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='symbol'>:io</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_job'>job</span><span class='rparen'>)</span>
@@ -1292,12 +1317,12 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
       <pre class="lines">
 
 
-108
-109
-110</pre>
+120
+121
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post!'>post!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_job'>job</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='symbol'>:fast</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_job'>job</span><span class='rparen'>)</span>
@@ -1345,12 +1370,12 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
       <pre class="lines">
 
 
-120
-121
-122</pre>
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 120</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 132</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post_on'>post_on</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_job'>job</span><span class='rparen'>)</span>
   <span class='const'>Concurrent</span><span class='period'>.</span><span class='id identifier rubyid_executor'>executor</span><span class='lparen'>(</span><span class='id identifier rubyid_executor'>executor</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_job'>job</span><span class='rparen'>)</span>
@@ -1470,22 +1495,24 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
       <pre class="lines">
 
 
-96
-97
-98
-99
-100
-101
-102
-103
-104</pre>
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 96</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 107</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_channels'>channels</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_future'>future</span> <span class='kw'>do</span>
-    <span class='const'>Channel</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='comment'># noinspection RubyArgCount
+</span>    <span class='const'>Channel</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
       <span class='id identifier rubyid_channels'>channels</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span>
         <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span><span class='lparen'>(</span><span class='id identifier rubyid_ch'>ch</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
       <span class='kw'>end</span>
@@ -1555,9 +1582,9 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="zip-instance_method">
+  <h3 class="signature " id="zip_events-instance_method">
   
-    - (<tt><span class='object_link'><a href="Future.html" title="Concurrent::Edge::Future (class)">Future</a></span></tt>) <strong>zip</strong>(*futures) 
+    - (<tt><span class='object_link'><a href="Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>) <strong>zip_events</strong>(*futures_and_or_events) 
   
 
   
@@ -1565,8 +1592,8 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Constructs new <span class='object_link'><a href="Future.html" title="Concurrent::Edge::Future (class)">Concurrent::Edge::Future</a></span> which is completed after all futures are complete. Its value is array
-of dependent future values. If there is an error it fails with the first one.</p>
+    <p>Constructs new <span class='object_link'><a href="Event.html" title="Concurrent::Edge::Event (class)">Event</a></span> which is completed after all futures_and_or_events are complete
+(Future is completed when Success or Failed).</p>
 
 
   </div>
@@ -1577,7 +1604,81 @@ of dependent future values. If there is an error it fails with the first one.</p
   
     <li>
       
-        <span class='name'>futures</span>
+        <span class='name'>futures_and_or_events</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+94
+95
+96</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 94</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_zip_events'>zip_events</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_futures_and_or_events'>futures_and_or_events</span><span class='rparen'>)</span>
+  <span class='const'>ZipEventsPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_futures_and_or_events'>futures_and_or_events</span><span class='comma'>,</span> <span class='symbol'>:io</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="zip_futures-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Future.html" title="Concurrent::Edge::Future (class)">Future</a></span></tt>) <strong>zip_futures</strong>(*futures_and_or_events) 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='zip-instance_method'>zip</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Constructs new <span class='object_link'><a href="Future.html" title="Concurrent::Edge::Future (class)">Concurrent::Edge::Future</a></span> which is completed after all futures_and_or_events are complete. Its value is array
+of dependent future values. If there is an error it fails with the first one. Event does not
+have a value so it&#39;s represented by nil in the array of values.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>futures_and_or_events</span>
       
       
         <span class='type'>(<tt><span class='object_link'><a href="Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
@@ -1608,15 +1709,15 @@ of dependent future values. If there is an error it fails with the first one.</p
       <pre class="lines">
 
 
-83
 84
-85</pre>
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/edge/future.rb', line 84</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_zip'>zip</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_futures'>futures</span><span class='rparen'>)</span>
-  <span class='const'>ZipPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_futures'>futures</span><span class='comma'>,</span> <span class='symbol'>:io</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_zip_futures'>zip_futures</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_futures_and_or_events'>futures_and_or_events</span><span class='rparen'>)</span>
+  <span class='const'>ZipFuturesPromise</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_futures_and_or_events'>futures_and_or_events</span><span class='comma'>,</span> <span class='symbol'>:io</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1628,7 +1729,7 @@ of dependent future values. If there is an error it fails with the first one.</p
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 13 10:01:22 2015 by
+  Generated on Sat Feb 27 09:06:57 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

@@ -111,8 +111,8 @@ Please read <em>Shutting Down Thread Pools</em> for more information.</p>
 </div>
   </div>
 
-<p>A thread pool with a set number of threads. The number of threads in the pool
-is set on construction and remains constant. When all threads are busy new
+<p>A thread pool that reuses a fixed number of threads operating off an unbounded queue.
+At any point, at most <code>num_threads</code> will be active processing tasks. When all threads are busy new
 tasks <code>#post</code> to the thread pool are enqueued until a thread becomes available.
 Should a thread crash for any reason the thread will immediately be removed
 from the pool and replaced.</p>
@@ -126,8 +126,8 @@ from the pool and replaced.</p>
 <ul>
 <li><code>idletime</code>: The number of seconds that a thread may be idle before being reclaimed.</li>
 <li><code>max_queue</code>: The maximum number of tasks that may be waiting in the work queue at
-any one time. When the queue size reaches <code>max_queue</code> subsequent tasks will be
-rejected in accordance with the configured <code>fallback_policy</code>.</li>
+any one time. When the queue size reaches <code>max_queue</code> and no new threads can be created,
+subsequent tasks will be rejected in accordance with the configured <code>fallback_policy</code>.</li>
 <li><code>auto_terminate</code>: When true (default) an <code>at_exit</code> handler will be registered which
 will stop the thread pool when the application exits. See below for more information
 on shutting down thread pools.</li>
@@ -161,7 +161,7 @@ the orderly shutdown to complete</li>
 <p>On some runtime platforms (most notably the JVM) the application will not
 exit until all thread pools have been shutdown. To prevent applications from
 &quot;hanging&quot; on exit all thread pools include an <code>at_exit</code> handler that will
-stop the thread pool when the application exists. This handler uses a brute
+stop the thread pool when the application exits. This handler uses a brute
 force method to stop the pool and makes no guarantees regarding resources being
 used by any tasks still running. Registration of this <code>at_exit</code> handler can be
 prevented by setting the thread pool&#39;s constructor <code>:auto_terminate</code> option to
@@ -1278,7 +1278,7 @@ new tasks. A value of -1 indicates that the queue may grow without bound.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 13 10:01:30 2015 by
+  Generated on Sat Feb 27 09:07:06 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

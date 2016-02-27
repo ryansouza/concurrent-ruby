@@ -206,7 +206,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#new-class_method" title="new (class method)">+ (Object) <strong>new</strong> </a>
+      <a href="#new-class_method" title="new (class method)">+ (Object) <strong>new</strong>(*args, &amp;block) </a>
     
 
     
@@ -359,13 +359,13 @@
       <pre class="lines">
 
 
-32
-33
 34
-35</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='kw'>super</span>
@@ -449,8 +449,6 @@ This method generates following methods: <code>value</code>, <code>value=(new_va
       <pre class="lines">
 
 
-90
-91
 92
 93
 94
@@ -480,10 +478,12 @@ This method generates following methods: <code>value</code>, <code>value=(new_va
 118
 119
 120
-121</pre>
+121
+122
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_attr_atomic'>attr_atomic</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_names'>names</span><span class='rparen'>)</span>
   <span class='ivar'>@volatile_cas_fields</span> <span class='op'>||=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -587,7 +587,7 @@ volatile (Java) semantic. The instance variable should be accessed oly through g
 </pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 26</span>
 
 </pre>
     </td>
@@ -621,8 +621,6 @@ any instance variables with CamelCase names and isn&#39;t <span class='object_li
       <pre class="lines">
 
 
-69
-70
 71
 72
 73
@@ -632,10 +630,12 @@ any instance variables with CamelCase names and isn&#39;t <span class='object_li
 77
 78
 79
-80</pre>
+80
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_ensure_safe_initialization_when_final_fields_are_present'>ensure_safe_initialization_when_final_fields_are_present</span>
   <span class='const'>Object</span><span class='period'>.</span><span class='id identifier rubyid_class_eval'>class_eval</span> <span class='kw'>do</span>
@@ -657,7 +657,7 @@ any instance variables with CamelCase names and isn&#39;t <span class='object_li
       <div class="method_details ">
   <h3 class="signature " id="new-class_method">
   
-    + (<tt><span class='object_link'><a href="" title="Concurrent::Synchronization::Object (class)">Object</a></span></tt>) <strong>new</strong> 
+    + (<tt><span class='object_link'><a href="" title="Concurrent::Synchronization::Object (class)">Object</a></span></tt>) <strong>new</strong>(*args, &amp;block) 
   
 
   
@@ -669,17 +669,17 @@ any instance variables with CamelCase names and isn&#39;t <span class='object_li
       <pre class="lines">
 
 
-52
-53
 54
 55
-56</pre>
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 54</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='kw'>super</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='kw'>super</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 <span class='kw'>ensure</span>
   <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_full_memory_barrier'>full_memory_barrier</span> <span class='kw'>if</span> <span class='id identifier rubyid_object'>object</span>
 <span class='kw'>end</span></pre>
@@ -729,8 +729,6 @@ same behaviour as Java&#39;s final fields.</p>
       <pre class="lines">
 
 
-48
-49
 50
 51
 52
@@ -740,17 +738,19 @@ same behaviour as Java&#39;s final fields.</p>
 56
 57
 58
-59</pre>
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_safe_initialization!'>safe_initialization!</span>
   <span class='comment'># define only once, and not again in children
 </span>  <span class='kw'>return</span> <span class='kw'>if</span> <span class='id identifier rubyid_safe_initialization?'>safe_initialization?</span>
 
-  <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='kw'>super</span>
+  <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='kw'>super</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>ensure</span>
     <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_full_memory_barrier'>full_memory_barrier</span> <span class='kw'>if</span> <span class='id identifier rubyid_object'>object</span>
   <span class='kw'>end</span>
@@ -804,13 +804,13 @@ same behaviour as Java&#39;s final fields.</p>
       <pre class="lines">
 
 
-62
-63
 64
-65</pre>
+65
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_safe_initialization?'>safe_initialization?</span>
   <span class='ivar'>@safe_initialization</span> <span class='op'>=</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='kw'>defined?</span> <span class='ivar'>@safe_initialization</span>
@@ -884,14 +884,14 @@ same behaviour as Java&#39;s final fields.</p>
       <pre class="lines">
 
 
-125
-126
 127
 128
-129</pre>
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 125</span>
+      <pre class="code"><span class="info file"># File 'lib/concurrent/synchronization/object.rb', line 127</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_volatile_cas_fields'>volatile_cas_fields</span><span class='lparen'>(</span><span class='id identifier rubyid_inherited'>inherited</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='ivar'>@volatile_cas_fields</span> <span class='op'>||=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -908,7 +908,7 @@ same behaviour as Java&#39;s final fields.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 13 10:01:28 2015 by
+  Generated on Sat Feb 27 09:07:04 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

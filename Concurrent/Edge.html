@@ -88,7 +88,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">lib/concurrent/edge.rb<span class="defines">,<br />
-  lib/concurrent/edge/future.rb,<br /> lib/concurrent/edge/lock_free_stack.rb,<br /> lib/concurrent/edge/lock_free_linked_set.rb,<br /> lib/concurrent/edge/lock_free_linked_set/node.rb,<br /> lib/concurrent/edge/atomic_markable_reference.rb,<br /> lib/concurrent/edge/lock_free_linked_set/window.rb</span>
+  lib/concurrent/edge/future.rb,<br /> lib/concurrent/edge/lock_free_stack.rb,<br /> lib/concurrent/edge/lock_free_linked_set.rb,<br /> lib/concurrent/edge/atomic_markable_reference.rb,<br /> lib/concurrent/edge/lock_free_linked_set/node.rb,<br /> lib/concurrent/edge/lock_free_linked_set/window.rb</span>
 </dd>
   
 </dl>
@@ -526,7 +526,7 @@ explicitly require only what they need.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#zip-class_method" title="#zip (class method)">+ (Future) <strong>zip</strong>(*futures) </a>
+      <a href="#zip_events-class_method" title="#zip_events (class method)">+ (Event) <strong>zip_events</strong>(*futures_and_or_events) </a>
     
 
     
@@ -534,7 +534,7 @@ explicitly require only what they need.</p>
   
     <span class="note title not_defined_here">
       extended
-      from <span class='object_link'><a href="Edge/FutureShortcuts.html#zip-class_method" title="Concurrent::Edge::FutureShortcuts#zip (method)">FutureShortcuts</a></span>
+      from <span class='object_link'><a href="Edge/FutureShortcuts.html#zip_events-class_method" title="Concurrent::Edge::FutureShortcuts#zip_events (method)">FutureShortcuts</a></span>
     </span>
   
   
@@ -545,7 +545,37 @@ explicitly require only what they need.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Future</a></span> which is completed after all futures are complete.</p>
+    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span> which is completed after all futures_and_or_events are complete (Future is completed when Success or Failed).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#zip_futures-class_method" title="#zip_futures (class method)">+ (Future) <strong>zip_futures</strong>(*futures_and_or_events) </a>
+    
+
+    
+      (also: #zip)
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      extended
+      from <span class='object_link'><a href="Edge/FutureShortcuts.html#zip_futures-class_method" title="Concurrent::Edge::FutureShortcuts#zip_futures (method)">FutureShortcuts</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Future</a></span> which is completed after all futures_and_or_events are complete.</p>
 </div></span>
   
 </li>
@@ -928,7 +958,7 @@ explicitly require only what they need.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#zip-instance_method" title="#zip (instance method)">- (Future) <strong>zip</strong>(*futures) </a>
+      <a href="#zip_events-instance_method" title="#zip_events (instance method)">- (Event) <strong>zip_events</strong>(*futures_and_or_events) </a>
     
 
     
@@ -936,7 +966,7 @@ explicitly require only what they need.</p>
   
     <span class="note title not_defined_here">
       included
-      from <span class='object_link'><a href="Edge/FutureShortcuts.html#zip-instance_method" title="Concurrent::Edge::FutureShortcuts#zip (method)">FutureShortcuts</a></span>
+      from <span class='object_link'><a href="Edge/FutureShortcuts.html#zip_events-instance_method" title="Concurrent::Edge::FutureShortcuts#zip_events (method)">FutureShortcuts</a></span>
     </span>
   
   
@@ -947,7 +977,37 @@ explicitly require only what they need.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Future</a></span> which is completed after all futures are complete.</p>
+    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span> which is completed after all futures_and_or_events are complete (Future is completed when Success or Failed).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#zip_futures-instance_method" title="#zip_futures (instance method)">- (Future) <strong>zip_futures</strong>(*futures_and_or_events) </a>
+    
+
+    
+      (also: #zip)
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Edge/FutureShortcuts.html#zip_futures-instance_method" title="Concurrent::Edge::FutureShortcuts#zip_futures (method)">FutureShortcuts</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Constructs new <span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Future</a></span> which is completed after all futures_and_or_events are complete.</p>
 </div></span>
   
 </li>
@@ -1593,9 +1653,9 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="zip-class_method">
+  <h3 class="signature " id="zip_events-class_method">
   
-    + (<tt><span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Future</a></span></tt>) <strong>zip</strong>(*futures) 
+    + (<tt><span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>) <strong>zip_events</strong>(*futures_and_or_events) 
   
 
   
@@ -1603,13 +1663,13 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="Edge/FutureShortcuts.html#zip-class_method" title="Concurrent::Edge::FutureShortcuts#zip (method)">FutureShortcuts</a></span>
+        <span class='object_link'><a href="Edge/FutureShortcuts.html#zip_events-class_method" title="Concurrent::Edge::FutureShortcuts#zip_events (method)">FutureShortcuts</a></span>
     </span>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Constructs new <span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Concurrent::Edge::Future</a></span> which is completed after all futures are complete. Its value is array
-of dependent future values. If there is an error it fails with the first one.</p>
+    <p>Constructs new <span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span> which is completed after all futures_and_or_events are complete
+(Future is completed when Success or Failed).</p>
 
 
   </div>
@@ -1620,7 +1680,68 @@ of dependent future values. If there is an error it fails with the first one.</p
   
     <li>
       
-        <span class='name'>futures</span>
+        <span class='name'>futures_and_or_events</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="zip_futures-class_method">
+  
+    + (<tt><span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Future</a></span></tt>) <strong>zip_futures</strong>(*futures_and_or_events) 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='zip-instance_method'>zip</span></span>
+    </span>
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Edge/FutureShortcuts.html#zip_futures-class_method" title="Concurrent::Edge::FutureShortcuts#zip_futures (method)">FutureShortcuts</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Constructs new <span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Concurrent::Edge::Future</a></span> which is completed after all futures_and_or_events are complete. Its value is array
+of dependent future values. If there is an error it fails with the first one. Event does not
+have a value so it&#39;s represented by nil in the array of values.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>futures_and_or_events</span>
       
       
         <span class='type'>(<tt><span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
@@ -2283,9 +2404,9 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="zip-instance_method">
+  <h3 class="signature " id="zip_events-instance_method">
   
-    - (<tt><span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Future</a></span></tt>) <strong>zip</strong>(*futures) 
+    - (<tt><span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>) <strong>zip_events</strong>(*futures_and_or_events) 
   
 
   
@@ -2293,13 +2414,13 @@ requested by calling <code>#wait</code>, <code>#value</code>, <code>#value!</cod
   
     <span class="not_defined_here">
       Originally defined in module
-        <span class='object_link'><a href="Edge/FutureShortcuts.html#zip-instance_method" title="Concurrent::Edge::FutureShortcuts#zip (method)">FutureShortcuts</a></span>
+        <span class='object_link'><a href="Edge/FutureShortcuts.html#zip_events-instance_method" title="Concurrent::Edge::FutureShortcuts#zip_events (method)">FutureShortcuts</a></span>
     </span>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Constructs new <span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Concurrent::Edge::Future</a></span> which is completed after all futures are complete. Its value is array
-of dependent future values. If there is an error it fails with the first one.</p>
+    <p>Constructs new <span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span> which is completed after all futures_and_or_events are complete
+(Future is completed when Success or Failed).</p>
 
 
   </div>
@@ -2310,7 +2431,68 @@ of dependent future values. If there is an error it fails with the first one.</p
   
     <li>
       
-        <span class='name'>futures</span>
+        <span class='name'>futures_and_or_events</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="zip_futures-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Future</a></span></tt>) <strong>zip_futures</strong>(*futures_and_or_events) 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='zip-instance_method'>zip</span></span>
+    </span>
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Edge/FutureShortcuts.html#zip_futures-instance_method" title="Concurrent::Edge::FutureShortcuts#zip_futures (method)">FutureShortcuts</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Constructs new <span class='object_link'><a href="Edge/Future.html" title="Concurrent::Edge::Future (class)">Concurrent::Edge::Future</a></span> which is completed after all futures_and_or_events are complete. Its value is array
+of dependent future values. If there is an error it fails with the first one. Event does not
+have a value so it&#39;s represented by nil in the array of values.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>futures_and_or_events</span>
       
       
         <span class='type'>(<tt><span class='object_link'><a href="Edge/Event.html" title="Concurrent::Edge::Event (class)">Event</a></span></tt>)</span>
@@ -2343,7 +2525,7 @@ of dependent future values. If there is an error it fails with the first one.</p
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 13 10:01:22 2015 by
+  Generated on Sat Feb 27 09:06:57 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

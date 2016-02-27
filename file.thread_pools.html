@@ -109,7 +109,11 @@
 
 <p>A <a href="http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/ThreadPoolExecutor.html">ThreadPoolExecutor</a> is a general-purpose thread pool that can be configured to have various behaviors.</p>
 
-<p>The <code>CachedThreadPool</code> and <code>FixedThreadPool</code> are simply <code>ThreadPoolExecutor</code>s with certain configuration pre-determined. For instance, to create a <code>ThreadPoolExecutor</code> that works just like a <code>FixedThreadPool.new 5</code>, you could:</p>
+<p>A <code>ThreadPoolExecutor</code> will automatically adjust the pool size according to the bounds set by <code>min-threads</code> and <code>max-threads</code>.
+When a new task is submitted and fewer than <code>min-threads</code> threads are running, a new thread is created to handle the request, even if other worker threads are idle.
+If there are more than <code>min-threads</code> but less than <code>max-threads</code> threads running, a new thread will be created only if the queue is full.</p>
+
+<p>The <code>CachedThreadPool</code> and <code>FixedThreadPool</code> are simply <code>ThreadPoolExecutors</code> with certain configuration pre-determined. For instance, to create a <code>ThreadPoolExecutor</code> that works just like a <code>FixedThreadPool.new 5</code>, you could:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
    <span class='label'>min_threads:</span> <span class='int'>5</span><span class='comma'>,</span>
@@ -118,13 +122,15 @@
 </span><span class='rparen'>)</span>
 </code></pre>
 
-<p>If you want to provide a maximum queue size, you may also consider the <code>fallback_policy</code> -- what will happen if work is posted to a pool when the queue of waiting work has reached the maximum size? Available policies:</p>
+<p>If you wants to provide a maximum queue size, you may also consider the <code>fallback_policy</code> which defines what will happen if work is posted to a pool when the queue of waiting work has reached the maximum size and no new threads can be created. Available policies:</p>
 
 <ul>
 <li>abort: Raise a <code>Concurrent::RejectedExecutionError</code> exception and discard the task. (default policy)</li>
 <li>discard: Silently discard the task and return nil as the task result.</li>
 <li>caller_runs: The work will be executed in the thread of the caller, instead of being given to another thread in the pool.</li>
 </ul>
+
+<p>For example:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
    <span class='label'>min_threads:</span> <span class='int'>5</span><span class='comma'>,</span>
@@ -134,23 +140,15 @@
 <span class='rparen'>)</span>
 </code></pre>
 
-<p>Similarly, you can create something similar to a <code>CachedThreadPool</code>, but with a maximum number of threads. With an unbounded queue:</p>
+<p>You can create something similar to a <code>CachedThreadPool</code>, but with a maximum number of threads and a bounded queue.
+A new thread will be created for the first 3 tasks submitted, and then, once the queue is full, up to an additional 7 threads (10 total) will be created.
+If all 10 threads are busy and 100 tasks are already queued, additional tasks will be rejected.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
-   <span class='label'>min_threads:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='comment'># create 3 threads at startup
+   <span class='label'>min_threads:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='comment'># create up to 3 threads before queueing tasks
 </span>   <span class='label'>max_threads:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='comment'># create at most 10 threads
-</span>   <span class='label'>max_queue:</span> <span class='int'>0</span><span class='comma'>,</span> <span class='comment'># unbounded queue of work waiting for an available thread
+</span>   <span class='label'>max_queue:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='comment'># at most 100 jobs waiting in the queue
 </span><span class='rparen'>)</span>
-</code></pre>
-
-<p>Or, with a variable number of threads like a CachedThreadPool, but with a bounded queue and a fallback_policy:</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pool'>pool</span> <span class='op'>=</span> <span class='const'>Concurrent</span><span class='op'>::</span><span class='const'>ThreadPoolExecutor</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
-   <span class='label'>min_threads:</span> <span class='int'>3</span><span class='comma'>,</span> <span class='comment'># create 3 threads at startup
-</span>   <span class='label'>max_threads:</span> <span class='int'>10</span><span class='comma'>,</span> <span class='comment'># create at most 10 threads
-</span>   <span class='label'>max_queue:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='comment'># at most 100 jobs waiting in the queue,
-</span>   <span class='label'>fallback_policy:</span> <span class='symbol'>:abort</span>
-<span class='rparen'>)</span>
 </code></pre>
 
 <p>ThreadPoolExecutors with <code>min_threads</code> and <code>max_threads</code> set to different values will ordinarily reclaim idle threads.  You can supply an <code>idletime</code> argument, number of seconds that a thread may be idle before being reclaimed. The default is 60 seconds.</p>
@@ -222,10 +220,29 @@
    <span class='comment'>#work
 </span><span class='kw'>end</span>
 </code></pre>
+
+<h2>Forking</h2>
+
+<p>Some Ruby versions allow the Ruby process to be <a href="http://ruby-doc.org/core-2.3.0/Process.html#method-c-fork">forked</a>. Generally, mixing threading and forking is an <a href="https://en.wikipedia.org/wiki/Anti-pattern">anti-pattern</a>. Threading and forking are both concurrency techniques and mixing the two is rarely beneficial. Moreover, threads created before the fork become unusable (&quot;dead&quot;) in the forked process. This aspect of forking is a significant issue for any application or library which spawns threads. It is strongly advised that applications using <code>ThreadPoolExecutor</code> do <strong>not</strong> also fork. Since Concurrent Ruby is a foundational library often used by gems which are in turn used by other applications, it is impossible to predict or prevent upstream forking. Concurrent Ruby therefore makes a few guarantees about the behavior of <code>ThreadPoolExecutor</code> after forking.</p>
+
+<p><em>Concurrent Ruby guarantees that jobs post on the parent process will be handled on the parent process; the child process does not inherit any jobs at the time of the fork. Concurrent Ruby also guarantees that thread pools copied to the child process will continue to function normally.</em></p>
+
+<p>When a fork occurs the <code>ThreadPoolExecutor</code> in the <em>forking</em> process takes no special actions whatsoever. It has no way of knowing that a fork occurred. It proceeds to process its jobs as normal and makes no attempt whatsoever to distribute those jobs to the forked process(es).</p>
+
+<p>When a <code>ThreadPoolExecutor</code> in the <em>forked</em> process detects that a fork has occurred it immediately takes the following actions:</p>
+
+<ul>
+<li>Clears all pending jobs from its queue (assuming they will be handled by the <em>forking</em> process).</li>
+<li>Deletes all worker threads (they will have died during the fork).</li>
+<li>Resets all job counters (these counts will be reflected in the <em>forking</em> process).</li>
+<li>Begins posting new jobs as normal.</li>
+</ul>
+
+<p>These actions guarantee that all in-flight jobs are processed normally in the forking process and that thread pools, including the global thread pools, remain functional in the forked process(es).</p>
 </div></div>
 
     <div id="footer">
-  Generated on Fri Nov 13 10:01:21 2015 by
+  Generated on Sat Feb 27 09:06:56 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
