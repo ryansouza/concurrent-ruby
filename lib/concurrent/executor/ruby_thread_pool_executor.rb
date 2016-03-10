@@ -1,6 +1,7 @@
 require 'thread'
 require 'concurrent/atomic/event'
 require 'concurrent/concern/logging'
+require 'concurrent/concern/observable'
 require 'concurrent/executor/ruby_executor_service'
 require 'concurrent/utility/monotonic_time'
 
@@ -10,6 +11,7 @@ module Concurrent
   # @!macro thread_pool_options
   # @!visibility private
   class RubyThreadPoolExecutor < RubyExecutorService
+    include Concern::Observable
 
     # @!macro thread_pool_executor_constant_default_max_pool_size
     DEFAULT_MAX_POOL_SIZE      = 2_147_483_647 # java.lang.Integer::MAX_VALUE
@@ -123,6 +125,7 @@ module Concurrent
       raise ArgumentError.new("`min_threads` cannot be more than `max_threads`") if min_length > max_length
 
       self.auto_terminate = opts.fetch(:auto_terminate, true)
+      self.observers = Collection::CopyOnNotifyObserverSet.new
 
       @pool                 = [] # all workers
       @ready                = [] # used as a stash (most idle worker is at the start)
@@ -224,7 +227,7 @@ module Concurrent
     def ns_add_busy_worker
       return if @pool.size >= @max_length
 
-      @pool << (worker = Worker.new(self))
+      @pool << (worker = Worker.new(self, observers))
       @largest_length = @pool.length if @pool.length > @largest_length
       worker
     end
@@ -292,11 +295,12 @@ module Concurrent
     class Worker
       include Concern::Logging
 
-      def initialize(pool)
+      def initialize(pool, observers)
         # instance variables accessed only under pool's lock so no need to sync here again
-        @queue  = Queue.new
-        @pool   = pool
-        @thread = create_worker @queue, pool, pool.idletime
+        @queue     = Queue.new
+        @pool      = pool
+        @observers = observers
+        @thread    = create_worker @queue, pool, pool.idletime
       end
 
       def <<(message)
@@ -345,14 +349,17 @@ module Concurrent
       end
 
       def run_task(pool, task, args)
-        task.call(*args)
+        value = task.call(*args)
         pool.worker_task_completed
+        @observers.notify_observers(Time.now, value, nil)
       rescue => ex
         # let it fail
         log DEBUG, ex
+        @observers.notify_observers(Time.now, nil, ex)
       rescue Exception => ex
         log ERROR, ex
         pool.worker_died(self)
+        @observers.notify_observers(Time.now, nil, ex)
         throw :stop
       end
     end

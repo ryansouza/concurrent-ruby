@@ -1,3 +1,4 @@
+require_relative '../concern/observable_shared'
 require_relative 'executor_service_shared'
 
 shared_examples :thread_pool do

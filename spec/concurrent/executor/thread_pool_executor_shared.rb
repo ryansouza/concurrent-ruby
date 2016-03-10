@@ -1,3 +1,4 @@
+require_relative '../concern/observable_shared'
 require_relative 'thread_pool_shared'
 
 shared_examples :thread_pool_executor do
@@ -535,6 +536,157 @@ shared_examples :thread_pool_executor do
         executor.shutdown
         executor << proc { latch.count_down }
         latch.wait(0.1)
+      end
+    end
+  end
+
+  context :observable do
+
+    after(:each) { subject.kill }
+
+    def trigger_observable(observable)
+      observable.post { nil }
+    end
+
+    it_should_behave_like :observable
+  end
+
+  context 'observation' do
+
+    after(:each) { subject.kill }
+
+    let(:observer) do
+      Class.new do
+        attr_reader :time
+        attr_reader :value
+        attr_reader :ex
+        attr_reader :latch
+        define_method(:initialize) { @latch = Concurrent::CountDownLatch.new(1) }
+        define_method(:update) do |time, value, ex|
+          @time  = time
+          @value = value
+          @ex    = ex
+          @latch.count_down
+        end
+      end.new
+    end
+
+    let!(:min_threads){ 1 }
+    let!(:max_threads){ 1 }
+    let!(:idletime){ 1 }
+    let!(:max_queue){ 1 }
+    let!(:fallback_policy) { :discard }
+
+    subject do
+      described_class.new(
+        min_threads: 1,
+        max_threads: 1,
+        max_queue: 1,
+        fallback_policy: fallback_policy
+      )
+    end
+
+    context 'task ran in worker' do
+      it 'notifies all observers on success' do
+        trigger = Concurrent::Event.new
+
+        subject.add_observer(observer)
+        subject.post { trigger.wait(1) && 42 }
+
+        trigger.set
+        observer.latch.wait(1)
+
+        expect(observer.value).to eq(42)
+        expect(observer.ex).to be_nil
+      end
+
+      it 'notifies all observers on error' do
+        trigger = Concurrent::Event.new
+
+        subject.add_observer(observer)
+        subject.post { trigger.wait(1) && raise(ArgumentError) }
+
+        trigger.set
+        observer.latch.wait(1)
+
+        expect(observer.value).to be_nil
+        expect(observer.ex).to be_a(ArgumentError)
+      end
+    end
+
+    context 'task is rejected' do
+      # TODO is it correct to not notify for abort and discard?
+
+      context 'abort fallback' do
+        let!(:fallback_policy) { :abort }
+
+        it 'does not notify observers' do
+          subject.add_observer(observer)
+          2.times { subject.post { sleep } }
+          expect { subject.post { 42 } }.to raise_error(Concurrent::RejectedExecutionError)
+          expect(observer.latch.wait(1)).to be_falsy
+        end
+      end
+
+      context 'discard fallback' do
+        let!(:fallback_policy) { :discard }
+
+        it 'does not notify observers' do
+          subject.add_observer(observer)
+          2.times { subject.post { sleep } }
+          subject.post { 42 }
+          expect(observer.latch.wait(1)).to be_falsy
+        end
+      end
+
+      context 'caller runs fallback' do
+        let!(:fallback_policy) { :caller_runs }
+
+        it 'notifies all observers on success' do
+          trigger = Concurrent::Event.new
+          subject.add_observer(observer)
+          2.times { subject.post { sleep } }
+
+          initial = Thread.list.length
+
+          # Post several tasks to the executor. Has to be a new thread,
+          # because it will start blocking once the queue fills up.
+          Thread.new do
+            5.times { subject.post { trigger.wait(1) && 42 } }
+          end
+
+          # No additional threads spawned
+          expect(Thread.list.length).to eq(initial + 1)
+
+          trigger.set
+          observer.latch.wait(1)
+
+          expect(observer.value).to eq(42)
+          expect(observer.ex).to be_nil
+        end
+
+        it 'notifies all observers on error' do
+          trigger = Concurrent::Event.new
+          subject.add_observer(observer)
+          2.times { subject.post { sleep } }
+
+          initial = Thread.list.length
+
+          # Post several tasks to the executor. Has to be a new thread,
+          # because it will start blocking once the queue fills up.
+          Thread.new do
+            5.times { subject.post { trigger.wait(1) && raise(ArgumentError) } }
+          end
+
+          # Pool spawned no additional threads
+          expect(Thread.list.length).to eq(initial + 1)
+
+          trigger.set
+          observer.latch.wait(1)
+
+          expect(observer.value).to be_nil
+          expect(observer.ex).to be_a(ArgumentError)
+        end
       end
     end
   end
